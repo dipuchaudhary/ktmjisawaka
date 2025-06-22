@@ -41,7 +41,7 @@
                             <div class="col-md-6">
                                 <div class="tn-img">
                                     <img src="{{ asset('frontend/img/image1.jpg') }}" />
-                                    <div class="tn-title">
+                                    <div class="tn-title text-center">
                                         <a href="">कानुनी सचेतना कार्यक्रम</a>
                                     </div>
                                 </div>
@@ -49,7 +49,7 @@
                             <div class="col-md-6">
                                 <div class="tn-img">
                                     <img src="{{ asset('frontend/img/image3.jpg') }}" />
-                                    <div class="tn-title">
+                                    <div class="tn-title text-center">
                                         <a  href="">फेरी भेटौला तथा विदाई कार्यक्रम</a>
                                     </div>
                                 </div>
@@ -57,7 +57,7 @@
                             <div class="col-md-6">
                                 <div class="tn-img">
                                     <img src="{{ asset('frontend/img/image4.jpg') }}" />
-                                    <div class="tn-title">
+                                    <div class="tn-title text-center">
                                         <a  href="">होली मिलन कार्यक्रम</a>
                                     </div>
                                 </div>

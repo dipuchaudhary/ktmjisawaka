@@ -197,13 +197,20 @@ button.btn:hover {
 
 .brand .b-logo a img {
     max-width: 100%;
-    max-height: 60px;
+    max-height: 70px;
 }
 
 .brand .b-ads {
     overflow: hidden;
     p {
          color: #28406e;
+    }
+}
+
+.brand .b-ads:hover {
+    overflow: hidden;
+    p {
+         color: #dc3545;
     }
 }
 

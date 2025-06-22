@@ -31,8 +31,10 @@
                     </div>
                     <div class="col-lg-8 col-md-6">
                         <div class="b-ads">
-                            <p> जिल्ला सरकारी वकील कार्यालय, काठमाण्डौ</p>
-                            <p> District Attorney Office, Kathmandu</p>
+                            <a href="{{ url('/') }}">
+                                <p style="font-size:20px; font-weight:600;">जिल्ला सरकारी वकील कार्यालय, काठमाण्डौ</p>
+                                <p style="font-size:20px; font-weight:600;"> District Attorney Office, Kathmandu</p>
+                            </a>
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-4 align-items-center">
