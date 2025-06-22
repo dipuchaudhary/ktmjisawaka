@@ -494,6 +494,10 @@ button.btn:hover {
     content: "\f105";
 }
 
+.top-news .card .scroll-text {
+    max-height: 400px;
+    overflow-y: auto;
+}
 
 /**********************************/
 /******* Category News CSS ********/
