@@ -11,21 +11,21 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('darta_tables', function (Blueprint $table) {
+        Schema::create('mudda_dartas', function (Blueprint $table) {
             $table->id();
-            $table->string('anusandhan_garne_nikale');
-            $table->string('mudda_number')->unique();
+            $table->string('anusandhan_garne_nikaye');
+            $table->string('mudda_number')->nullable();
             $table->string('mudda_name');
             $table->string('jaherwala_name');
             $table->string('pratiwadi_name');
-            $table->integer('pratiwadi_number');
+            $table->string('pratiwadi_number')->nullable();
             $table->string('mudda_stithi');
-            $table->string('mudda_date');
-            $table->string('mudda_myad');
-            $table->string('sarkariwakil_name');
-            $table->string('faat_name');
+            $table->string('mudda_date')->nullable();
+            $table->string('mudda_myad')->nullable();
+            $table->string('sarkariwakil_name')->nullable();
+            $table->string('faat_name')->nullable();
             $table->string('mudda_pathayko_date');
-            $table->string('kaifiyat');
+            $table->string('kaifiyat')->nullable();
             $table->timestamps();
         });
     }
@@ -35,6 +35,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('darta_tables');
+        Schema::dropIfExists('mudda_dartas');
     }
 };
