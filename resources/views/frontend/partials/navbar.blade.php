@@ -8,18 +8,10 @@
 
                     <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                         <div class="navbar-nav mr-auto">
-                            <a href="index.html" class="nav-item nav-link active">गृहपृष्ठ</a>
-                            {{-- <div class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Dropdown</a>
-                                <div class="dropdown-menu">
-                                    <a href="#" class="dropdown-item">Sub Item 1</a>
-                                    <a href="#" class="dropdown-item">Sub Item 2</a>
-                                </div>
-                            </div> --}}
-							 <a href="#" class="nav-item nav-link">कर्मचारी विवरण</a>
-                            <a href="#" class="nav-item nav-link">नागरिक वडापत्र</a>
-                            <a href="#" class="nav-item nav-link">शाखाहरुको बिवरण</a>
-                            <a href="#" class="nav-item nav-link">पूर्व सहन्यायाधिवक्ता</a>
+                            <a href="{{ url('/') }}" class="nav-item nav-link active">गृहपृष्ठ</a>
+							 <a href="{{ url('/darta') }}" class="nav-item nav-link">दर्ता</a>
+                            <a href="#" class="nav-item nav-link">चलानी</a>
+                            <a href="#" class="nav-item nav-link">पुनरावेदन</a>
                             <a href="contact.html" class="nav-item nav-link">सम्पर्क ठेगाना</a>
 
                         </div>
