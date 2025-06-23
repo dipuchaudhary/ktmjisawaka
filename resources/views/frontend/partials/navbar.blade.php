@@ -9,7 +9,7 @@
                     <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                         <div class="navbar-nav mr-auto">
                             <a href="{{ url('/') }}" class="nav-item nav-link active">गृहपृष्ठ</a>
-							 <a href="{{ url('/darta') }}" class="nav-item nav-link">दर्ता</a>
+							 <a href="{{ route('mudda_darta.create') }}" class="nav-item nav-link">दर्ता</a>
                             <a href="#" class="nav-item nav-link">चलानी</a>
                             <a href="#" class="nav-item nav-link">पुनरावेदन</a>
                             <a href="contact.html" class="nav-item nav-link">सम्पर्क ठेगाना</a>

@@ -6,8 +6,8 @@ use Illuminate\Http\Request;
 
 class DartaController extends Controller
 {
-    public function index()
+    public function create()
     {
-        return view('frontend.darta');
+        return view('frontend.mudda_darta.create');
     }
 }
