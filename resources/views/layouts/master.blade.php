@@ -19,7 +19,7 @@
         <link href="{{ asset('frontend/lib/slick/slick.css') }}" rel="stylesheet">
         <link href="{{ asset('frontend/lib/slick/slick-theme.css') }}" rel="stylesheet">
         <link rel="stylesheet" href="{{ asset('frontend/css/nepaliDatePicker.min.css') }}">
-
+        <link rel="stylesheet" href="{{ asset('frontend/css/toastr.min.css') }}">
         <!-- Template Stylesheet -->
         <link href="{{ asset('frontend/css/style.css') }}" rel="stylesheet">
     </head>
@@ -54,6 +54,30 @@
         <script src="{{ asset('frontend/js/main.js') }}"></script>
         <script src="{{ asset('frontend/js/nepaliDatePicker.min.js') }}"></script>
         <script src="{{ asset('frontend/js/custom-js.js') }}"></script>
-
+        <script src="{{ asset('frontend/js/toastr.min.js') }}"></script>
+        <script>
+            toastr.options = {
+                "closeButton": true,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": true,
+                "positionClass": "toast-top-right",
+                "preventDuplicates": false,
+                "showDuration": "1000",
+                "hideDuration": "1000",
+                "timeOut": "3000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+            @if(Session::has('success'))
+            toastr.success('{{ Session::get('success')}}')
+            @endif
+            @if(Session::has('info'))
+            toastr.info('{{ Session::get('info')}}')
+            @endif
+        </script>
     </body>
 </html>

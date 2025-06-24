@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\MuddaDarta;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class MuddaDartaController extends Controller
 {
@@ -54,6 +55,7 @@ class MuddaDartaController extends Controller
             'mudda_pathayko_date' => $request->input('mudda_pathayko_date'),
             'kaifiyat' => $request->input('kaifiyat'),
         ]);
-       return redirect()->route('mudda_darta.create')->with('success', 'Darta created successfully!');
+        Session::flash('success','मुद्दा दर्ता सफल भयो।');
+        return redirect()->route('mudda_darta.create');
     }
 }
