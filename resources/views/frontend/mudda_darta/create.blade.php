@@ -53,10 +53,10 @@
         <div class="col-md-4 mb-3">
         <label for="मुद्दाको स्थिति" class="form-label">मुद्दाको स्थिति <span style="color:red">*</span></label>
         <select class="form-select form-control" name="mudda_stithi" id="mudda_stithi">
-            <option selected>-----एउटाको विकल्प रोज्नु----</option>
-            <option value="farar">फरार</option>
-            <option value="pakrau">पक्राउ</option>
-            <option value="hajiri_jawanima_xodeko">हाजिरि जमानीमा छोडेको</option>
+            <option selected value="">-----एउटाको विकल्प रोज्नु----</option>
+            <option value="फरार">फरार</option>
+            <option value="पक्राउ">पक्राउ</option>
+            <option value="हाजिरि जमानीमा छोडेको">हाजिरि जमानीमा छोडेको</option>
         </select>
          @error('mudda_stithi')
                 <div class="alert alert-danger">{{ $message }}</div>
@@ -83,9 +83,9 @@
             <label for="फाँट" class="form-label">फाँट</label>
             <select class="form-select form-control" name="faat_name" id="faat_name">
                 <option selected>-----एउटाको विकल्प रोज्नु----</option>
-                <option value="ka">क</option>
-                <option value="kha">ख</option>
-                <option value="ga">ग</option>
+                <option value="क">क</option>
+                <option value="ख">ख</option>
+                <option value="ग">ग</option>
             </select>
         </div>
         <div class="col-md-4 mb-3">

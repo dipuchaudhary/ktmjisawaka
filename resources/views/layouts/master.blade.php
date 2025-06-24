@@ -22,6 +22,8 @@
         <link rel="stylesheet" href="{{ asset('frontend/css/toastr.min.css') }}">
         <!-- Template Stylesheet -->
         <link href="{{ asset('frontend/css/style.css') }}" rel="stylesheet">
+        <!-- DataTables CSS -->
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
     </head>
 
     <body>
@@ -79,5 +81,9 @@
             toastr.info('{{ Session::get('info')}}')
             @endif
         </script>
+        <!-- jQuery and DataTables JS -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+         @stack('datatable_scripts')
     </body>
 </html>

@@ -11,7 +11,8 @@ Route::get('/home', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-// Route::get('/mudda_darta', [MuddaDartaController::class, 'index'])->name('mudda_darta.index');
+Route::get('/mudda_darta', [MuddaDartaController::class, 'index'])->name('mudda_darta.index');
+Route::get('/get_mudda', [MuddaDartaController::class, 'getMudda'])->name('mudda_darta.get_mudda');;
 Route::get('/mudda_darta/create', [MuddaDartaController::class, 'create'])->name('mudda_darta.create');
 Route::post('/mudda_darta/store', [MuddaDartaController::class, 'store'])->name('mudda_darta.store');
 

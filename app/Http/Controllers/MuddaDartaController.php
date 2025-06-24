@@ -1,16 +1,23 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\DataTables\MuddaDartaDataTable;
 use App\Models\MuddaDarta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Yajra\DataTables\Facades\DataTables;
 
 class MuddaDartaController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        return view('frontend.mudda_darta.index');
+    }
 
+    public function getMudda()
+    {
+        $data = MuddaDarta::select('id', 'anusandhan_garne_nikaye', 'mudda_number', 'mudda_name', 'jaherwala_name','pratiwadi_name','mudda_stithi','mudda_date','sarkariwakil_name','faat_name')->get();
+        return response()->json(['data' => $data]);
     }
 
     public function create(Request $request)
@@ -37,7 +44,7 @@ class MuddaDartaController extends Controller
            'mudda_stithi.required' => 'मुद्दा स्थिति अनिवार्य छ।',
            'mudda_date.required' => 'मुद्दा दर्ता मिति अनिवार्य छ।',
         ];
-        // Retrieve the validated input...
+
         $this->validate($request, $rules, $customMessages);
         // Store the data in the database
          $muddadarta = MuddaDarta::create([
