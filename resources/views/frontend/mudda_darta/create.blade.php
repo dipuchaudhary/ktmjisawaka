@@ -63,7 +63,7 @@
             @enderror
         </div>
         <div class="col-md-4 mb-3">
-            <label for="मुद्दा दर्ता मिति" class="form-label">मुद्दा दर्ता मिति </label>
+            <label for="मुद्दा दर्ता मिति" class="form-label">मुद्दा दर्ता मिति <span style="color:red">*</span></label>
             <input type="text" class="form-control date-picker" id="mudda_date" name="mudda_date" value="{{ old('mudda_date') }}">
               @error('mudda_date')
                 <div class="alert alert-danger">{{ $message }}</div>
@@ -96,11 +96,13 @@
             @enderror
         </div>
     </div>
+    <div class="row">
         <div class="col-md-4 mb-3">
             <label for="कैफियत" class="form-label">कैफियत</label>
             <textarea class="form-control" id="kaifiyat" name="kaifiyat" rows="3"></textarea>
         </div>
     </div>
-  <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="submit" class="btn btn-primary">Submit</button>
+
 </form>
 @endsection

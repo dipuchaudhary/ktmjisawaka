@@ -9,7 +9,14 @@
                     <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                         <div class="navbar-nav mr-auto">
                             <a href="{{ url('/') }}" class="nav-item nav-link active">गृहपृष्ठ</a>
-							 <a href="{{ route('mudda_darta.create') }}" class="nav-item nav-link">दर्ता</a>
+                            <div class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"> दर्ता </a>
+                                <div class="dropdown-menu">
+                                    <a href="{{ route('mudda_darta.create') }}" class="dropdown-item">मुल मुद्दा दर्ता</a>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <a href="#" class="dropdown-item">बैकिङ्ग मुद्दा दर्ता</a>
+                                </div>
+                            </div>
                             <a href="#" class="nav-item nav-link">चलानी</a>
                             <a href="#" class="nav-item nav-link">पुनरावेदन</a>
                             <a href="contact.html" class="nav-item nav-link">सम्पर्क ठेगाना</a>
