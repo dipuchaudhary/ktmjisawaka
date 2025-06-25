@@ -36,7 +36,7 @@
         <!-- Nav Bar End -->
 
         <!-- Top News Start-->
-       @yield('content' )
+       @yield('content')
         <!-- Top News End-->
 
         <!-- Footer Start -->
@@ -48,7 +48,7 @@
 
         <!-- JavaScript Libraries -->
         <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
         <script src="{{ asset('frontend/lib/easing/easing.min.js') }}"></script>
         <script src="{{ asset('frontend/lib/slick/slick.min.js') }}"></script>
 
@@ -82,8 +82,8 @@
             @endif
         </script>
         <!-- jQuery and DataTables JS -->
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        {{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
         <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-         @stack('datatable_scripts')
+        @stack('datatable_scripts')
     </body>
 </html>

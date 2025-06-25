@@ -15,6 +15,9 @@ Route::get('/mudda_darta', [MuddaDartaController::class, 'index'])->name('mudda_
 Route::get('/get_mudda', [MuddaDartaController::class, 'getMudda'])->name('mudda_darta.get_mudda');;
 Route::get('/mudda_darta/create', [MuddaDartaController::class, 'create'])->name('mudda_darta.create');
 Route::post('/mudda_darta/store', [MuddaDartaController::class, 'store'])->name('mudda_darta.store');
+Route::get('/mudda_darta/{id}/edit', [MuddaDartaController::class, 'edit'])->name('mudda_darta.edit');
+// Route::post('/mudda_darta/update/{id}', [MuddaDartaController::class, 'update'])->name('mudda_darta.update');
+Route::post('/mudda_darta/delete/{id}', [MuddaDartaController::class, 'destroy'])->name('mudda_darta.destroy');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

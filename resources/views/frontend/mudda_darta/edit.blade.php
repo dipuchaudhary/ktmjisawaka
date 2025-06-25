@@ -1,5 +1,6 @@
+
 <!-- Modal -->
-<div class="modal fade" id="mudda_Modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade mudda_Modal" id="mudda_Modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content" style="width: 800px; margin: auto;">
       <div class="modal-header">
@@ -9,7 +10,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <form class="container p-10" method="POST" action="{{ route('mudda_darta.store') }}" enctype="multipart/form-data">
+        <form class="container p-10" method="POST" action="" enctype="multipart/form-data">
             @csrf
             <div class="row">
                 <div class="col-md-4 mb-3">

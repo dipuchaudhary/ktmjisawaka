@@ -11,7 +11,28 @@ class MuddaDartaController extends Controller
 {
     public function index(Request $request)
     {
+        $data = MuddaDarta::select('id', 'anusandhan_garne_nikaye', 'mudda_number', 'mudda_name', 'jaherwala_name','pratiwadi_name','mudda_stithi','mudda_date','sarkariwakil_name','faat_name')->get();
+         if(request()->ajax())
+        {
+            return Datatables::of($data)
+                   ->addIndexColumn()
+                   ->addColumn('action',function($data){
+                        $btn = '';
+                        $show = '';
+                        $edit = "";
+                        $edit = '<a href="'.route('mudda_darta.edit', $data->id).'" class="edit p-2"><i class="fas fa-edit fa-lg"></i></a>';
+                        $btn .= $edit;
+                        $show = '<a href="#" class="delete" style="color:red"><i class="fas fa-trash-alt fa-lg"></i></a>';
+                        $btn .= $show;
+
+                        return $btn;
+                   })
+
+                   ->rawColumns(['action'])
+                   ->make(true);
+        }
         return view('frontend.mudda_darta.index');
+
     }
 
     public function getMudda()
@@ -62,7 +83,27 @@ class MuddaDartaController extends Controller
             'mudda_pathayko_date' => $request->input('mudda_pathayko_date'),
             'kaifiyat' => $request->input('kaifiyat'),
         ]);
-        Session::flash('success','मुद्दा दर्ता सफल भयो।');
-        return redirect()->route('mudda_darta.create');
+        return redirect()->route('mudda_darta.index')
+        ->with('success', 'मुद्दा दर्ता सफल भयो।');
+    }
+    public function edit($id)
+    {
+        $mudda = MuddaDarta::findOrFail($id);
+        return view('frontend.mudda_darta.edit', compact('mudda'));
+    }
+    public function update(Request $request, $id)
+    {
+        // $mudda = MuddaDarta::findOrFail($id);
+        // $mudda->update($request->all());
+        // return redirect()->route('mudda_darta.index')
+        // ->with('success', 'मुद्दा सफलतापूर्वक अपडेट भयो।');
+    }
+    public function destroy($id)
+    {
+        dd($id);
+        // $mudda = MuddaDarta::findOrFail($id);
+        // $mudda->delete();
+        // return redirect()->route('mudda_darta.index')
+        // ->with('success', 'मुद्दा सफलतापूर्वक मेटियो।');
     }
 }

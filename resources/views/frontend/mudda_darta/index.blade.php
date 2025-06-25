@@ -2,6 +2,11 @@
     @section('content')
     <div class="container mt-5">
         <h1> Mudda list </h1>
+         <button type="button" class="btn btn-primary float-right mb-5" data-bs-toggle="modal" data-bs-target=".mudda_Modal">
+          नयाँ मुल मुद्दा दर्ता सिर्जना गर्नुहोस्
+        </button>
+        @include('frontend.mudda_darta.create')
+        @include('frontend.mudda_darta.edit')
         <table id="muddaTable" class="table table-bordered data-table">
             <thead>
                 <tr>
@@ -28,7 +33,7 @@
             $('#muddaTable').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{{ route('mudda_darta.get_mudda') }}",
+            ajax: "{{ route('mudda_darta.index') }}",
             columns: [
                 { data: 'id', name: 'id' },
                 { data: 'anusandhan_garne_nikaye', name: 'anusandhan_garne_nikaye' },
