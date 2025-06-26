@@ -38,7 +38,13 @@ class PatraChallaniController extends Controller
      */
     public function create()
     {
-        return view('frontend.challani.patrachallani.create');
+        $latest = PatraChallani::orderByDesc('id')->first();
+        if ($latest && $latest->id) {
+        $nextChallaniNumber = toNepaliNumber($latest->id+1);
+        } else {
+        $nextChallaniNumber = toNepaliNumber('1');
+        }
+        return view('frontend.challani.patrachallani.create',compact('nextChallaniNumber'));
     }
 
     /**

@@ -12,7 +12,7 @@
                     <label for="चलानी नं." class="col-form-label">चलानी नं.</label>
                 </div>
                 <div class="col-auto">
-                    <input type="text" class="input-group-text mb-2" id="challani_number" name="challani_number" value="२०८२/०८३/१२" readonly>
+                    <input type="text" class="input-group-text mb-2" id="challani_number" name="challani_number" value="२०८२/०८३/{{ $nextChallaniNumber }}" readonly>
                 </div>
             </div>
             <div class="row">
