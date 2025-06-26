@@ -24,6 +24,9 @@
         <link href="{{ asset('frontend/css/style.css') }}" rel="stylesheet">
         <!-- DataTables CSS -->
         <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+        <!-- Buttons CSS -->
+        <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css" />
+
         @stack('styles')
     </head>
 
@@ -84,7 +87,30 @@
         </script>
         <!-- jQuery and DataTables JS -->
         {{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
+        <!-- DataTables CSS -->
+        <!-- jQuery -->
+        <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+        <!-- DataTables JS -->
         <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+        <!-- Buttons JS and dependencies -->
+        <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+        <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.flash.min.js"></script>
+
+        <!-- For Excel export -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+        <!-- For PDF export -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+
+        <!-- Buttons for HTML5 export -->
+        <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+
+        <!-- Print button -->
+        <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
+
         @stack('datatable_scripts')
         @stack('scripts')
     </body>

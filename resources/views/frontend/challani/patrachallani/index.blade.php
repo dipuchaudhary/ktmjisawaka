@@ -40,7 +40,20 @@
                 { data: 'bodartha', name: 'bodartha' },
                 { data: 'verified_by', name: 'verified_by' },
                 { data: 'action', name: 'action', orderable: false, searchable: false },
-            ]
+            ],
+            dom: '<"d-flex justify-content-between align-items-right mb-3"lBf>rtip',
+            buttons: [
+                { extend: 'csv', className: 'btn btn-outline-primary' },
+                { extend: 'excel', className: 'btn btn-success' },
+                { extend: 'pdf', className: 'btn btn-danger' },
+                { extend: 'print', className: 'btn btn-info' }
+            ],
+            language: {
+                zeroRecords: "कुनै डाटा फेला परेन",
+                info: "_TOTAL_ मध्य _START_ देखि _END_ प्रविष्टिहरू",
+                infoEmpty: "० प्रविष्टिहरू",
+                infoFiltered: "(कुल _MAX_ मध्येबाट छानिएको)",
+            }
             });
         });
     </script>
