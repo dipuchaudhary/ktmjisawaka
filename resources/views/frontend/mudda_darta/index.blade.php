@@ -2,11 +2,9 @@
     @section('content')
     <div class="container mt-5">
         <h1> Mudda list </h1>
-         <button type="button" class="btn btn-primary float-right mb-5" data-bs-toggle="modal" data-bs-target=".mudda_Modal">
+         <a href="{{ route('mudda_darta.create') }}" class="btn btn-primary float-right mb-5">
           नयाँ मुल मुद्दा दर्ता सिर्जना गर्नुहोस्
-        </button>
-        @include('frontend.mudda_darta.create')
-        @include('frontend.mudda_darta.edit')
+        </a>
         <table id="muddaTable" class="table table-bordered data-table">
             <thead>
                 <tr>

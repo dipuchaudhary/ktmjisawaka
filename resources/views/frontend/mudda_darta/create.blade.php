@@ -1,15 +1,8 @@
-<!-- Modal -->
-<div class="modal fade" id="mudda_Modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content" style="width: 800px; margin: auto;">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">मुल दर्ता फारम</h5>
-        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form class="container p-10" method="POST" action="{{ route('mudda_darta.store') }}" enctype="multipart/form-data">
+@extends('layouts.master')
+@section('content')
+<div class="container mt-5">
+    <h3 class="mb-5">मुल मुद्दा दर्ता फारम</h3>
+    <form class="container" method="POST" action="{{ route('mudda_darta.store') }}" enctype="multipart/form-data">
             @csrf
             <div class="row">
                 <div class="col-md-4 mb-3">
@@ -110,12 +103,7 @@
                     <textarea class="form-control" id="kaifiyat" name="kaifiyat" rows="3"></textarea>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </div>
-        </form>
-      </div>
-    </div>
-  </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
 </div>
+@endsection
