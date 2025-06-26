@@ -17,7 +17,14 @@
                                     <a href="{{ route('banking_mudda.index') }}" class="dropdown-item">बैकिङ्ग मुद्दा दर्ता</a>
                                 </div>
                             </div>
-                            <a href="#" class="nav-item nav-link">चलानी</a>
+                            <div class="nav-item" aria-expanded="false">
+                                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"> चलानी </a>
+                                <div class="dropdown-menu">
+                                    <a href="{{ route('patra_challani.index') }}" class="dropdown-item">पत्र चलानी</a>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <a href="" class="dropdown-item">अभियोग चलानी</a>
+                                </div>
+                            </div>
                             <a href="#" class="nav-item nav-link">पुनरावेदन</a>
                             <a href="contact.html" class="nav-item nav-link">सम्पर्क ठेगाना</a>
                         </div>

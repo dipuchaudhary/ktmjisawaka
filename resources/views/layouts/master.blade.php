@@ -24,6 +24,7 @@
         <link href="{{ asset('frontend/css/style.css') }}" rel="stylesheet">
         <!-- DataTables CSS -->
         <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+        @stack('styles')
     </head>
 
     <body>
@@ -85,5 +86,6 @@
         {{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
         <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
         @stack('datatable_scripts')
+        @stack('scripts')
     </body>
 </html>
