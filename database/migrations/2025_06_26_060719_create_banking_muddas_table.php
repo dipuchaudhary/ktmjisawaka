@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('mudda_dartas', function (Blueprint $table) {
+        Schema::create('banking_muddas', function (Blueprint $table) {
             $table->id();
             $table->string('anusandhan_garne_nikaye');
             $table->string('mudda_number')->nullable();
@@ -23,7 +23,6 @@ return new class extends Migration
             $table->string('mudda_date')->nullable();
             $table->string('mudda_myad')->nullable();
             $table->string('sarkariwakil_name')->nullable();
-            $table->string('faat_name')->nullable();
             $table->string('mudda_pathayko_date')->nullable();
             $table->string('kaifiyat')->nullable();
             $table->timestamps();
@@ -35,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('mudda_dartas');
+        Schema::dropIfExists('banking_muddas');
     }
 };

@@ -1,8 +1,8 @@
 @extends('layouts.master')
 @section('content')
 <div class="container mt-5">
-    <h3 class="mb-5">मुल मुद्दा दर्ता फारम</h3>
-    <form class="container" method="POST" action="{{ route('mudda_darta.store') }}" enctype="multipart/form-data">
+    <h3 class="mb-5">बैकिङ्ग मुद्दा दर्ता फारम</h3>
+    <form class="container" method="POST" action="{{ route('banking_mudda.store') }}" enctype="multipart/form-data">
             @csrf
             <div class="row">
                 <div class="col-md-4 mb-3">
@@ -21,8 +21,11 @@
                 </div>
                 <div class="col-md-4 mb-3">
                     <label for="मुद्दाको किसिम" class="form-label">मुद्दाको किसिम <span style="color:red">*</span></label>
-                    <input type="text" class="form-control @error('mudda_name') is-invalid @enderror" id="mudda_name" name="mudda_name" value="{{ old('mudda_name') }}" >
-                    @error('mudda_name')
+                    <select class="form-select form-control @error('mudda_name') is-invalid @enderror" name="mudda_name" id="mudda_name">
+                        <option value="बैकिङ्ग" selected>बैकिङ्ग</option>
+                        <option value="ठगी">ठगी</option>
+                    </select>
+                @error('mudda_name')
                         <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
                 </div>
@@ -58,6 +61,7 @@
                     <option value="फरार">फरार</option>
                     <option value="पक्राउ">पक्राउ</option>
                     <option value="हाजिरि जमानीमा छोडेको">हाजिरि जमानीमा छोडेको</option>
+                    <option value="तामेली">तामेली</option>
                 </select>
                 @error('mudda_stithi')
                         <div class="alert alert-danger">{{ $message }}</div>
@@ -81,23 +85,12 @@
                     <input type="text" class="form-control" id="sarkariwakil_name" name="sarkariwakil_name">
                 </div>
                 <div class="col-md-4 mb-3">
-                    <label for="फाँट" class="form-label">फाँट</label>
-                    <select class="form-select form-control" name="faat_name" id="faat_name">
-                        <option selected>--एउटाको विकल्प रोज्नुहोस।--</option>
-                        <option value="क">क</option>
-                        <option value="ख">ख</option>
-                        <option value="ग">ग</option>
-                    </select>
-                </div>
-                <div class="col-md-4 mb-3">
-                    <label for="मुद्दा पठाएको मिति" class="form-label">मुद्दा पठाएको मिति </label>
+                    <label for="मुद्दा पठाएको मिति" class="form-label">मुद्दा पठाएको मिति र च.नं.</label>
                     <input type="text" class="form-control date-picker @error('mudda_pathayko_date') is-invalid @enderror" id="mudda_pathayko_date" name="mudda_pathayko_date" value="{{ old('mudda_pathayko_date') }}">
                     @error('mudda_pathayko_date')
                         <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
                 </div>
-            </div>
-            <div class="row">
                 <div class="col-md-4 mb-3">
                     <label for="कैफियत" class="form-label">कैफियत</label>
                     <textarea class="form-control" id="kaifiyat" name="kaifiyat" rows="3"></textarea>

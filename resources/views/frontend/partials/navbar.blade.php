@@ -14,7 +14,7 @@
                                 <div class="dropdown-menu">
                                     <a href="{{ route('mudda_darta.index') }}" class="dropdown-item">मुल मुद्दा दर्ता</a>
                                     <li><hr class="dropdown-divider"></li>
-                                    <a href="#" class="dropdown-item">बैकिङ्ग मुद्दा दर्ता</a>
+                                    <a href="{{ route('banking_mudda.index') }}" class="dropdown-item">बैकिङ्ग मुद्दा दर्ता</a>
                                 </div>
                             </div>
                             <a href="#" class="nav-item nav-link">चलानी</a>
