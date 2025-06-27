@@ -47,7 +47,6 @@
             ],
             dom: '<"d-flex justify-content-between align-items-right mb-3"lBf>rtip',
             buttons: [
-                { extend: 'csv', className: 'btn btn-outline-primary' },
                 { extend: 'excel', className: 'btn btn-success' },
                 { extend: 'pdf', className: 'btn btn-danger' },
                 { extend: 'print', className: 'btn btn-info' }

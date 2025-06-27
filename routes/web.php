@@ -1,11 +1,13 @@
 <?php
 
+use App\Http\Controllers\AviyogChallaniController;
 use App\Http\Controllers\BankingMuddaController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\MuddaDartaController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\PatraChallaniController;
+use App\Models\AviyogChallani;
 
 Route::get('/', [FrontendController::class, 'index'])->name('home');
 
@@ -34,7 +36,8 @@ Route::get('/patra-challani/create', [PatraChallaniController::class, 'create'])
 Route::post('/patra-challani/store', [PatraChallaniController::class, 'store'])->name('patra_challani.store');
 Route::get('/patra-challani/{id}/edit', [PatraChallaniController::class, 'edit'])->name('patra_challani.edit');
 Route::post('/patra-challani/update/{id}',[PatraChallaniController::class, 'update'])->name('patra_challani.update');
-
+//aviyog challani routes
+Route::get('/aviyog-challlani', [AviyogChallaniController::class, 'index'])->name('aviyog_challani.index');
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

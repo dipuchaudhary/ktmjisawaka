@@ -1,7 +1,7 @@
 @extends('layouts.master')
     @section('content')
     <div class="container mt-5">
-        <h1> पत्र चलानी सूची </h1>
+        <h1> अभियोग चलानी सूची </h1>
          <a href="{{ route('patra_challani.create') }}" class="btn btn-primary float-right mb-5">
           नयाँ पत्र चलानी गर्नुहोस्
         </a>
@@ -9,13 +9,17 @@
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>पत्र चलानी भएको कार्यालय</th>
                     <th>चलानी मिति</th>
                     <th>चलानी नं. </th>
-                    <th>मुद्दा नं. </th>
-                    <th>विषय</th>
-                    <th>बोधार्थ</th>
-                    <th>दस्तखत गर्ने अधिकारी</th>
+                    <th>मुद्दा नं.</th>
+                    <th>मुद्दाको किसिम </th>
+                    <th>जाहेरवालाको नाम</th>
+                    <th>प्रतिवादीको नाम</th>
+                    <th>जम्मा प्रतिवादी</th>
+                    <th>मुद्दा दर्ता मिति</th>
+                    <th>सरकारी वकील</th>
+                    <th>फाँट</th>
+                    <th>अनुसन्धान गर्ने निकाय</th>
                     <th width="105px">Action</th>
                 </tr>
             </thead>

@@ -22,7 +22,7 @@
                                 <div class="dropdown-menu">
                                     <a href="{{ route('patra_challani.index') }}" class="dropdown-item">पत्र चलानी</a>
                                     <li><hr class="dropdown-divider"></li>
-                                    <a href="" class="dropdown-item">अभियोग चलानी</a>
+                                    <a href="{{ route('aviyog_challani.index') }}" class="dropdown-item">अभियोग चलानी</a>
                                 </div>
                             </div>
                             <a href="#" class="nav-item nav-link">पुनरावेदन</a>
