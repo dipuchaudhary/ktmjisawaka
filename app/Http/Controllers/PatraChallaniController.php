@@ -64,6 +64,11 @@ class PatraChallaniController extends Controller
         ];
 
         $this->validate($request, $rules, $Messages);
+        if (!empty($request->input('bodartha')) ) {
+           $bodartha = implode(',', $request->input('bodartha'));
+        } else {
+            $bodartha= $request->input('bodartha');
+        }
         // Store the data in the database
         PatraChallani::create([
             'karyalaya_name' => $request->input('karyalaya_name'),
@@ -71,7 +76,7 @@ class PatraChallaniController extends Controller
             'challani_number' => $request->input('challani_number'),
             'mudda_number' => $request->input('mudda_number'),
             'challani_subject' => $request->input('challani_subject'),
-            'bodartha' => implode(',', $request->input('bodartha')),
+            'bodartha' => $bodartha,
             'verified_by' => $request->input('verified_by'),
             'kaifiyat' => $request->input('kaifiyat'),
         ]);
@@ -83,7 +88,7 @@ class PatraChallaniController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(c $c)
+    public function show($id)
     {
         //
     }
@@ -91,23 +96,50 @@ class PatraChallaniController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(c $c)
+    public function edit($id)
     {
-        //
+        $patrachallani = PatraChallani::findOrFail($id);
+        return view('frontend.challani.patrachallani.edit', compact('patrachallani'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, c $c)
+    public function update(Request $request, $id)
     {
-        //
+        $rules = [
+            'karyalaya_name' => 'required',
+            'challani_date' => 'required',
+            'challani_subject' => 'required',
+        ];
+        $Messages = [
+           'karyalaya_name.required' => 'पत्र चलान भएको कार्यालय अनिवार्य छ।',
+           'challani_date.required' => 'चलानी मिति अनिवार्य छ।',
+           'challani_subject.required' => 'चलानी विषय अनिवार्य छ।',
+        ];
+
+        $patraChallani = PatraChallani::findOrFail($id);
+        $this->validate($request, $rules, $Messages);
+        // Store the data in the database
+        $patraChallani->update([
+            'karyalaya_name' => $request->input('karyalaya_name'),
+            'challani_date' => $request->input('challani_date'),
+            'challani_number' => $request->input('challani_number'),
+            'mudda_number' => $request->input('mudda_number'),
+            'challani_subject' => $request->input('challani_subject'),
+            'bodartha' => implode(',', $request->input('bodartha')),
+            'verified_by' => $request->input('verified_by'),
+            'kaifiyat' => $request->input('kaifiyat'),
+        ]);
+
+        return redirect()->route('patra_challani.index')
+        ->with('success', 'चलानी पत्र सफलतापूर्वक अपडेट भयो।');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(c $c)
+    public function destroy($id)
     {
         //
     }

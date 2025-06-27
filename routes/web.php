@@ -33,6 +33,7 @@ Route::get('/patra-challani', [PatraChallaniController::class, 'index'])->name('
 Route::get('/patra-challani/create', [PatraChallaniController::class, 'create'])->name('patra_challani.create');
 Route::post('/patra-challani/store', [PatraChallaniController::class, 'store'])->name('patra_challani.store');
 Route::get('/patra-challani/{id}/edit', [PatraChallaniController::class, 'edit'])->name('patra_challani.edit');
+Route::post('/patra-challani/update/{id}',[PatraChallaniController::class, 'update'])->name('patra_challani.update');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
