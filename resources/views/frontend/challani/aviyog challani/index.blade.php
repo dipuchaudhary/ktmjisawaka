@@ -2,9 +2,6 @@
     @section('content')
     <div class="container mt-5">
         <h1> अभियोग चलानी सूची </h1>
-         <a href="{{ route('patra_challani.create') }}" class="btn btn-primary float-right mb-5">
-          नयाँ पत्र चलानी गर्नुहोस्
-        </a>
         <table id="muddaTable" class="table table-bordered data-table">
             <thead>
                 <tr>
@@ -15,8 +12,6 @@
                     <th>मुद्दाको किसिम </th>
                     <th>जाहेरवालाको नाम</th>
                     <th>प्रतिवादीको नाम</th>
-                    <th>जम्मा प्रतिवादी</th>
-                    <th>मुद्दा दर्ता मिति</th>
                     <th>सरकारी वकील</th>
                     <th>फाँट</th>
                     <th>अनुसन्धान गर्ने निकाय</th>
@@ -33,16 +28,25 @@
             $('#muddaTable').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "",
+            ajax: {
+                url: "{{ route('aviyog_challani.index') }}",
+                type: 'GET',
+                dataSrc: function (json) {
+                    console.log('Data from server:', json);
+                    return json.data;
+                }
+            },
             columns: [
                 { data: 'id', name: 'id' },
-                { data: 'karyalaya_name', name: 'karyalaya_name' },
                 { data: 'challani_date', name: 'challani_date' },
                 { data: 'challani_number', name: 'challani_number' },
+                { data: 'jaherwala_name', name: 'jaherwala_name' },
+                { data: 'pratiwadi_name', name: 'pratiwadi_name' },
+                { data: 'mudda_name', name: 'mudda_name' },
                 { data: 'mudda_number', name: 'mudda_number' },
-                { data: 'challani_subject', name: 'challani_subject' },
-                { data: 'bodartha', name: 'bodartha' },
-                { data: 'verified_by', name: 'verified_by' },
+                { data: 'sarkariwakil_name', name: 'sarkariwakil_name' },
+                { data: 'faat_name', name: 'faat_name' },
+                { data: 'anusandhan_garne_nikaye', name: 'anusandhan_garne_nikaye' },
                 { data: 'action', name: 'action', orderable: false, searchable: false },
             ],
             dom: '<"d-flex justify-content-between align-items-right mb-3"lBf>rtip',

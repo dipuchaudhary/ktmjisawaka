@@ -83,7 +83,7 @@
                 <div class="col-md-4 mb-3">
                     <label for="फाँट" class="form-label">फाँट</label>
                     <select class="form-select form-control" name="faat_name" id="faat_name">
-                        <option selected>--एउटाको विकल्प रोज्नुहोस।--</option>
+                        <option value="" selected>--एउटाको विकल्प रोज्नुहोस।--</option>
                         <option value="क">क</option>
                         <option value="ख">ख</option>
                         <option value="ग">ग</option>

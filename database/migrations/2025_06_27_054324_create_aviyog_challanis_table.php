@@ -13,17 +13,18 @@ return new class extends Migration
     {
         Schema::create('aviyog_challanis', function (Blueprint $table) {
             $table->id();
-            $table->string('challani_date');
-            $table->string('challani_number');
+            $table->string('challani_date')->nullable();
+            $table->string('challani_number')->nullable();
             $table->string('jaherwala_name');
             $table->string('pratiwadi_name');
             $table->string('mudda_name');
-            $table->string('gender');
+            $table->json('gender')->nullable();
+            $table->string('gender_counts')->nullable();
             $table->string('mudda_number')->nullable();
             $table->string('sarkariwakil_name')->nullable();
             $table->string('anusandhan_garne_nikaye');
             $table->string('faat_name')->nullable();
-            $table->string('file');
+            $table->string('file')->nullable();
             $table->string('kaifiyat')->nullable();
             $table->timestamps();
         });

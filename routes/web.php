@@ -37,7 +37,9 @@ Route::post('/patra-challani/store', [PatraChallaniController::class, 'store'])-
 Route::get('/patra-challani/{id}/edit', [PatraChallaniController::class, 'edit'])->name('patra_challani.edit');
 Route::post('/patra-challani/update/{id}',[PatraChallaniController::class, 'update'])->name('patra_challani.update');
 //aviyog challani routes
-Route::get('/aviyog-challlani', [AviyogChallaniController::class, 'index'])->name('aviyog_challani.index');
+Route::get('/aviyog-challani', [AviyogChallaniController::class, 'index'])->name('aviyog_challani.index');
+Route::get('/aviyog-challani/{id}/edit', [AviyogChallaniController::class, 'edit'])->name('aviyog_challani.edit');
+Route::post('/aviyog-challani/update/{id}',[AviyogChallaniController::class, 'update'])->name('aviyog_challani.update');
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

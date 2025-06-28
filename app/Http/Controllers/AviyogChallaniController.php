@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\AviyogChallani;
+use Illuminate\Support\Facades\Session;
+use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\Storage;
 
 class AviyogChallaniController extends Controller
 {
@@ -11,19 +14,95 @@ class AviyogChallaniController extends Controller
         $data = AviyogChallani::select('id', 'challani_date','challani_number','mudda_number','mudda_name','jaherwala_name','pratiwadi_name','sarkariwakil_name','faat_name','anusandhan_garne_nikaye')->get();
          if(request()->ajax())
         {
-            return Datatables::of($data)
-                   ->addIndexColumn()
-                   ->addColumn('action',function($data){
-                        $btn = '';
-                        $edit = "";
-                        $edit = '<a href="'.route('patra_challani.edit',$data->id).'" class="edit p-2"><i class="fas fa-edit fa-lg"></i></a>';
-                        $btn .= $edit;
-                        return $btn;
-                   })
+            try {
+                return Datatables::of($data)
+                    ->addIndexColumn()
+                    ->addColumn('action',function($data){
+                            $btn = '';
+                            $edit = "";
+                            $edit = '<a href="'.route('aviyog_challani.edit',$data->id).'" class="edit p-2"><i class="fas fa-edit fa-lg"></i></a>';
+                            $btn .= $edit;
+                            return $btn;
+                    })
 
-                   ->rawColumns(['action'])
-                   ->make(true);
+                    ->rawColumns(['action'])
+                    ->make(true);
+            } catch (\Exception $e) {
+            \Log::error('DataTables error: ' . $e->getMessage());
+        }
         }
         return view('frontend.challani.aviyog challani.index',compact('data'));
+    }
+
+    public function edit($id){
+        $aviyogchallani = AviyogChallani::findorfail($id);
+        return view('frontend.challani.aviyog challani.edit',compact('aviyogchallani'));
+    }
+
+    public function update(Request $request, $id){
+        $rules = [
+            'anusandhan_garne_nikaye' => 'required',
+            'mudda_name' => 'required',
+            'jaherwala_name' => 'required',
+            'pratiwadi_name' => 'required',
+            'mudda_name' => 'required',
+            'upload_file' => 'nullable|file|mimes:pdf|max:10240',
+        ];
+        $customMessages = [
+           'anusandhan_garne_nikaye.required' => 'अनुसन्धान गर्ने निकाय अनिवार्य छ।',
+           'mudda_name.required' => 'मुद्दाको किसिम अनिवार्य छ।',
+           'jaherwala_name.required' => 'जाहेरवालाको नाम अनिवार्य छ।',
+           'pratiwadi_name.required' => 'प्रतिवादीको नाम अनिवार्य छ।',
+           'mudda_name.required' => 'मुद्दा किसिम अनिवार्य छ।',
+           'custom_file' => 'pdf फाइल मात्र अपलोड गर्नुहोस्।'
+        ];
+
+        $this->validate($request, $rules, $customMessages);
+        $aviyogchallani = AviyogChallani::findOrFail($id);
+
+        $fileurl = $request->input('existing_file');
+        if ($request->hasFile('upload_file')) {
+
+            if ($aviyogchallani->file && Storage::disk('public')->exists($aviyogchallani->file)) {
+            Storage::disk('public')->delete($aviyogchallani->file);
+            }
+
+            $file = $request->file('upload_file');
+            $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+            $extension = $file->getClientOriginalExtension();
+            $filename = $originalName .'.'. $extension;
+            $fileurl = $file->storeAs('aviyogfile', $filename, 'public');
+        }
+
+        $genderCounts = $request->input('gender', []);
+        $male   = isset($genderCounts['male']) ? (int) $genderCounts['male'] : 0;
+        $female = isset($genderCounts['female']) ? (int) $genderCounts['female'] : 0;
+        $child  = isset($genderCounts['child']) ? (int) $genderCounts['child'] : 0;
+        $other  = isset($genderCounts['other']) ? (int) $genderCounts['other'] : 0;
+        $total  = $male + $female + $child + $other;
+
+        $aviyogchallani->update([
+            'challani_number'         => $request->input('challani_number'),
+            'challani_date'           => $request->input('challani_date'),
+            'jaherwala_name'          => $request->input('jaherwala_name'),
+            'pratiwadi_name'          => $request->input('pratiwadi_name'),
+            'mudda_name'              => $request->input('mudda_name'),
+            'mudda_number'            => $request->input('mudda_number'),
+            'gender'                  => json_encode($genderCounts),
+            'gender_counts'           => toNepaliNumber($total),
+            'anusandhan_garne_nikaye' => $request->input('anusandhan_garne_nikaye'),
+            'sarkariwakil_name'       => $request->input('sarkariwakil_name'),
+            'faat_name'               => $request->input('faat_name'),
+            'kaifiyat'                => $request->input('kaifiyat'),
+            'file'                    => $fileurl
+        ]);
+
+
+        return redirect()->route('aviyog_challani.index')
+        ->with('success', 'अभियोग चलानी सफलतापूर्वक अपडेट भयो।');
+    }
+
+    public function destroy($id){
+
     }
 }
