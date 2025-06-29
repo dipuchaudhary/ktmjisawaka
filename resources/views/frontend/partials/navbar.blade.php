@@ -8,25 +8,25 @@
 
                     <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                         <div class="navbar-nav mr-auto">
-                            <a href="{{ url('/') }}" class="nav-item nav-link active">गृहपृष्ठ</a>
+                            <a href="{{ url('/') }}" class="nav-item nav-link {{ request()->is('/') ? 'active' : '' }}">गृहपृष्ठ</a>
                             <div class="nav-item" aria-expanded="false">
-                                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"> दर्ता </a>
+                                <a href="#" class="nav-link dropdown-toggle {{ request()->is('mudda-darta') || request()->is('banking-mudda') ? 'active' : '' }}" data-bs-toggle="dropdown"> दर्ता </a>
                                 <div class="dropdown-menu">
-                                    <a href="{{ route('mudda_darta.index') }}" class="dropdown-item">मुल मुद्दा दर्ता</a>
+                                    <a href="{{ route('mudda_darta.index') }}" class="{{ request()->is('mudda-darta') ? 'active' : '' }} dropdown-item">मुल मुद्दा दर्ता</a>
                                     <li><hr class="dropdown-divider"></li>
-                                    <a href="{{ route('banking_mudda.index') }}" class="dropdown-item">बैकिङ्ग मुद्दा दर्ता</a>
+                                    <a href="{{ route('banking_mudda.index') }}" class="{{ request()->is('banking-mudda') ? 'active' : '' }} dropdown-item">बैकिङ्ग मुद्दा दर्ता</a>
                                 </div>
                             </div>
                             <div class="nav-item" aria-expanded="false">
-                                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"> चलानी </a>
+                                <a href="#" class="nav-link dropdown-toggle {{ request()->is('patra-challani') || request()->is('aviyog-challani') ? 'active' : '' }}" data-bs-toggle="dropdown"> चलानी </a>
                                 <div class="dropdown-menu">
-                                    <a href="{{ route('patra_challani.index') }}" class="dropdown-item">पत्र चलानी</a>
+                                    <a href="{{ route('patra_challani.index') }}" class="dropdown-item {{ request()->is('patra-challani') ? 'active' : '' }}">पत्र चलानी</a>
                                     <li><hr class="dropdown-divider"></li>
-                                    <a href="{{ route('aviyog_challani.index') }}" class="dropdown-item">अभियोग चलानी</a>
+                                    <a href="{{ route('aviyog_challani.index') }}" class="{{ request()->is('aviyog-challani') ? 'active' : '' }} dropdown-item">अभियोग चलानी</a>
                                 </div>
                             </div>
-                            <a href="#" class="nav-item nav-link">पुनरावेदन</a>
-                            <a href="contact.html" class="nav-item nav-link">सम्पर्क ठेगाना</a>
+                            <a href="{{ route('punarabedan.index') }}" class="nav-item nav-link {{ request()->is('punarabedan') ? 'active' : '' }}">पुनरावेदन</a>
+                            <a href="#" class="nav-item nav-link {{ request()->is('contact') ? 'active' : '' }}">सम्पर्क ठेगाना</a>
                         </div>
                         <div class="social ml-auto">
                             <a href=""><i class="fab fa-twitter"></i></a>

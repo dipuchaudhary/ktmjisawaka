@@ -33,7 +33,7 @@
                         <div class="b-ads">
                             <a href="{{ url('/') }}">
                                 <p style="font-size:20px; font-weight:600;">जिल्ला सरकारी वकील कार्यालय, काठमाण्डौ</p>
-                                <p style="font-size:20px; font-weight:600;"> District Attorney Office, Kathmandu</p>
+                                <p style="font-size:20px; font-weight:600;"> District Government Attorney Office, Kathmandu</p>
                             </a>
                         </div>
                     </div>

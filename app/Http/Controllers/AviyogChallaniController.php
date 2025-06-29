@@ -42,6 +42,7 @@ class AviyogChallaniController extends Controller
     public function update(Request $request, $id){
         $rules = [
             'anusandhan_garne_nikaye' => 'required',
+            'challani_date' => 'required',
             'mudda_name' => 'required',
             'jaherwala_name' => 'required',
             'pratiwadi_name' => 'required',
@@ -54,7 +55,8 @@ class AviyogChallaniController extends Controller
            'jaherwala_name.required' => 'जाहेरवालाको नाम अनिवार्य छ।',
            'pratiwadi_name.required' => 'प्रतिवादीको नाम अनिवार्य छ।',
            'mudda_name.required' => 'मुद्दा किसिम अनिवार्य छ।',
-           'custom_file' => 'pdf फाइल मात्र अपलोड गर्नुहोस्।'
+           'upload_file' => 'pdf फाइल मात्र अपलोड गर्नुहोस्।',
+           'challani_date' => 'चलानी मिति अनिवार्य छ।',
         ];
 
         $this->validate($request, $rules, $customMessages);

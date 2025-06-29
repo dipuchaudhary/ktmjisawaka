@@ -114,8 +114,11 @@
                 </div>
                 <div class="col-md-4 mb-3">
                     <label for="अभियोग फाइल" class="form-label">अभियोग अपलोड गर्नुहोस्</label>
-                    <input class="" type="file" id="upload_file" name="upload_file" accept=".pdf"> <span>{{ $aviyogchallani->file }}</span>
+                    <input class="" type="file" id="upload_file" name="upload_file" > <span>{{ $aviyogchallani->file }}</span>
                     <input type="hidden" name="existing_file" value="{{ $aviyogchallani->file }}">
+                    @error('upload_file')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror
                       @if($aviyogchallani->file)
                         <a href="{{ asset('storage/' . $aviyogchallani->file) }}" target="_blank" class="btn btn-sm btn-success mt-2">
                             <i class="fas fa-download"></i> डाउनलोड फाइल

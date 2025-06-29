@@ -7,6 +7,7 @@ use App\Http\Controllers\MuddaDartaController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\PatraChallaniController;
+use App\Http\Controllers\PunarabedanController;
 use App\Models\AviyogChallani;
 
 Route::get('/', [FrontendController::class, 'index'])->name('home');
@@ -40,6 +41,9 @@ Route::post('/patra-challani/update/{id}',[PatraChallaniController::class, 'upda
 Route::get('/aviyog-challani', [AviyogChallaniController::class, 'index'])->name('aviyog_challani.index');
 Route::get('/aviyog-challani/{id}/edit', [AviyogChallaniController::class, 'edit'])->name('aviyog_challani.edit');
 Route::post('/aviyog-challani/update/{id}',[AviyogChallaniController::class, 'update'])->name('aviyog_challani.update');
+
+//Punarabedan routes
+Route::get('/punarabedan',[PunarabedanController::class,'index'])->name('punarabedan.index');
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
