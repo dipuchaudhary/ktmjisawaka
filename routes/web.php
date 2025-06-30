@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AviyogChallaniController;
 use App\Http\Controllers\BankingMuddaController;
+use App\Http\Controllers\ChallaniController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\MuddaDartaController;
 use Illuminate\Support\Facades\Route;
@@ -14,7 +15,7 @@ Route::get('/', [FrontendController::class, 'index'])->name('home');
 
 Auth::routes();
 Route::get('/home', function () {
-    return view('dashboard');
+    return view('backend.dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 // mudda darta routes
 Route::get('/mudda-darta', [MuddaDartaController::class, 'index'])->name('mudda_darta.index');
@@ -50,4 +51,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/admin/challani', [ChallaniController::class,'index'])->name('challani.index');
+    Route::post('/admin/challani/store', [ChallaniController::class,'storeOrUpdate'])->name('challani.store');
 });
