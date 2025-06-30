@@ -25,6 +25,7 @@ class PatraChallaniController extends Controller
                     } else {
                             return '<span class="badge rounded-pill text-white bg-danger">Pending</span>';
                     }
+					})
                    ->addColumn('action',function($data){
                         $btn = '';
                         $edit = "";
