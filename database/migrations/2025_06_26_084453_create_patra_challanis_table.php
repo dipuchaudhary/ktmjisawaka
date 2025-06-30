@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('bodartha')->nullable();
             $table->string('verified_by')->nullable();
             $table->string('kaifiyat')->nullable();
+            $table->boolean('status')->default(false);
             $table->timestamps();
         });
     }

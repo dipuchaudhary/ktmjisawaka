@@ -14,11 +14,17 @@ class PatraChallaniController extends Controller
      */
     public function index()
     {
-        $data = PatraChallani::select('id', 'karyalaya_name','challani_date','challani_number','mudda_number','challani_subject','bodartha','verified_by','kaifiyat',)->get();
+        $data = PatraChallani::select('id', 'karyalaya_name','challani_date','challani_number','mudda_number','challani_subject','bodartha','verified_by','kaifiyat','status')->get();
          if(request()->ajax())
         {
             return Datatables::of($data)
                    ->addIndexColumn()
+                    ->addColumn('status', function ($data) {
+                    if ($data->status == 1 || $data->status === true) {
+                            return '<span class="badge rounded-pill text-white bg-success">Done</span>';
+                    } else {
+                            return '<span class="badge rounded-pill text-white bg-danger">Pending</span>';
+                    }
                    ->addColumn('action',function($data){
                         $btn = '';
                         $edit = "";
@@ -27,7 +33,7 @@ class PatraChallaniController extends Controller
                         return $btn;
                    })
 
-                   ->rawColumns(['action'])
+                    ->rawColumns(['status','action'])
                    ->make(true);
         }
        return view('frontend.challani.patrachallani.index');
@@ -79,6 +85,7 @@ class PatraChallaniController extends Controller
             'bodartha' => $bodartha,
             'verified_by' => $request->input('verified_by'),
             'kaifiyat' => $request->input('kaifiyat'),
+            'status' => true,
         ]);
 
         return redirect()->route('patra_challani.index')

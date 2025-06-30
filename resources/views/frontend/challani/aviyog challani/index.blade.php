@@ -15,6 +15,7 @@
                     <th>सरकारी वकील</th>
                     <th>फाँट</th>
                     <th>अनुसन्धान गर्ने निकाय</th>
+                    <th>Status</th>
                     <th width="105px">Action</th>
                 </tr>
             </thead>
@@ -47,6 +48,7 @@
                 { data: 'sarkariwakil_name', name: 'sarkariwakil_name' },
                 { data: 'faat_name', name: 'faat_name' },
                 { data: 'anusandhan_garne_nikaye', name: 'anusandhan_garne_nikaye' },
+                { data: 'status', name: 'status' },
                 { data: 'action', name: 'action', orderable: false, searchable: false },
             ],
             dom: '<"d-flex justify-content-between align-items-right mb-3"lBf>rtip',

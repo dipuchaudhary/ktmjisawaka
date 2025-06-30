@@ -21,6 +21,7 @@ class AviyogChallani extends Model
         'faat_name',
         'file',
         'kaifiyat',
+        'status',
         'created_at',
     ];
 

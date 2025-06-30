@@ -4,12 +4,32 @@ namespace App\Http\Controllers;
 use App\DataTables\MuddaDartaDataTable;
 use App\Models\MuddaDarta;
 use App\Models\AviyogChallani;
+use App\Models\Punarabedan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Yajra\DataTables\Facades\DataTables;
 
 class MuddaDartaController extends Controller
 {
+    protected $rules = [
+            'anusandhan_garne_nikaye' => 'required',
+            'mudda_name' => 'required',
+            'jaherwala_name' => 'required',
+            'pratiwadi_name' => 'required',
+            'mudda_stithi' => 'required',
+            'mudda_date' => 'required',
+            'mudda_pathayko_date' => 'required',
+        ];
+    protected $customMessages = [
+           'anusandhan_garne_nikaye.required' => 'अनुसन्धान गर्ने निकाय अनिवार्य छ।',
+           'mudda_name.required' => 'मुद्दाको किसिम अनिवार्य छ।',
+           'jaherwala_name.required' => 'जाहेरवालाको नाम अनिवार्य छ।',
+           'pratiwadi_name.required' => 'प्रतिवादीको नाम अनिवार्य छ।',
+           'mudda_stithi.required' => 'मुद्दा स्थिति अनिवार्य छ।',
+           'mudda_date.required' => 'मुद्दा दर्ता मिति अनिवार्य छ।',
+           'mudda_pathayko_date.required' => 'मुद्दा पठाएको मिति अनिवार्य छ।',
+        ];
+
     public function index(Request $request)
     {
         $data = MuddaDarta::select('id', 'anusandhan_garne_nikaye', 'mudda_number', 'mudda_name', 'jaherwala_name','pratiwadi_name','mudda_stithi','mudda_date','sarkariwakil_name','faat_name')->get();
@@ -18,20 +38,7 @@ class MuddaDartaController extends Controller
             return Datatables::of($data)
                    ->addIndexColumn()
                    ->addColumn('action',function($data){
-                        $btn = '';
-                        $show = '';
-                        $edit = "";
-                        $edit = '<a href="'.route('mudda_darta.edit', $data->id).'" class="edit p-2"><i class="fas fa-edit fa-lg"></i></a>';
-                        $btn .= $edit;
-                        $show = '<form action="' . route('mudda_darta.destroy', $data->id) . '" method="POST" style="display:inline;">
-                                    <input type="hidden" name="_token" value="' . csrf_token() . '">
-                                    <input type="hidden" name="_method" value="DELETE">
-                                    <button type="submit" style="border:none; background:none; color:red; padding:0;">
-                                        <i class="fas fa-trash-alt fa-lg"></i>
-                                    </button>
-                                </form>';
-                        $btn .= $show;
-                        return $btn;
+                        return $this->getActionButtons($data);
                    })
 
                    ->rawColumns(['action'])
@@ -40,11 +47,21 @@ class MuddaDartaController extends Controller
         return view('frontend.mudda_darta.index');
 
     }
+    /**
+     * Get action buttons for DataTable
+     */
+    protected function getActionButtons($data){
+        $editBtn = '<a href="'.route('mudda_darta.edit', $data->id).'" class="edit p-2"><i class="fas fa-edit fa-lg"></i></a>';
 
-    public function getMudda()
-    {
-        $data = MuddaDarta::select('id', 'anusandhan_garne_nikaye', 'mudda_number', 'mudda_name', 'jaherwala_name','pratiwadi_name','mudda_stithi','mudda_date','sarkariwakil_name','faat_name')->get();
-        return response()->json(['data' => $data]);
+        $deleteBtn = '<form action="' . route('mudda_darta.destroy', $data->id) . '" method="POST" style="display:inline;">
+                        '.csrf_field().'
+                        '.method_field('DELETE').'
+                        <button type="submit" class="btn-delete" style="border:none; background:none; color:red; padding:0;">
+                            <i class="fas fa-trash-alt fa-lg"></i>
+                        </button>
+                      </form>';
+
+        return $editBtn . $deleteBtn;
     }
 
     public function create(Request $request)
@@ -55,26 +72,7 @@ class MuddaDartaController extends Controller
 
     public function store(Request $request)
     {
-        $rules = [
-            'anusandhan_garne_nikaye' => 'required',
-            'mudda_name' => 'required',
-            'jaherwala_name' => 'required',
-            'pratiwadi_name' => 'required',
-            'mudda_stithi' => 'required',
-            'mudda_date' => 'required',
-            'mudda_pathayko_date' => 'required',
-        ];
-        $customMessages = [
-           'anusandhan_garne_nikaye.required' => 'अनुसन्धान गर्ने निकाय अनिवार्य छ।',
-           'mudda_name.required' => 'मुद्दाको किसिम अनिवार्य छ।',
-           'jaherwala_name.required' => 'जाहेरवालाको नाम अनिवार्य छ।',
-           'pratiwadi_name.required' => 'प्रतिवादीको नाम अनिवार्य छ।',
-           'mudda_stithi.required' => 'मुद्दा स्थिति अनिवार्य छ।',
-           'mudda_date.required' => 'मुद्दा दर्ता मिति अनिवार्य छ।',
-           'mudda_pathayko_date.required' => 'मुद्दा पठाएको मिति अनिवार्य छ।',
-        ];
-
-        $this->validate($request, $rules, $customMessages);
+        $this->validate($request, $this->rules, $this->customMessages);
         // Store the data in the database
         MuddaDarta::create([
             'anusandhan_garne_nikaye' => $request->input('anusandhan_garne_nikaye'),
@@ -91,20 +89,10 @@ class MuddaDartaController extends Controller
             'mudda_pathayko_date' => $request->input('mudda_pathayko_date'),
             'kaifiyat' => $request->input('kaifiyat'),
         ]);
-        // Create PatraChallani using common fields
-        AviyogChallani::create([
-            'challani_date'            => null,
-            'challani_number'          => null,
-            'jaherwala_name'           => $request->input('jaherwala_name'),
-            'pratiwadi_name'           => $request->input('pratiwadi_name'),
-            'mudda_name'               => $request->input('mudda_name'),
-            'gender'                   => null,
-            'mudda_number'             => $request->input('mudda_name'),
-            'sarkariwakil_name'        => $request->input('sarkariwakil_name'),
-            'faat_name'                => $request->input('faat_name'),
-            'anusandhan_garne_nikaye'  => $request->input('anusandhan_garne_nikaye'),
-            'kaifiyat'                 => '',
-        ]);
+        // Create PatraChallani and Punarabedan using common fields
+        $this->createAviyogChallani($request);
+        $this->createPunarabedan($request);
+
         return redirect()->route('mudda_darta.index')
         ->with('success', 'मुद्दा दर्ता सफल भयो।');
     }
@@ -115,24 +103,8 @@ class MuddaDartaController extends Controller
     }
     public function update(Request $request, $id)
     {
-        $rules = [
-            'anusandhan_garne_nikaye' => 'required',
-            'mudda_name' => 'required',
-            'jaherwala_name' => 'required',
-            'pratiwadi_name' => 'required',
-            'mudda_stithi' => 'required',
-            'mudda_date' => 'required',
-        ];
-        $customMessages = [
-           'anusandhan_garne_nikaye.required' => 'अनुसन्धान गर्ने निकाय अनिवार्य छ।',
-           'mudda_name.required' => 'मुद्दाको किसिम अनिवार्य छ।',
-           'jaherwala_name.required' => 'जाहेरवालाको नाम अनिवार्य छ।',
-           'pratiwadi_name.required' => 'प्रतिवादीको नाम अनिवार्य छ।',
-           'mudda_stithi.required' => 'मुद्दा स्थिति अनिवार्य छ।',
-           'mudda_date.required' => 'मुद्दा दर्ता मिति अनिवार्य छ।',
-        ];
         $mudda = MuddaDarta::findOrFail($id);
-        $this->validate($request, $rules, $customMessages);
+        $this->validate($request, $this->rules, $this->customMessages);
         $mudda->update([
             'anusandhan_garne_nikaye' => $request->input('anusandhan_garne_nikaye'),
             'mudda_number' => $request->input('mudda_number'),
@@ -148,6 +120,39 @@ class MuddaDartaController extends Controller
             'mudda_pathayko_date' => $request->input('mudda_pathayko_date'),
             'kaifiyat' => $request->input('kaifiyat'),
         ]);
+        $this->updateAviyogchallani($mudda,$request);
+        $this->updatePunarabedan($mudda,$request);
+        return redirect()->route('mudda_darta.index')
+        ->with('success', 'मुद्दा सफलतापूर्वक अपडेट भयो।');
+    }
+
+    protected function createAviyogChallani($request) {
+        AviyogChallani::create([
+            'challani_date'            => null,
+            'challani_number'          => null,
+            'jaherwala_name'           => $request->input('jaherwala_name'),
+            'pratiwadi_name'           => $request->input('pratiwadi_name'),
+            'mudda_name'               => $request->input('mudda_name'),
+            'gender'                   => null,
+            'mudda_number'             => $request->input('mudda_name'),
+            'sarkariwakil_name'        => $request->input('sarkariwakil_name'),
+            'faat_name'                => $request->input('faat_name'),
+            'anusandhan_garne_nikaye'  => $request->input('anusandhan_garne_nikaye'),
+            'kaifiyat'                 => '',
+        ]);
+    }
+
+    protected function createPunarabedan($request) {
+        Punarabedan::create([
+            'mudda_name'               => $request->input('mudda_name'),
+            'jaherwala_name'           => $request->input('jaherwala_name'),
+            'pratiwadi_name'           => $request->input('pratiwadi_name'),
+            'mudda_number'             => $request->input('mudda_number'),
+            'suchana_date'             => null,
+        ]);
+    }
+
+    protected function updateAviyogchallani($mudda, $request){
         $aviyogchallani = AviyogChallani::where('id', $mudda->id)->first();
 
         if ($aviyogchallani) {
@@ -163,9 +168,22 @@ class MuddaDartaController extends Controller
                 'anusandhan_garne_nikaye'  => $request->input('anusandhan_garne_nikaye'),
             ]);
         }
-        return redirect()->route('mudda_darta.index')
-        ->with('success', 'मुद्दा सफलतापूर्वक अपडेट भयो।');
     }
+
+    protected function updatePunarabedan($mudda, $request){
+        $punarabedan = Punarabedan::where('id', $mudda->id)->first();
+
+        if ($punarabedan) {
+            $punarabedan->update([
+            'mudda_name'               => $request->input('mudda_name'),
+            'jaherwala_name'           => $request->input('jaherwala_name'),
+            'pratiwadi_name'           => $request->input('pratiwadi_name'),
+            'mudda_number'             => $request->input('mudda_number'),
+            'sarkariwakil_name'        => $request->input('sarkariwakil_name'),
+            ]);
+        }
+    }
+
     public function destroy($id)
     {
         $mudda = MuddaDarta::findOrFail($id);

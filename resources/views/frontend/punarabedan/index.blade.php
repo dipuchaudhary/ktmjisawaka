@@ -5,18 +5,22 @@
         <table id="muddaTable" class="table table-bordered data-table">
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>चलानी मिति</th>
-                    <th>चलानी नं. </th>
-                    <th>मुद्दा नं.</th>
-                    <th>मुद्दाको किसिम </th>
-                    <th>जाहेरवालाको नाम</th>
-                    <th>प्रतिवादीको नाम</th>
-                    <th>सरकारी वकील</th>
-                    <th>फाँट</th>
-                    <th>अनुसन्धान गर्ने निकाय</th>
-                    <th width="105px">Action</th>
-                </tr>
+                   <th rowspan="2">ID</th>
+                <th rowspan="2" >मुद्दा नं.</th>
+                <th rowspan="2" >जाहेरवालाको नाम</th>
+                <th rowspan="2" >प्रतिवादीको नाम</th>
+                <th rowspan="2" >मुद्दाको किसिम</th>
+                <th rowspan="2" >फैसला मिति</th>
+                <th rowspan="2" >फैसला प्रमाणीकरण मिति</th>
+                <th colspan="3" class="text-center">कार्यालयबाट भएको पुनरावेदन सम्बन्धी कारवाही</th>
+                <th rowspan="2">Status</th>
+                <th rowspan="2" width="105px">Action</th>
+            </tr>
+            <tr>
+                <th>पुवे/दो.पा</th>
+                <th>चलानी नं.</th>
+                <th>चलानी मिति</th>
+            </tr>
             </thead>
             <tbody></tbody>
         </table>
@@ -28,41 +32,28 @@
             $('#muddaTable').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{{ route('aviyog_challani.index') }}",
+            ajax: {
+                url: "{{ route('punarabedan.index') }}",
+            },
             columns: [
                 { data: 'id', name: 'id' },
-                { data: 'challani_date', name: 'challani_date' },
-                { data: 'challani_number', name: 'challani_number' },
+                { data: 'mudda_number', name: 'mudda_number' },
                 { data: 'jaherwala_name', name: 'jaherwala_name' },
                 { data: 'pratiwadi_name', name: 'pratiwadi_name' },
                 { data: 'mudda_name', name: 'mudda_name' },
-                { data: 'mudda_number', name: 'mudda_number' },
-                { data: 'sarkariwakil_name', name: 'sarkariwakil_name' },
-                { data: 'faat_name', name: 'faat_name' },
-                { data: 'anusandhan_garne_nikaye', name: 'anusandhan_garne_nikaye' },
+                { data: 'faisala_date', name: 'faisala_date' },
+                { data: 'faisala_pramanikaran_date', name: 'faisala_pramanikaran_date' },
+                { data: 'punarabedan', name: 'punarabedan' },
+                { data: 'punarabedan_date', name: 'punarabedan_date' },
+                { data: 'punarabedan_challani_number', name: 'punarabedan_challani_number' },
+                { data: 'status', name: 'status' },
                 { data: 'action', name: 'action', orderable: false, searchable: false },
             ],
             dom: '<"d-flex justify-content-between align-items-right mb-3"lBf>rtip',
             buttons: [
                 { extend: 'excel', className: 'btn btn-success' },
-                { extend: 'pdf', className: 'btn btn-danger',
-                    customize: function (win) {
-                        // Inject font (you must host this or use a reliable CDN)
-                        $(win.document.head).append(`
-                            <style>
-                                @font-face {
-                                    font-family: 'NotoSans';
-                                    src: url('https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari&display=swap');
-                                }
-                                body, table {
-                                    font-family: 'NotoSans', sans-serif !important;
-                                    font-size: 14px;
-                                }
-                            </style>
-                        `);
-                    }
-                 },
-                { extend: 'print', className: 'btn btn-info' }
+                { extend: 'pdf', className: 'btn btn-danger' },
+                { extend: 'print', className: 'btn btn-info' },
             ],
             language: {
                 zeroRecords: "कुनै डाटा फेला परेन",

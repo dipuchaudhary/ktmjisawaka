@@ -15,11 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('mudda_number')->nullable();
             $table->string('jaherwala_name');
-            $table->string('pratiwadi_name');
+            $table->text('pratiwadi_name');
             $table->string('mudda_name');
             $table->string('faisala_date')->nullable();
             $table->string('faisala_pramanikaran_date')->nullable();
-            $table->string('suchana_date');
+            $table->string('suchana_date')->nullable();
             $table->string('faisala_garne_nikaye')->nullable();
             $table->string('pra_kaid')->nullable();
             $table->string('pra_jariwana')->nullable();
@@ -33,10 +33,11 @@ return new class extends Migration
             $table->string('punarabedan')->nullable();
             $table->string('punarabedan_date')->nullable();
             $table->string('punarabedan_challani_number')->nullable();
-            $table->string('nirnaye')->nullable();
+            $table->text('nirnaye')->nullable();
             $table->string('nirnaye_date')->nullable();
             $table->string('sarkariwakil_name')->nullable();
             $table->string('kaifiyat')->nullable();
+            $table->boolean('status')->default(false);
             $table->timestamps();
         });
     }

@@ -18,7 +18,6 @@ Route::get('/home', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 // mudda darta routes
 Route::get('/mudda-darta', [MuddaDartaController::class, 'index'])->name('mudda_darta.index');
-Route::get('/get-mudda', [MuddaDartaController::class, 'getMudda'])->name('mudda_darta.get_mudda');;
 Route::get('/mudda-darta/create', [MuddaDartaController::class, 'create'])->name('mudda_darta.create');
 Route::post('/mudda-darta/store', [MuddaDartaController::class, 'store'])->name('mudda_darta.store');
 Route::get('/mudda-darta/{id}/edit', [MuddaDartaController::class, 'edit'])->name('mudda_darta.edit');
@@ -44,6 +43,9 @@ Route::post('/aviyog-challani/update/{id}',[AviyogChallaniController::class, 'up
 
 //Punarabedan routes
 Route::get('/punarabedan',[PunarabedanController::class,'index'])->name('punarabedan.index');
+Route::get('/punarabedan/{id}/edit',[PunarabedanController::class,'edit'])->name('punarabedan.edit');
+Route::post('/punarabedan/update/{id}',[PunarabedanController::class, 'update'])->name('punarabedan.update');
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

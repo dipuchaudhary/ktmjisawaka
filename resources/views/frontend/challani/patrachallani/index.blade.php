@@ -16,6 +16,7 @@
                     <th>विषय</th>
                     <th>बोधार्थ</th>
                     <th>दस्तखत गर्ने अधिकारी</th>
+                    <th>Status</th>
                     <th width="105px">Action</th>
                 </tr>
             </thead>
@@ -39,6 +40,7 @@
                 { data: 'challani_subject', name: 'challani_subject' },
                 { data: 'bodartha', name: 'bodartha' },
                 { data: 'verified_by', name: 'verified_by' },
+                { data: 'status', name: 'status' },
                 { data: 'action', name: 'action', orderable: false, searchable: false },
             ],
             dom: '<"d-flex justify-content-between align-items-right mb-3"lBf>rtip',

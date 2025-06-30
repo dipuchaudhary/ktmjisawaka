@@ -11,12 +11,19 @@ use Illuminate\Support\Facades\Storage;
 class AviyogChallaniController extends Controller
 {
     public function index(){
-        $data = AviyogChallani::select('id', 'challani_date','challani_number','mudda_number','mudda_name','jaherwala_name','pratiwadi_name','sarkariwakil_name','faat_name','anusandhan_garne_nikaye')->get();
+        $data = AviyogChallani::select('id', 'challani_date','challani_number','mudda_number','mudda_name','jaherwala_name','pratiwadi_name','sarkariwakil_name','faat_name','anusandhan_garne_nikaye','status')->get();
          if(request()->ajax())
         {
             try {
                 return Datatables::of($data)
                     ->addIndexColumn()
+                     ->addColumn('status', function ($data) {
+                    if ($data->status == 1 || $data->status === true) {
+                            return '<span class="badge rounded-pill text-white bg-success">Done</span>';
+                    } else {
+                            return '<span class="badge rounded-pill text-white bg-danger">Pending</span>';
+                    }
+                    })
                     ->addColumn('action',function($data){
                             $btn = '';
                             $edit = "";
@@ -25,7 +32,7 @@ class AviyogChallaniController extends Controller
                             return $btn;
                     })
 
-                    ->rawColumns(['action'])
+                    ->rawColumns(['status','action'])
                     ->make(true);
             } catch (\Exception $e) {
             \Log::error('DataTables error: ' . $e->getMessage());
@@ -96,7 +103,8 @@ class AviyogChallaniController extends Controller
             'sarkariwakil_name'       => $request->input('sarkariwakil_name'),
             'faat_name'               => $request->input('faat_name'),
             'kaifiyat'                => $request->input('kaifiyat'),
-            'file'                    => $fileurl
+            'file'                    => $fileurl,
+            'status'                  => true,
         ]);
 
 
