@@ -141,10 +141,11 @@
                         </div>
                         <div class="flex-fill text-center p-1">
                             <label for="चलानी नं." class="form-label">चलानी नं. <span style="color:red">*</span></label>
-                            <input type="text" class="form-control  @error('punarabedan_challani_number') is-invalid @enderror" id="punarabedan_challani_number" name="punarabedan_challani_number" value="{{ $punarabedan->punarabedan_challani_number }}" >
-                            @error('punarabedan_challani_number')
-                                <div class="alert alert-danger">{{ $message }}</div>
-                            @enderror
+                            <input type="text" class="form-control  @error('punarabedan_challani_number') is-invalid @enderror" id="punarabedan_challani_number" name="punarabedan_challani_number"
+                            value="{{ (isset($punarabedan) && $punarabedan->status == true)
+                                        ? toNepaliNumber($punarabedan->punarabedan_challani_number)
+                                        : toNepaliNumber($nextChallaniNumber) }}" readonly>
+
                         </div>
                         <div class="flex-fill text-center p-1">
                             <label for="चलानी मिति" class="form-label">चलानी मिति <span style="color:red">*</span></label>

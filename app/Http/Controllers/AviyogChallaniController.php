@@ -4,12 +4,16 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\AviyogChallani;
+use App\Models\Challani;
+use App\Models\ChallaniFormat;
 use Illuminate\Support\Facades\Session;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Storage;
 
 class AviyogChallaniController extends Controller
 {
+    protected $format = '';
+    protected $ChallaniNumber = '';
     public function index(){
         $data = AviyogChallani::select('id', 'challani_date','challani_number','mudda_number','mudda_name','jaherwala_name','pratiwadi_name','sarkariwakil_name','faat_name','anusandhan_garne_nikaye','status')->get();
          if(request()->ajax())
@@ -43,7 +47,17 @@ class AviyogChallaniController extends Controller
 
     public function edit($id){
         $aviyogchallani = AviyogChallani::findorfail($id);
-        return view('frontend.challani.aviyog challani.edit',compact('aviyogchallani'));
+        $latest = Challani::orderByDesc('id')->first();
+        $challani_format = ChallaniFormat::value('format_prefix');
+        $this->format = $challani_format;
+        if ($latest && $latest->id) {
+        $nextChallaniNumber = $challani_format .'-'. $latest->id+1;
+        $this->ChallaniNumber = $nextChallaniNumber;
+        } else {
+        $nextChallaniNumber = $challani_format .'-'. '1';
+        $this->ChallaniNumber = $nextChallaniNumber;
+        }
+        return view('frontend.challani.aviyog challani.edit',compact('aviyogchallani','nextChallaniNumber'));
     }
 
     public function update(Request $request, $id){
@@ -68,7 +82,6 @@ class AviyogChallaniController extends Controller
 
         $this->validate($request, $rules, $customMessages);
         $aviyogchallani = AviyogChallani::findOrFail($id);
-
         $fileurl = $request->input('existing_file');
         if ($request->hasFile('upload_file')) {
 
@@ -106,6 +119,14 @@ class AviyogChallaniController extends Controller
             'file'                    => $fileurl,
             'status'                  => true,
         ]);
+
+        if ( isset($aviyogchallani) && $aviyogchallani->status == true ) {
+            $challaniNumber = $request->input('challani_number');
+            $exists = Challani::where('challani_number', $challaniNumber)->exists();
+            if (!$exists) {
+                Challani::create(['challani_number' => $challaniNumber]);
+            }
+        }
 
 
         return redirect()->route('aviyog_challani.index')

@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('patra_challanis', function (Blueprint $table) {
             $table->id();
             $table->string('karyalaya_name');
-            $table->string('challani_date');
-            $table->string('challani_number');
+            $table->string('challani_date')->nullable();
+            $table->string('challani_number')->nullable();
             $table->string('mudda_number')->nullable();
-            $table->string('challani_subject');
+            $table->string('challani_subject')->nullable();
             $table->string('bodartha')->nullable();
             $table->string('verified_by')->nullable();
             $table->string('kaifiyat')->nullable();

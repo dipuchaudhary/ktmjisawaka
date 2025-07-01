@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('challanis', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('challani_format_id')->constrained('challani_formats')->onDelete('cascade');
             $table->string('challani_number')->unique();
             $table->timestamps();
         });

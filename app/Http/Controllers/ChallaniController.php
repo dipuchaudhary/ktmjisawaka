@@ -28,11 +28,11 @@ class ChallaniController extends Controller
             $existingFormat = ChallaniFormat::first();
             if ($existingFormat) {
             $existingFormat->update([
-                'format_prefix' => toNepaliNumber($validated['format_prefix']),
+                'format_prefix' => $validated['format_prefix'],
             ]);
         } else {
             ChallaniFormat::create([
-                'format_prefix' => toNepaliNumber($validated['format_prefix']),
+                'format_prefix' => $validated['format_prefix'],
             ]);
         }
         $message = 'Challani format saved successfully';

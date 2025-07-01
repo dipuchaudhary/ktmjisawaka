@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Challani;
+use App\Models\ChallaniFormat;
 use App\Models\PatraChallani;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -9,6 +11,8 @@ use Yajra\DataTables\Facades\DataTables;
 
 class PatraChallaniController extends Controller
 {
+    protected $format = '';
+    protected $ChallaniNumber = '';
     /**
      * Display a listing of the resource.
      */
@@ -45,12 +49,17 @@ class PatraChallaniController extends Controller
      */
     public function create()
     {
-        $latest = PatraChallani::orderByDesc('id')->first();
+        $latest = Challani::orderByDesc('id')->first();
+        $challani_format = ChallaniFormat::value('format_prefix');
+        $this->format = $challani_format;
         if ($latest && $latest->id) {
-        $nextChallaniNumber = toNepaliNumber($latest->id+1);
+        $nextChallaniNumber = $challani_format .'-'. $latest->id+1;
+        $this->ChallaniNumber = $nextChallaniNumber;
         } else {
-        $nextChallaniNumber = toNepaliNumber('1');
+        $nextChallaniNumber = $challani_format .'-'. '1';
+        $this->ChallaniNumber = $nextChallaniNumber;
         }
+
         return view('frontend.challani.patrachallani.create',compact('nextChallaniNumber'));
     }
 
@@ -128,6 +137,11 @@ class PatraChallaniController extends Controller
 
         $patraChallani = PatraChallani::findOrFail($id);
         $this->validate($request, $rules, $Messages);
+         if (!empty($request->input('bodartha')) ) {
+           $bodartha = implode(',', $request->input('bodartha'));
+        } else {
+            $bodartha= $request->input('bodartha');
+        }
         // Store the data in the database
         $patraChallani->update([
             'karyalaya_name' => $request->input('karyalaya_name'),
@@ -135,10 +149,18 @@ class PatraChallaniController extends Controller
             'challani_number' => $request->input('challani_number'),
             'mudda_number' => $request->input('mudda_number'),
             'challani_subject' => $request->input('challani_subject'),
-            'bodartha' => implode(',', $request->input('bodartha')),
+            'bodartha' => $bodartha,
             'verified_by' => $request->input('verified_by'),
             'kaifiyat' => $request->input('kaifiyat'),
         ]);
+
+        if ( isset($patraChallani) && $patraChallani->status == true ) {
+            $challaniNumber = $request->input('challani_number');
+            $exists = Challani::where('challani_number', $challaniNumber)->exists();
+            if (!$exists) {
+                Challani::create(['challani_number' => $challaniNumber]);
+            }
+        }
 
         return redirect()->route('patra_challani.index')
         ->with('success', 'चलानी पत्र सफलतापूर्वक अपडेट भयो।');

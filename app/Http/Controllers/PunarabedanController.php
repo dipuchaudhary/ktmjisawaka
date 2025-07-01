@@ -4,11 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Punarabedan;
 use Illuminate\Http\Request;
+use App\Models\Challani;
+use App\Models\ChallaniFormat;
 use Illuminate\Support\Facades\Session;
 use Yajra\DataTables\Facades\DataTables;
 
 class PunarabedanController extends Controller
 {
+    protected $format = '';
+    protected $ChallaniNumber = '';
     protected $rules = [
             'mudda_name' => 'required',
             'jaherwala_name' => 'required',
@@ -63,7 +67,17 @@ class PunarabedanController extends Controller
 
     public function edit($id){
         $punarabedan = Punarabedan::findOrFail($id);
-        return view('frontend.punarabedan.edit', compact('punarabedan'));
+        $latest = Challani::orderByDesc('id')->first();
+        $challani_format = ChallaniFormat::value('format_prefix');
+        $this->format = $challani_format;
+        if ($latest && $latest->id) {
+        $nextChallaniNumber = $challani_format .'-'. $latest->id+1;
+        $this->ChallaniNumber = $nextChallaniNumber;
+        } else {
+        $nextChallaniNumber = $challani_format .'-'. '1';
+        $this->ChallaniNumber = $nextChallaniNumber;
+        }
+        return view('frontend.punarabedan.edit', compact('punarabedan','nextChallaniNumber'));
     }
 
     public function update(Request $request, $id){
@@ -98,6 +112,15 @@ class PunarabedanController extends Controller
             'kaifiyat' => $request->input('kaifiyat'),
             'status' => true,
         ]);
+
+        if ( isset($punarabedan) && $punarabedan->status == true ) {
+            $challaniNumber = $request->input('punarabedan_challani_number');
+            $exists = Challani::where('challani_number', $challaniNumber)->exists();
+            if (!$exists) {
+                Challani::create(['challani_number' => $challaniNumber]);
+            }
+        }
+
         return redirect()->route('punarabedan.index')
         ->with('success', 'पुनरावेदन सफलतापूर्वक अपडेट भयो।');
     }

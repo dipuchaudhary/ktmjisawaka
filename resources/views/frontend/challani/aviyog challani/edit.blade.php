@@ -13,9 +13,9 @@
                 </div>
                 <div class="col-auto">
                     <input type="text" class="input-group-text mb-2" id="challani_number" name="challani_number"
-                    value="{{ !empty($aviyogchallani->challani_number)
-                        ? $aviyogchallani->challani_number
-                        : '२०८२/०८३-' . toNepaliNumber($aviyogchallani->id) }}
+                    value="{{ (isset($aviyogchallani) && $aviyogchallani->status == true)
+                        ? toNepaliNumber($aviyogchallani->challani_number)
+                        : toNepaliNumber($nextChallaniNumber) }}
                     " readonly>
                 </div>
             </div>

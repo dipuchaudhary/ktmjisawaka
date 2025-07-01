@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\DataTables\MuddaDartaDataTable;
 use App\Models\MuddaDarta;
 use App\Models\AviyogChallani;
+use App\Models\PatraChallani;
 use App\Models\Punarabedan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -83,7 +84,9 @@ class MuddaDartaController extends Controller
             'pratiwadi_number' => $request->input('pratiwadi_number'),
             'mudda_stithi' => $request->input('mudda_stithi'),
             'mudda_date' => $request->input('mudda_date'),
-            'mudda_myad' => $request->input('mudda_myad'),
+            'mudda_suru_myad' => $request->input('mudda_suru_myad'),
+            'mudda_myad_thap' => $request->input('mudda_myad_thap'),
+            'jamma_din' => $request->input('jamma_din'),
             'sarkariwakil_name' => $request->input('sarkariwakil_name'),
             'faat_name' => $request->input('faat_name'),
             'mudda_pathayko_date' => $request->input('mudda_pathayko_date'),
@@ -114,7 +117,9 @@ class MuddaDartaController extends Controller
             'pratiwadi_number' => $request->input('pratiwadi_number'),
             'mudda_stithi' => $request->input('mudda_stithi'),
             'mudda_date' => $request->input('mudda_date'),
-            'mudda_myad' => $request->input('mudda_myad'),
+            'mudda_suru_myad' => $request->input('mudda_suru_myad'),
+            'mudda_myad_thap' => $request->input('mudda_myad_thap'),
+            'jamma_din' => $request->input('jamma_din'),
             'sarkariwakil_name' => $request->input('sarkariwakil_name'),
             'faat_name' => $request->input('faat_name'),
             'mudda_pathayko_date' => $request->input('mudda_pathayko_date'),
@@ -134,7 +139,7 @@ class MuddaDartaController extends Controller
             'pratiwadi_name'           => $request->input('pratiwadi_name'),
             'mudda_name'               => $request->input('mudda_name'),
             'gender'                   => null,
-            'mudda_number'             => $request->input('mudda_name'),
+            'mudda_number'             => $request->input('mudda_number'),
             'sarkariwakil_name'        => $request->input('sarkariwakil_name'),
             'faat_name'                => $request->input('faat_name'),
             'anusandhan_garne_nikaye'  => $request->input('anusandhan_garne_nikaye'),
