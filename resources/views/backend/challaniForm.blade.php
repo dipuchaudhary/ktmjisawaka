@@ -19,7 +19,7 @@
                 <div class="card-body">
                   <div class="form-group">
                     <label for="format_prefix">Challani Format</label>
-                    <input type="text" class="form-control" id="format_prefix" name="format_prefix" placeholder="Enter challani format" value="{{ $format->format_prefix }}">
+                    <input type="text" class="form-control" id="format_prefix" name="format_prefix" placeholder="Enter challani format" value="{{ isset($format) ? $format->format_prefix : '' }}">
                   </div>
                   <button type="submit" class="btn btn-primary">Save</button>
               </form>

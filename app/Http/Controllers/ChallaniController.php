@@ -10,7 +10,12 @@ class ChallaniController extends Controller
 {
     public function index() {
         $format = ChallaniFormat::first();
-        return view('backend.challaniForm',compact('format'));
+        if($format) {
+            return view('backend.challaniForm',compact('format'));
+        } else {
+             return view('backend.challaniForm');
+        }
+
     }
 
     public function storeOrUpdate(Request $request){
