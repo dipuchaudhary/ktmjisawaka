@@ -62,10 +62,19 @@
                     <option value="पक्राउ"{{ $bankingmudda->mudda_stithi == 'पक्राउ' ? 'selected' : '' }}>पक्राउ</option>
                     <option value="हाजिरि जमानीमा छोडेको" {{ $bankingmudda->mudda_stithi == 'हाजिरि जमानीमा छोडेको' ? 'selected' : '' }}>हाजिरि जमानीमा छोडेको</option>
                     <option value="तामेली" {{ $bankingmudda->mudda_stithi == 'तामेली' ? 'selected' : '' }}>हाजिरि जमानीमा छोडेको</option>
+                    <option value="नचल्ने" {{ $bankingmudda->mudda_stithi == 'नचल्ने' ? 'selected' : '' }}>मुद्दा नचल्ने</option>
                 </select>
                 @error('mudda_stithi')
                         <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="मुद्दा पेश भएको कार्यालय" class="form-label">मुद्दा पेश भएको कार्यालय <span style="color:red">*</span></label>
+                    <select class="form-select form-control @error('pesi_karyala') is-invalid @enderror" name="pesi_karyala" id="pesi_karyala">
+                        <option selected value="" {{ empty($bankingmudda->pesi_karyala) ? 'selected' : '' }}>--एउटाको विकल्प रोज्नुहोस।--</option>
+                        <option value="ktm" {{ $bankingmudda->mudda_stithi == 'ktm' ? 'selected' : '' }}>काठमाण्डौं जिल्ला अदालत</option>
+                        <option value="patan" {{ $bankingmudda->mudda_stithi == 'patan' ? 'selected' : '' }}>उच्च सरकारी वकील कार्यालय, पाटन</option>
+                    </select>
                 </div>
                 <div class="col-md-4 mb-3">
                     <label for="मुद्दा दर्ता मिति" class="form-label">मुद्दा दर्ता मिति <span style="color:red">*</span></label>
@@ -74,26 +83,39 @@
                         <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
                 </div>
-                <div class="col-md-4 mb-3">
+            </div>
+            <div class="row">
+                <div class="col-md-3 mb-3">
                     <label for="म्याद" class="form-label">म्याद</label>
                     <input type="text" class="form-control date-picker" id="mudda_myad" name="mudda_myad" value="{{ $bankingmudda->mudda_myad }}">
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-md-4 mb-3">
+                <div class="col-md-3 mb-3">
                     <label for="सरकारी वकील" class="form-label">सरकारी वकील</label>
                     <input type="text" class="form-control" id="sarkariwakil_name" name="sarkariwakil_name" value="{{ $bankingmudda->sarkariwakil_name}}">
                 </div>
-                <div class="col-md-4 mb-3">
-                    <label for="मुद्दा पठाएको मिति" class="form-label">मुद्दा पठाएको मिति र च.नं.</label>
+                <div class="col-md-3 mb-3">
+                    <label for="मुद्दा पठाएको मिति" class="form-label">मुद्दा पठाएको मिति</label>
                     <input type="text" class="form-control date-picker @error('mudda_pathayko_date') is-invalid @enderror" id="mudda_pathayko_date" name="mudda_pathayko_date" value="{{ $bankingmudda->mudda_pathayko_date }}">
                     @error('mudda_pathayko_date')
                         <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
                 </div>
+                <div class="col-md-3 mb-3">
+                    <label for="मुद्दा पठाएको मिति" class="form-label"> चलानी नं.(चलानी भएमा)</label>
+                    <input type="text" class="form-control" id="challani_number" name="challani_number" value="{{ !empty($bankingmudda->challani_number) ? $bankingmudda->challani_number : toNepaliNumber($nextChallaniNumber) }}" readonly>
+                </div>
+            </div>
+            <div class="row">
                 <div class="col-md-4 mb-3">
                     <label for="कैफियत" class="form-label">कैफियत</label>
                     <textarea class="form-control" id="kaifiyat" name="kaifiyat" rows="3">{{ $bankingmudda->kaifiyat }}</textarea>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="चलानी भएको/नभएको" class="form-label">चलानी अवस्था <span style="color:red">*</span></label>
+                    <select class="form-select form-control @error('status') is-invalid @enderror" name="status" id="status">
+                        <option value="0" {{ $bankingmudda->mudda_stithi == '0' ? 'selected' : '' }}>चलानी नभएको</option>
+                        <option value="1" {{ $bankingmudda->mudda_stithi == '1' ? 'selected' : '' }}>चलानी भएको</option>
+                    </select>
                 </div>
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>

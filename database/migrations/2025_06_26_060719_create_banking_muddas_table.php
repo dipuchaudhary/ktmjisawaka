@@ -24,7 +24,9 @@ return new class extends Migration
             $table->string('mudda_myad')->nullable();
             $table->string('sarkariwakil_name')->nullable();
             $table->string('mudda_pathayko_date')->nullable();
+            $table->string('challani_number')->nullable();
             $table->string('kaifiyat')->nullable();
+            $table->string('status')->default(false);
             $table->timestamps();
         });
     }

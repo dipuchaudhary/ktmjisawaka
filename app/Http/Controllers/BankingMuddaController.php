@@ -5,21 +5,32 @@ use App\Models\BankingMudda;
 use Illuminate\Http\Request;
 use App\Models\AviyogChallani;
 use App\Models\Punarabedan;
+use App\Models\Challani;
+use App\Models\ChallaniFormat;
 use Illuminate\Support\Facades\Session;
 use Yajra\DataTables\Facades\DataTables;
 
 class BankingMuddaController extends Controller
 {
+    protected $format = '';
+    protected $ChallaniNumber = '';
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $data = BankingMudda::select('id', 'anusandhan_garne_nikaye', 'mudda_number', 'mudda_name', 'jaherwala_name','pratiwadi_name','mudda_stithi','mudda_date','sarkariwakil_name')->get();
+        $data = BankingMudda::select('id', 'anusandhan_garne_nikaye', 'mudda_number', 'mudda_name', 'jaherwala_name','pratiwadi_name','mudda_stithi','mudda_date','sarkariwakil_name','challani_number','status')->get();
          if(request()->ajax())
         {
             return Datatables::of($data)
                    ->addIndexColumn()
+                   ->addColumn('status', function ($data) {
+                    if ($data->status == 1 || $data->status === true) {
+                            return '<span class="badge rounded-pill text-white bg-success">Done</span>';
+                    } else {
+                            return '<span class="badge rounded-pill text-white bg-danger">Pending</span>';
+                    }
+					})
                    ->addColumn('action',function($data){
                         $btn = '';
                         $show = '';
@@ -37,7 +48,7 @@ class BankingMuddaController extends Controller
                         return $btn;
                    })
 
-                   ->rawColumns(['action'])
+                   ->rawColumns(['status','action'])
                    ->make(true);
         }
        return view('frontend.banking_mudda.index');
@@ -48,7 +59,17 @@ class BankingMuddaController extends Controller
      */
     public function create()
     {
-        return view('frontend.banking_mudda.create');
+        $latest = Challani::orderByDesc('id')->first();
+        $challani_format = ChallaniFormat::value('format_prefix');
+        $this->format = $challani_format;
+        if ($latest && $latest->id) {
+        $nextChallaniNumber = $challani_format .'-'. $latest->id+1;
+        $this->ChallaniNumber = $nextChallaniNumber;
+        } else {
+        $nextChallaniNumber = $challani_format .'-'. '1';
+        $this->ChallaniNumber = $nextChallaniNumber;
+        }
+        return view('frontend.banking_mudda.create',compact('nextChallaniNumber'));
     }
 
     /**
@@ -74,7 +95,7 @@ class BankingMuddaController extends Controller
 
         $this->validate($request, $rules, $Messages);
         // Store the data in the database
-        BankingMudda::create([
+        $Insertdata = [
             'anusandhan_garne_nikaye' => $request->input('anusandhan_garne_nikaye'),
             'mudda_number' => $request->input('mudda_number'),
             'mudda_name' => $request->input('mudda_name'),
@@ -86,8 +107,21 @@ class BankingMuddaController extends Controller
             'mudda_myad' => $request->input('mudda_myad'),
             'sarkariwakil_name' => $request->input('sarkariwakil_name'),
             'mudda_pathayko_date' => $request->input('mudda_pathayko_date'),
+            'status' => $request->input('status'),
             'kaifiyat' => $request->input('kaifiyat'),
-        ]);
+        ];
+
+        if ($request->input('status') == '1' || $request->status === 1 ||$request->input('status') === true) {
+
+            $Insertdata['challani_number'] = $request->input('challani_number');
+            $challaniNumber = $request->input('challani_number');
+            $exists = Challani::where('challani_number', $challaniNumber)->exists();
+            if (!$exists) {
+                Challani::create(['challani_number' => $challaniNumber]);
+            }
+        }
+
+        BankingMudda::create($Insertdata);
 
         $this->createAviyogChallani($request);
         $this->createPunarabedan($request);
@@ -109,7 +143,17 @@ class BankingMuddaController extends Controller
     public function edit(string $id)
     {
         $bankingmudda = BankingMudda::findOrFail($id);
-        return view('frontend.banking_mudda.edit', compact('bankingmudda'));
+         $latest = Challani::orderByDesc('id')->first();
+        $challani_format = ChallaniFormat::value('format_prefix');
+        $this->format = $challani_format;
+        if ($latest && $latest->id) {
+        $nextChallaniNumber = $challani_format .'-'. $latest->id+1;
+        $this->ChallaniNumber = $nextChallaniNumber;
+        } else {
+        $nextChallaniNumber = $challani_format .'-'. '1';
+        $this->ChallaniNumber = $nextChallaniNumber;
+        }
+        return view('frontend.banking_mudda.edit', compact('bankingmudda','nextChallaniNumber'));
     }
 
     protected function createAviyogChallani($request) {
@@ -120,7 +164,7 @@ class BankingMuddaController extends Controller
             'pratiwadi_name'           => $request->input('pratiwadi_name'),
             'mudda_name'               => $request->input('mudda_name'),
             'gender'                   => null,
-            'mudda_number'             => $request->input('mudda_name'),
+            'mudda_number'             => $request->input('mudda_number'),
             'sarkariwakil_name'        => $request->input('sarkariwakil_name'),
             'faat_name'                => $request->input('faat_name'),
             'anusandhan_garne_nikaye'  => $request->input('anusandhan_garne_nikaye'),
@@ -172,10 +216,20 @@ class BankingMuddaController extends Controller
             'sarkariwakil_name' => $request->input('sarkariwakil_name'),
             'faat_name' => $request->input('faat_name'),
             'mudda_pathayko_date' => $request->input('mudda_pathayko_date'),
-            'kaifiyat' => $request->input('kaifiyat'),
+            'challani_number' => $request->status ? $request->input('challani_number') : $bankingmudda->challani_number,
+            'status' => $request->input('status'),
+            'kaifiyat' => $request->input('kaifiyat')
         ]);
         $this->updateAviyogchallani($bankingmudda,$request);
         $this->updatePunarabedan($bankingmudda,$request);
+
+        if ( isset($bankingmudda) && $bankingmudda->status == true ) {
+            $challaniNumber = $request->input('challani_number');
+            $exists = Challani::where('challani_number', $challaniNumber)->exists();
+            if (!$exists) {
+                Challani::create(['challani_number' => $challaniNumber]);
+            }
+        }
         return redirect()->route('banking_mudda.index')
         ->with('success', 'बैकिङ्ग मुद्दा सफलतापूर्वक अपडेट भयो।');
     }
@@ -185,12 +239,10 @@ class BankingMuddaController extends Controller
 
         if ($aviyogchallani) {
             $aviyogchallani->update([
-                'challani_number'          => '२०८२/०८३-'.toNepaliNumber($aviyogchallani->id),
                 'jaherwala_name'           => $request->input('jaherwala_name'),
                 'pratiwadi_name'           => $request->input('pratiwadi_name'),
                 'mudda_name'               => $request->input('mudda_name'),
-                'mudda_name'               => $request->input('mudda_name'),
-                'mudda_number'             => $request->input('mudda_name'),
+                'mudda_number'             => $request->input('mudda_number'),
                 'sarkariwakil_name'        => $request->input('sarkariwakil_name'),
                 'faat_name'                => $request->input('faat_name'),
                 'anusandhan_garne_nikaye'  => $request->input('anusandhan_garne_nikaye'),

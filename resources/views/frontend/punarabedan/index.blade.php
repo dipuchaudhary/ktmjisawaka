@@ -5,7 +5,7 @@
         <table id="muddaTable" class="table table-bordered data-table">
             <thead>
                 <tr>
-                   <th rowspan="2">ID</th>
+                <th rowspan="2">ID</th>
                 <th rowspan="2" >मुद्दा नं.</th>
                 <th rowspan="2" >जाहेरवालाको नाम</th>
                 <th rowspan="2" >प्रतिवादीको नाम</th>
@@ -30,6 +30,7 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('#muddaTable').DataTable({
+            "order": [[0, "desc"]],
             processing: true,
             serverSide: true,
             ajax: {

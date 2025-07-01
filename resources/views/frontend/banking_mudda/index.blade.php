@@ -17,6 +17,8 @@
                     <th>मुद्दाको स्थिति</th>
                     <th>मुद्दा दर्ता मिति</th>
                     <th>सरकारी वकील</th>
+                    <th>चलानी नं.</th>
+                    <th>Status</th>
                     <th width="105px">Action</th>
                 </tr>
             </thead>
@@ -28,6 +30,7 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('#muddaTable').DataTable({
+            "order": [[0, "desc"]],
             processing: true,
             serverSide: true,
             ajax: "{{ route('banking_mudda.index') }}",
@@ -41,6 +44,8 @@
                 { data: 'mudda_stithi', name: 'mudda_stithi' },
                 { data: 'mudda_date', name: 'mudda_date' },
                 { data: 'sarkariwakil_name', name: 'sarkariwakil_name' },
+                { data: 'challani_number', name: 'challani_number' },
+                { data: 'status', name: 'sarkariwakil_name' },
                 { data: 'action', name: 'action', orderable: false, searchable: false },
             ],
             dom: '<"d-flex justify-content-between align-items-right mb-3"lBf>rtip',

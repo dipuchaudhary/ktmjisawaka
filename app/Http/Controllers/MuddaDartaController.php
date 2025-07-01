@@ -162,12 +162,10 @@ class MuddaDartaController extends Controller
 
         if ($aviyogchallani) {
             $aviyogchallani->update([
-                'challani_number'          => '२०८२/०८३-'.toNepaliNumber($aviyogchallani->id),
                 'jaherwala_name'           => $request->input('jaherwala_name'),
                 'pratiwadi_name'           => $request->input('pratiwadi_name'),
                 'mudda_name'               => $request->input('mudda_name'),
-                'mudda_name'               => $request->input('mudda_name'),
-                'mudda_number'             => $request->input('mudda_name'),
+                'mudda_number'             => $request->input('mudda_number'),
                 'sarkariwakil_name'        => $request->input('sarkariwakil_name'),
                 'faat_name'                => $request->input('faat_name'),
                 'anusandhan_garne_nikaye'  => $request->input('anusandhan_garne_nikaye'),

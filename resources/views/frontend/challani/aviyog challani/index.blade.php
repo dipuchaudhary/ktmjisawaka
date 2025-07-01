@@ -27,6 +27,7 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('#muddaTable').DataTable({
+            "order": [[0, "desc"]],
             processing: true,
             serverSide: true,
             ajax: {

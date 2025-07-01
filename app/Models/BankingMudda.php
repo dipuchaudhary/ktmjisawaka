@@ -18,7 +18,9 @@ class BankingMudda extends Model
         'mudda_myad',
         'sarkariwakil_name',
         'mudda_pathayko_date',
+        'challani_number',
         'kaifiyat',
+        'status',
         'created_at',
     ];
 }
