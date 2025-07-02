@@ -103,6 +103,8 @@ class BankingMuddaController extends Controller
             'pratiwadi_name' => $request->input('pratiwadi_name'),
             'pratiwadi_number' => $request->input('pratiwadi_number'),
             'mudda_stithi' => $request->input('mudda_stithi'),
+            'mudda_bibran' => $request->input('mudda_bibran'),
+            'pesi_karyala' => $request->input('pesi_karyala'),
             'mudda_date' => $request->input('mudda_date'),
             'mudda_myad' => $request->input('mudda_myad'),
             'sarkariwakil_name' => $request->input('sarkariwakil_name'),
@@ -123,7 +125,6 @@ class BankingMuddaController extends Controller
 
         BankingMudda::create($Insertdata);
 
-        $this->createAviyogChallani($request);
         $this->createPunarabedan($request);
         return redirect()->route('banking_mudda.index')
         ->with('success', 'बैकिङ्ग मुद्दा दर्ता सफल भयो।');
@@ -143,7 +144,7 @@ class BankingMuddaController extends Controller
     public function edit(string $id)
     {
         $bankingmudda = BankingMudda::findOrFail($id);
-         $latest = Challani::orderByDesc('id')->first();
+        $latest = Challani::orderByDesc('id')->first();
         $challani_format = ChallaniFormat::value('format_prefix');
         $this->format = $challani_format;
         if ($latest && $latest->id) {
@@ -154,22 +155,6 @@ class BankingMuddaController extends Controller
         $this->ChallaniNumber = $nextChallaniNumber;
         }
         return view('frontend.banking_mudda.edit', compact('bankingmudda','nextChallaniNumber'));
-    }
-
-    protected function createAviyogChallani($request) {
-        AviyogChallani::create([
-            'challani_date'            => null,
-            'challani_number'          => null,
-            'jaherwala_name'           => $request->input('jaherwala_name'),
-            'pratiwadi_name'           => $request->input('pratiwadi_name'),
-            'mudda_name'               => $request->input('mudda_name'),
-            'gender'                   => null,
-            'mudda_number'             => $request->input('mudda_number'),
-            'sarkariwakil_name'        => $request->input('sarkariwakil_name'),
-            'faat_name'                => $request->input('faat_name'),
-            'anusandhan_garne_nikaye'  => $request->input('anusandhan_garne_nikaye'),
-            'kaifiyat'                 => '',
-        ]);
     }
 
     protected function createPunarabedan($request) {
@@ -189,15 +174,11 @@ class BankingMuddaController extends Controller
     {
         $rules = [
             'anusandhan_garne_nikaye' => 'required',
-            'jaherwala_name' => 'required',
-            'pratiwadi_name' => 'required',
             'mudda_stithi' => 'required',
             'mudda_date' => 'required',
         ];
         $Messages = [
            'anusandhan_garne_nikaye.required' => 'अनुसन्धान गर्ने निकाय अनिवार्य छ।',
-           'jaherwala_name.required' => 'जाहेरवालाको नाम अनिवार्य छ।',
-           'pratiwadi_name.required' => 'प्रतिवादीको नाम अनिवार्य छ।',
            'mudda_stithi.required' => 'मुद्दा स्थिति अनिवार्य छ।',
            'mudda_date.required' => 'मुद्दा दर्ता मिति अनिवार्य छ।',
         ];
@@ -211,6 +192,8 @@ class BankingMuddaController extends Controller
             'pratiwadi_name' => $request->input('pratiwadi_name'),
             'pratiwadi_number' => $request->input('pratiwadi_number'),
             'mudda_stithi' => $request->input('mudda_stithi'),
+            'mudda_bibran' => $request->input('mudda_bibran'),
+            'pesi_karyala' => $request->input('pesi_karyala'),
             'mudda_date' => $request->input('mudda_date'),
             'mudda_myad' => $request->input('mudda_myad'),
             'sarkariwakil_name' => $request->input('sarkariwakil_name'),

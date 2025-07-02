@@ -14,6 +14,8 @@ class BankingMudda extends Model
         'pratiwadi_name',
         'pratiwadi_number',
         'mudda_stithi',
+        'mudda_bibran',
+        'pesi_karyala',
         'mudda_date',
         'mudda_myad',
         'sarkariwakil_name',

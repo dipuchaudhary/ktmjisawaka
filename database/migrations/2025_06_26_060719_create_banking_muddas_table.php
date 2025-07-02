@@ -16,10 +16,12 @@ return new class extends Migration
             $table->string('anusandhan_garne_nikaye');
             $table->string('mudda_number')->nullable();
             $table->string('mudda_name');
-            $table->string('jaherwala_name');
-            $table->string('pratiwadi_name');
+            $table->string('jaherwala_name')->nullable();
+            $table->string('pratiwadi_name')->nullable();
             $table->string('pratiwadi_number')->nullable();
             $table->string('mudda_stithi');
+            $table->string('mudda_bibran')->nullable();
+            $table->string('pesi_karyala')->nullable();
             $table->string('mudda_date')->nullable();
             $table->string('mudda_myad')->nullable();
             $table->string('sarkariwakil_name')->nullable();
