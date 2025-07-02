@@ -73,7 +73,7 @@
                 </div>
                 <div class="col-md-2 mb-3">
                     <label for="म्याद" class="form-label">जम्मा दिन</label>
-                    <input type="text" class="form-control" id="jamma_din" name="jamma_din" value="{{ old('jamma_din') }}">
+                    <input type="text" class="form-control" id="jamma_din" name="jamma_din" value="{{ old('jamma_din') }}" readonly>
                 </div>
                 <div class="col-md-2 mb-3">
                     <label for="मुद्दा नं." class="form-label">मुद्दा नं.</label>
@@ -115,3 +115,40 @@
     </form>
 </div>
 @endsection
+@push('scripts')
+<script>
+
+const nepToEng = s => s.replace(/[०-९]/g, d => '०१२३४५६७८९'.indexOf(d));
+const engToNep = s => String(s).replace(/[0-9]/g, d => '०१२३४५६७८९'[d]);
+
+function bsDaysDiff(bsStart, bsEnd) {
+  const [y1, m1, d1] = nepToEng(bsStart).split('-').map(Number);
+  const [y2, m2, d2] = nepToEng(bsEnd).split('-').map(Number);
+
+  const ad1 = calendarFunctions.getAdDateByBsDate(y1, m1, d1);
+  const ad2 = calendarFunctions.getAdDateByBsDate(y2, m2, d2);
+
+  return Math.round((ad2 - ad1) / 86_400_000);
+}
+
+
+let startBS = '', endBS = '';
+
+function updateGap() {
+  if (!startBS || !endBS) return;
+  const gap = bsDaysDiff(startBS, endBS);
+  $('#jamma_din').val(engToNep(gap));
+}
+
+$('#mudda_suru_myad').on('dateSelect', e => {
+  startBS = e.target.value;
+  updateGap();
+});
+
+$('#mudda_myad_thap').on('dateSelect', e => {
+  endBS = e.target.value;
+  updateGap();
+});
+
+</script>
+@endpush

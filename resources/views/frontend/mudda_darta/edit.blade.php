@@ -76,7 +76,7 @@
                 </div>
                 <div class="col-md-2 mb-3">
                     <label for="म्याद" class="form-label">जम्मा दिन</label>
-                    <input type="text" class="form-control date-picker" id="jamma_din" name="jamma_din" value="{{ $mudda->jamma_din }}">
+                    <input type="text" class="form-control date-picker" id="jamma_din" name="jamma_din" value="{{ $mudda->jamma_din }}" readonly>
                 </div>
                  <div class="col-md-2 mb-3">
                     <label for="मुद्दा नं." class="form-label">मुद्दा नं.</label>
@@ -118,3 +118,47 @@
     </form>
 </div>
 @endsection
+@push('scripts')
+<script>
+const nepToEng = s => s.replace(/[०-९]/g, d => '०१२३४५६७८९'.indexOf(d));
+const engToNep = s => String(s).replace(/[0-9]/g, d => '०१२३४५६७८९'[d]);
+
+function isValidBsDate(bsStr) {
+  if (!bsStr) return false;
+  const parts = nepToEng(bsStr).split('-');
+  if (parts.length !== 3) return false;
+  const [y, m, d] = parts.map(Number);
+  return y >= 1970 && y <= 2100 && m >= 1 && m <= 12 && d >= 1 && d <= 32;
+}
+
+function bsToAdDate(bsStr) {
+  if (!isValidBsDate(bsStr)) throw new Error(`Invalid BS date: ${bsStr}`);
+  const [y, m, d] = nepToEng(bsStr).split('-').map(Number);
+  return calendarFunctions.getAdDateByBsDate(y, m, d);
+}
+
+function bsDaysDiff(bsStart, bsEnd) {
+  const ad1 = bsToAdDate(bsStart);
+  const ad2 = bsToAdDate(bsEnd);
+  return Math.round((ad2 - ad1) / 86400000);
+}
+
+let startBS = '', endBS = '';
+
+function updateGap() {
+  if (!isValidBsDate(startBS) || !isValidBsDate(endBS)) return;
+  const gap = bsDaysDiff(startBS, endBS);
+ $('#jamma_din').val(engToNep(gap));
+}
+
+$('#mudda_suru_myad').on('dateSelect', e => {
+  startBS = e.target.value;
+  updateGap();
+});
+
+$('#mudda_myad_thap').on('dateSelect', e => {
+  endBS = e.target.value;
+  updateGap();
+});
+</script>
+@endpush
