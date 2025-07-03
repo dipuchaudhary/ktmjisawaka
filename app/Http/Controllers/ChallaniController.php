@@ -11,9 +11,9 @@ class ChallaniController extends Controller
     public function index() {
         $format = ChallaniFormat::first();
         if($format) {
-            return view('backend.challaniForm',compact('format'));
+            return view('backend.challani.challaniForm',compact('format'));
         } else {
-             return view('backend.challaniForm');
+             return view('backend.challani.challaniForm');
         }
 
     }

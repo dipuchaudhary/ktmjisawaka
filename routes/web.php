@@ -47,10 +47,11 @@ Route::get('/punarabedan',[PunarabedanController::class,'index'])->name('punarab
 Route::get('/punarabedan/{id}/edit',[PunarabedanController::class,'edit'])->name('punarabedan.edit');
 Route::post('/punarabedan/update/{id}',[PunarabedanController::class, 'update'])->name('punarabedan.update');
 
-Route::middleware('auth')->group(function () {
+Route::middleware('auth')->prefix('admin')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::get('/admin/challani', [ChallaniController::class,'index'])->name('challani.index');
-    Route::post('/admin/challani/store', [ChallaniController::class,'storeOrUpdate'])->name('challani.store');
+    Route::get('/challani', [ChallaniController::class,'index'])->name('challani.index');
+    Route::post('/challani/store', [ChallaniController::class,'storeOrUpdate'])->name('challani.store');
+    Route::resource('users', App\Http\Controllers\UserController::class);
 });
