@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AviyogChallaniController;
 use App\Http\Controllers\BankingMuddaController;
 use App\Http\Controllers\ChallaniController;
@@ -9,14 +10,12 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\PatraChallaniController;
 use App\Http\Controllers\PunarabedanController;
+use App\Http\Controllers\UserController;
 use App\Models\AviyogChallani;
 
 Route::get('/', [FrontendController::class, 'index'])->name('home');
 
 Auth::routes();
-Route::get('/home', function () {
-    return view('backend.dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
 // mudda darta routes
 Route::get('/mudda-darta', [MuddaDartaController::class, 'index'])->name('mudda_darta.index');
 Route::get('/mudda-darta/create', [MuddaDartaController::class, 'create'])->name('mudda_darta.create');
@@ -47,11 +46,12 @@ Route::get('/punarabedan',[PunarabedanController::class,'index'])->name('punarab
 Route::get('/punarabedan/{id}/edit',[PunarabedanController::class,'edit'])->name('punarabedan.edit');
 Route::post('/punarabedan/update/{id}',[PunarabedanController::class, 'update'])->name('punarabedan.update');
 
-Route::middleware('auth')->prefix('admin')->group(function () {
+Route::prefix('admin')->middleware(['auth'])->group(function() {
+    Route::get('/home', [HomeController::class, 'index'])->name('dashboard');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/challani', [ChallaniController::class,'index'])->name('challani.index');
     Route::post('/challani/store', [ChallaniController::class,'storeOrUpdate'])->name('challani.store');
-    Route::resource('users', App\Http\Controllers\UserController::class);
+    Route::resource('users', UserController::class);
 });

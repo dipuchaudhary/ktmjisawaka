@@ -15,7 +15,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        return view('backend.User.index');
+        $users = User::latest()->paginate(5);
+        return view('backend.user.index',compact('users'));
     }
 
     /**
@@ -23,7 +24,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('backend.User.create');
+        return view('backend.user.create');
     }
 
     /**
@@ -34,15 +35,13 @@ class UserController extends Controller
         $this->validate($request, [
             'name' => 'required',
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|same:confirm-password',
-            'roles' => 'required'
+            'password' => 'required|min:8|confirmed',
 
         ]);
 
         $input = $request->all();
         $input['password'] = Hash::make($input['password']);
         $user = User::create($input);
-        $user->assignRole($request->input('roles'));
         return redirect()->route('users.index')->with('success','User created successfully');
     }
 
@@ -59,7 +58,8 @@ class UserController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $user = User::findOrFail($id);
+        return view('backend.user.edit', compact('user'));
     }
 
     /**
@@ -67,7 +67,23 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $this->validate($request, [
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email,' . $id,
+            'password' => 'nullable|min:8|confirmed',
+
+        ]);
+
+        $user = User::findOrFail($id);
+        $input = $request->all();
+        if(!empty($input['password'])){
+            $input['password'] = Hash::make($input['password']);
+        }else{
+            $input = Arr::except($input,array('password'));
+        }
+        $user->update($input);
+        return redirect()->route('users.index')
+                        ->with('success','User updated successfully');
     }
 
     /**
@@ -75,6 +91,8 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        User::find($id)->delete();
+        return redirect()->route('users.index')
+                ->with('success','User deleted successfully');
     }
 }

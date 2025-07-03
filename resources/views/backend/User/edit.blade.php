@@ -3,7 +3,7 @@
 @section('title', 'Create User')
 
 @section('content_header')
-    <h1>Create User</h1>
+    <h1>Edit User</h1>
 @stop
 
 @section('content')
@@ -15,9 +15,9 @@
 
 <div class="row">
     <div class="col-md-12">
-        <form action="{{ route('users.store') }}" method="POST">
+        <form action="{{ route('users.update', $user->id) }}" method="POST">
             @csrf
-
+            @method('PUT')
             <div class="card card-primary card-outline">
                 <div class="card-header">
                     <h3 class="card-title mb-0">User Details</h3>
@@ -31,7 +31,7 @@
                                 <input  type="text"
                                         id="name"
                                         name="name"
-                                        value="{{ old('name') }}"
+                                        value="{{ $user->name }}"
                                         class="form-control @error('name') is-invalid @enderror">
                                 @error('name')
                                     <span class="invalid-feedback d-block">{{ $message }}</span>
@@ -45,7 +45,7 @@
                                 <input  type="email"
                                         id="email"
                                         name="email"
-                                        value="{{ old('email') }}"
+                                        value="{{ $user->email }}"
                                         class="form-control @error('email') is-invalid @enderror">
                                 @error('email')
                                     <span class="invalid-feedback d-block">{{ $message }}</span>

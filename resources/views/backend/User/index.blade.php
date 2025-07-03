@@ -8,6 +8,11 @@
 @section('content')
 <div class="row">
     <div class="col-lg-12 mt-3 mb-3">
+        @session('success')
+    <div class="alert alert-success" role="alert">
+        {{ $value }}
+    </div>
+@endsession
         <div class="pull-left">
             <h2>Users Management</h2>
         </div>
@@ -24,64 +29,35 @@
                       <thead>
                         <tr>
                           <th style="width: 10px">#</th>
-                          <th>Task</th>
-                          <th>Progress</th>
-                          <th style="width: 40px">Label</th>
+                          <th>Name</th>
+                          <th>Email</th>
+                          <th>Action</th>
                         </tr>
                       </thead>
                       <tbody>
+                        @foreach ($users as $index => $user)
                         <tr class="align-middle">
-                          <td>1.</td>
-                          <td>Update software</td>
+                          <td>{{ $loop->iteration }}</td>
+                          <td>{{ $user->name }}</td>
+                          <td>{{ $user->email }}</td>
                           <td>
-                            <div class="progress progress-xs">
-                              <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
-                            </div>
+                            <form action="{{ route('users.destroy', $user->id) }}" method="POST">
+                                <a class="btn btn-primary btn-sm" href="{{ route('users.edit', $user->id) }}"><i class="fa-solid fas fa-edit"></i> Edit</a>
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-sm"><i class="fa-solid fas fa-trash"></i> Delete</button>
+                            </form>
                           </td>
-                          <td><span class="badge text-bg-danger">55%</span></td>
                         </tr>
-                        <tr class="align-middle">
-                          <td>2.</td>
-                          <td>Clean database</td>
-                          <td>
-                            <div class="progress progress-xs">
-                              <div class="progress-bar text-bg-warning" style="width: 70%"></div>
-                            </div>
-                          </td>
-                          <td><span class="badge text-bg-warning">70%</span></td>
-                        </tr>
-                        <tr class="align-middle">
-                          <td>3.</td>
-                          <td>Cron job running</td>
-                          <td>
-                            <div class="progress progress-xs progress-striped active">
-                              <div class="progress-bar text-bg-primary" style="width: 30%"></div>
-                            </div>
-                          </td>
-                          <td><span class="badge text-bg-primary">30%</span></td>
-                        </tr>
-                        <tr class="align-middle">
-                          <td>4.</td>
-                          <td>Fix and squish bugs</td>
-                          <td>
-                            <div class="progress progress-xs progress-striped active">
-                              <div class="progress-bar text-bg-success" style="width: 90%"></div>
-                            </div>
-                          </td>
-                          <td><span class="badge text-bg-success">90%</span></td>
-                        </tr>
+                        @endforeach
                       </tbody>
                     </table>
                   </div>
                   <!-- /.card-body -->
                   <div class="card-footer clearfix">
-                    <ul class="pagination pagination-sm m-0 float-end">
-                      <li class="page-item"><a class="page-link" href="#">«</a></li>
-                      <li class="page-item"><a class="page-link" href="#">1</a></li>
-                      <li class="page-item"><a class="page-link" href="#">2</a></li>
-                      <li class="page-item"><a class="page-link" href="#">3</a></li>
-                      <li class="page-item"><a class="page-link" href="#">»</a></li>
-                    </ul>
-                  </div>
+                    <div class="float-right">
+                        {{ $users->onEachSide(1)->links('pagination::bootstrap-4') }}
+                    </div>
+                </div>
                 </div>
 @stop
