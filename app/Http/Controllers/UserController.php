@@ -24,7 +24,8 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('backend.user.create');
+        $roles = Role::pluck('name','name')->all();
+        return view('backend.user.create', compact('roles'));
     }
 
     /**
@@ -36,12 +37,15 @@ class UserController extends Controller
             'name' => 'required',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:8|confirmed',
-
+            'roles' => 'required|array',
         ]);
 
-        $input = $request->all();
-        $input['password'] = Hash::make($input['password']);
-        $user = User::create($input);
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => $request->password,
+        ]);
+        $user->syncRoles($request->roles);
         return redirect()->route('users.index')->with('success','User created successfully');
     }
 
@@ -59,7 +63,9 @@ class UserController extends Controller
     public function edit(string $id)
     {
         $user = User::findOrFail($id);
-        return view('backend.user.edit', compact('user'));
+        $roles = Role::pluck('name','name')->all();
+        $userRoles = $user->roles->pluck('name','name')->all();
+        return view('backend.user.edit', compact('user','roles', 'userRoles'));
     }
 
     /**
@@ -71,17 +77,18 @@ class UserController extends Controller
             'name' => 'required',
             'email' => 'required|email|unique:users,email,' . $id,
             'password' => 'nullable|min:8|confirmed',
-
+            'roles' => 'required'
         ]);
 
         $user = User::findOrFail($id);
         $input = $request->all();
         if(!empty($input['password'])){
-            $input['password'] = Hash::make($input['password']);
+            $input['password'] = $input['password'];
         }else{
             $input = Arr::except($input,array('password'));
         }
         $user->update($input);
+        $user->syncRoles($request->roles);
         return redirect()->route('users.index')
                         ->with('success','User updated successfully');
     }

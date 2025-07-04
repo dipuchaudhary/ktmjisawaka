@@ -70,7 +70,18 @@ class RoleController extends Controller
      */
     public function update(Request $request, Role $role)
     {
-        //
+        $this->validate($request, [
+            'name' => 'required|unique:roles,name,' . $role->id,
+            'permissions' => 'required|array',
+        ]);
+
+        $role->name = $request->name;
+        $role->save();
+
+        $role->syncPermissions($request->input('permissions'));
+
+        return redirect()->route('roles.index')
+                        ->with('success','Role updated successfully');
     }
 
     /**
@@ -78,6 +89,8 @@ class RoleController extends Controller
      */
     public function destroy(Role $role)
     {
-        //
+        $role->delete();
+        return redirect()->route('roles.index')
+                ->with('success','Role deleted successfully');
     }
 }

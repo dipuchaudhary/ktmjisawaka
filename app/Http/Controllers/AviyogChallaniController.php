@@ -14,6 +14,12 @@ class AviyogChallaniController extends Controller
 {
     protected $format = '';
     protected $ChallaniNumber = '';
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index(){
         $data = AviyogChallani::select('id', 'challani_date','challani_number','mudda_number','mudda_name','jaherwala_name','pratiwadi_name','sarkariwakil_name','faat_name','anusandhan_garne_nikaye','status')->get();
          if(request()->ajax())
@@ -22,18 +28,14 @@ class AviyogChallaniController extends Controller
                 return Datatables::of($data)
                     ->addIndexColumn()
                      ->addColumn('status', function ($data) {
-                    if ($data->status == 1 || $data->status === true) {
-                            return '<span class="badge rounded-pill text-white bg-success">Done</span>';
-                    } else {
+                    if ($data->status == 0 || $data->status === false) {
                             return '<span class="badge rounded-pill text-white bg-danger">Pending</span>';
+                    } else {
+                            return '<span class="badge rounded-pill text-white bg-success">Done</span>';
                     }
-                    })
+					})
                     ->addColumn('action',function($data){
-                            $btn = '';
-                            $edit = "";
-                            $edit = '<a href="'.route('aviyog_challani.edit',$data->id).'" class="edit p-2"><i class="fas fa-edit fa-lg"></i></a>';
-                            $btn .= $edit;
-                            return $btn;
+                         return $this->getActionButtons($data);
                     })
 
                     ->rawColumns(['status','action'])
@@ -43,6 +45,30 @@ class AviyogChallaniController extends Controller
         }
         }
         return view('frontend.challani.aviyog challani.index',compact('data'));
+    }
+
+    /**
+     * Get action buttons for DataTable
+     */
+    protected function getActionButtons($data)
+    {
+        $buttons = '';
+
+        if (auth()->user()->can('aviyog-edit')) {
+            $buttons .= '<a href="'.route('aviyog_challani.edit',$data->id).'" class="edit p-2"><i class="fas fa-edit fa-lg"></i></a>';
+        }
+
+        if (auth()->user()->can('aviyog-delete')) {
+            $buttons .= '<form action="'.route('aviyog_challani.destroy', $data->id).'" method="POST" style="display:inline;">
+                                    <input type="hidden" name="_token" value="' . csrf_token() . '">
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    <button type="submit" style="border:none; background:none; color:red; padding:0;">
+                                        <i class="fas fa-trash-alt fa-lg"></i>
+                                    </button>
+                                </form>';
+        }
+
+        return $buttons;
     }
 
     public function edit($id){

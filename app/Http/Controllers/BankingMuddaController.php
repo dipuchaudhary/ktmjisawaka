@@ -25,33 +25,44 @@ class BankingMuddaController extends Controller
             return Datatables::of($data)
                    ->addIndexColumn()
                    ->addColumn('status', function ($data) {
-                    if ($data->status == 1 || $data->status === true) {
-                            return '<span class="badge rounded-pill text-white bg-success">Done</span>';
-                    } else {
+                    if ($data->status == 0 || $data->status === false) {
                             return '<span class="badge rounded-pill text-white bg-danger">Pending</span>';
+                    } else {
+                            return '<span class="badge rounded-pill text-white bg-success">Done</span>';
                     }
 					})
                    ->addColumn('action',function($data){
-                        $btn = '';
-                        $show = '';
-                        $edit = "";
-                        $edit = '<a href="'.route('banking_mudda.edit',$data->id).'" class="edit p-2"><i class="fas fa-edit fa-lg"></i></a>';
-                        $btn .= $edit;
-                        $show = '<form action="'.route('banking_mudda.destroy', $data->id).'" method="POST" style="display:inline;">
-                                    <input type="hidden" name="_token" value="' . csrf_token() . '">
-                                    <input type="hidden" name="_method" value="DELETE">
-                                    <button type="submit" style="border:none; background:none; color:red; padding:0;">
-                                        <i class="fas fa-trash-alt fa-lg"></i>
-                                    </button>
-                                </form>';
-                        $btn .= $show;
-                        return $btn;
+                        return $this->getActionButtons($data);
                    })
 
                    ->rawColumns(['status','action'])
                    ->make(true);
         }
        return view('frontend.banking_mudda.index');
+    }
+
+    /**
+     * Get action buttons for DataTable
+     */
+    protected function getActionButtons($data)
+    {
+        $buttons = '';
+
+        if (auth()->user()->can('bankingdarta-edit')) {
+            $buttons .= '<a href="'.route('banking_mudda.edit',$data->id).'" class="edit p-2"><i class="fas fa-edit fa-lg"></i></a>';
+        }
+
+        if (auth()->user()->can('bankingdarta-delete')) {
+            $buttons .= '<form action="'.route('banking_mudda.destroy', $data->id).'" method="POST" style="display:inline;">
+                                    <input type="hidden" name="_token" value="' . csrf_token() . '">
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    <button type="submit" style="border:none; background:none; color:red; padding:0;">
+                                        <i class="fas fa-trash-alt fa-lg"></i>
+                                    </button>
+                                </form>';
+        }
+
+        return $buttons;
     }
 
     /**

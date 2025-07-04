@@ -2,9 +2,11 @@
     @section('content')
     <div class="container mt-5">
         <h1> Banking Mudda list </h1>
-         <a href="{{ route('banking_mudda.create') }}" class="btn btn-primary float-right mb-5">
-          नयाँ बैकिङ्ग मुद्दा दर्ता गर्नुहोस्
+        @can('bankingdarta-create')
+        <a href="{{ route('banking_mudda.create') }}" class="btn btn-primary float-right mb-5">
+        नयाँ बैकिङ्ग मुद्दा दर्ता गर्नुहोस्
         </a>
+        @endcan
         <table id="muddaTable" class="table table-bordered data-table">
             <thead>
                 <tr>
@@ -19,7 +21,9 @@
                     <th>सरकारी वकील</th>
                     <th>चलानी नं.</th>
                     <th>Status</th>
+                     @if(auth()->user()->can('bankingdarta-edit') || auth()->user()->can('bankingdarta-delete'))
                     <th width="105px">Action</th>
+                    @endif
                 </tr>
             </thead>
             <tbody></tbody>
@@ -28,13 +32,8 @@
     @endsection
     @push('datatable_scripts')
     <script type="text/javascript">
-        $(document).ready(function () {
-            $('#muddaTable').DataTable({
-            "order": [[0, "desc"]],
-            processing: true,
-            serverSide: true,
-            ajax: "{{ route('banking_mudda.index') }}",
-            columns: [
+    const hasActions = @json(auth()->user()->can('bankingdarta-edit') || auth()->user()->can('bankingdarta-delete'));
+    let columns = [
                 { data: 'id', name: 'id' },
                 { data: 'anusandhan_garne_nikaye', name: 'anusandhan_garne_nikaye' },
                 { data: 'mudda_number', name: 'mudda_number' },
@@ -46,8 +45,18 @@
                 { data: 'sarkariwakil_name', name: 'sarkariwakil_name' },
                 { data: 'challani_number', name: 'challani_number' },
                 { data: 'status', name: 'sarkariwakil_name' },
-                { data: 'action', name: 'action', orderable: false, searchable: false },
-            ],
+        ];
+
+        if (hasActions) {
+            columns.push({ data: 'action', name: 'action', orderable: false, searchable: false });
+        }
+    $(document).ready(function () {
+            $('#muddaTable').DataTable({
+            "order": [[0, "desc"]],
+            processing: true,
+            serverSide: true,
+            ajax: "{{ route('banking_mudda.index') }}",
+            columns: columns,
             dom: '<"d-flex justify-content-between align-items-right mb-3"lBf>rtip',
             buttons: [
                 { extend: 'excel', className: 'btn btn-success' },

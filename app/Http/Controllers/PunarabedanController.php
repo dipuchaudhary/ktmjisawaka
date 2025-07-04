@@ -38,6 +38,9 @@ class PunarabedanController extends Controller
            'punarabedan_challani_number.required' => 'चलानी मिति अनिवार्य छ।',
         ];
 
+    /**
+     * Display a listing of the resource.
+     */
     public function index() {
         $data = Punarabedan::select('id', 'mudda_number', 'jaherwala_name','pratiwadi_name','mudda_name','faisala_date','faisala_pramanikaran_date','punarabedan','punarabedan_date','punarabedan_challani_number','status')->get();
         // dd($data->status);
@@ -46,23 +49,44 @@ class PunarabedanController extends Controller
             return Datatables::of($data)
                 ->addIndexColumn()
                  ->addColumn('status', function ($data) {
-                    if ($data->status == 1 || $data->status === true) {
-                            return '<span class="badge rounded-pill text-white bg-success">Done</span>';
-                    } else {
+                    if ($data->status == 0 || $data->status === false) {
                             return '<span class="badge rounded-pill text-white bg-danger">Pending</span>';
+                    } else {
+                            return '<span class="badge rounded-pill text-white bg-success">Done</span>';
                     }
-                })
+					})
                 ->addColumn('action', function ($data) {
-                    $editBtn = '<a href="' . route('punarabedan.edit', $data->id) . '" class="edit p-2">
-                                    <i class="fas fa-edit fa-lg"></i>
-                                </a>';
-                    return $editBtn;
+                    return $this->getActionButtons($data);
                 })
                 ->rawColumns(['status','action'])
                 ->make(true);
 
         }
         return view('frontend.punarabedan.index');
+    }
+
+    /**
+     * Get action buttons for DataTable
+     */
+    protected function getActionButtons($data)
+    {
+        $buttons = '';
+
+        if (auth()->user()->can('punarabedan-edit')) {
+            $buttons .= '<a href="'.route('punarabedan.edit',$data->id).'" class="edit p-2"><i class="fas fa-edit fa-lg"></i></a>';
+        }
+
+        if (auth()->user()->can('punarabedan-delete')) {
+            $buttons .= '<form action="'.route('punarabedan.destroy', $data->id).'" method="POST" style="display:inline;">
+                                    <input type="hidden" name="_token" value="' . csrf_token() . '">
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    <button type="submit" style="border:none; background:none; color:red; padding:0;">
+                                        <i class="fas fa-trash-alt fa-lg"></i>
+                                    </button>
+                                </form>';
+        }
+
+        return $buttons;
     }
 
     public function edit($id){

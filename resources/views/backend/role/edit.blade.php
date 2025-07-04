@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Create Role')
+@section('title', 'Edit Role')
 
 @section('content_header')
     <h1>Edit Role</h1>
@@ -15,8 +15,9 @@
 
 <div class="row">
     <div class="col-md-12">
-        <form action="{{ route('roles.store') }}" method="POST">
+        <form action="{{ route('roles.update', $role->id) }}" method="POST">
             @csrf
+             @method('PUT')
             <div class="card card-primary card-outline">
                 <div class="card-header">
                     <h3 class="card-title mb-0">Role Details</h3>
@@ -74,7 +75,7 @@
 
                 <div class="card-footer text-right">
                     <button type="submit" class="btn btn-primary">
-                        <i class="fa fa-save"></i> Submit
+                        <i class="fa fa-save"></i> Update
                     </button>
                 </div>
             </div><!-- /.card -->

@@ -2,6 +2,7 @@
     @section('content')
     <div class="container mt-5">
         <h1>पुनरावेदन सूची </h1>
+        @can('punarabedan-list')
         <table id="muddaTable" class="table table-bordered data-table">
             <thead>
                 <tr>
@@ -14,7 +15,9 @@
                 <th rowspan="2" >फैसला प्रमाणीकरण मिति</th>
                 <th colspan="3" class="text-center">कार्यालयबाट भएको पुनरावेदन सम्बन्धी कारवाही</th>
                 <th rowspan="2">Status</th>
-                <th rowspan="2" width="105px">Action</th>
+                @if(auth()->user()->can('punarabedan-edit') || auth()->user()->can('punarabedan-delete'))
+                    <th rowspan="2" width="105px">Action</th>
+                @endif
             </tr>
             <tr>
                 <th>पुवे/दो.पा</th>
@@ -24,19 +27,14 @@
             </thead>
             <tbody></tbody>
         </table>
+         @endcan
     </div>
     @endsection
     @push('datatable_scripts')
     <script type="text/javascript">
         $(document).ready(function () {
-            $('#muddaTable').DataTable({
-            "order": [[0, "desc"]],
-            processing: true,
-            serverSide: true,
-            ajax: {
-                url: "{{ route('punarabedan.index') }}",
-            },
-            columns: [
+            const hasActions = @json(auth()->user()->can('punarabedan-edit') || auth()->user()->can('punarabedan-delete'));
+            let columns = [
                 { data: 'id', name: 'id' },
                 { data: 'mudda_number', name: 'mudda_number' },
                 { data: 'jaherwala_name', name: 'jaherwala_name' },
@@ -48,8 +46,21 @@
                 { data: 'punarabedan_date', name: 'punarabedan_date' },
                 { data: 'punarabedan_challani_number', name: 'punarabedan_challani_number' },
                 { data: 'status', name: 'status' },
-                { data: 'action', name: 'action', orderable: false, searchable: false },
-            ],
+
+            ];
+
+            if (hasActions) {
+            columns.push({ data: 'action', name: 'action', orderable: false, searchable: false });
+            }
+
+            $('#muddaTable').DataTable({
+            "order": [[0, "desc"]],
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: "{{ route('punarabedan.index') }}",
+            },
+            columns: columns,
             dom: '<"d-flex justify-content-between align-items-right mb-3"lBf>rtip',
             buttons: [
                 { extend: 'excel', className: 'btn btn-success' },

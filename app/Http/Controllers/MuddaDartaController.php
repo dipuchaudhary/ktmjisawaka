@@ -1,13 +1,16 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\DataTables\MuddaDartaDataTable;
 use App\Models\MuddaDarta;
-use App\Models\AviyogChallani;
-use App\Models\PatraChallani;
 use App\Models\Punarabedan;
 use Illuminate\Http\Request;
+use App\Models\PatraChallani;
+use App\Models\AviyogChallani;
+use Spatie\Permission\Models\Role;
+use App\Http\Controllers\Controller;
+use App\DataTables\MuddaDartaDataTable;
 use Illuminate\Support\Facades\Session;
+use Spatie\Permission\Models\Permission;
 use Yajra\DataTables\Facades\DataTables;
 
 class MuddaDartaController extends Controller
@@ -31,38 +34,49 @@ class MuddaDartaController extends Controller
            'mudda_pathayko_date.required' => 'मुद्दा पठाएको मिति अनिवार्य छ।',
         ];
 
+    /**
+     * Display a listing of the resource.
+     */
+
     public function index(Request $request)
     {
-        $data = MuddaDarta::select('id', 'anusandhan_garne_nikaye', 'mudda_number', 'mudda_name', 'jaherwala_name','pratiwadi_name','mudda_stithi','mudda_date','sarkariwakil_name','faat_name')->get();
-         if(request()->ajax())
+        if(request()->ajax())
         {
-            return Datatables::of($data)
-                   ->addIndexColumn()
-                   ->addColumn('action',function($data){
-                        return $this->getActionButtons($data);
-                   })
+            $data = MuddaDarta::select('id', 'anusandhan_garne_nikaye', 'mudda_number', 'mudda_name', 'jaherwala_name','pratiwadi_name','mudda_stithi','mudda_date','sarkariwakil_name','faat_name');
 
-                   ->rawColumns(['action'])
-                   ->make(true);
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function($data) {
+                        return $this->getActionButtons($data);
+                })
+                ->rawColumns(['action'])
+                ->make(true);
         }
         return view('frontend.mudda_darta.index');
-
     }
+
     /**
      * Get action buttons for DataTable
      */
-    protected function getActionButtons($data){
-        $editBtn = '<a href="'.route('mudda_darta.edit', $data->id).'" class="edit p-2"><i class="fas fa-edit fa-lg"></i></a>';
+    protected function getActionButtons($data)
+    {
+        $buttons = '';
 
-        $deleteBtn = '<form action="' . route('mudda_darta.destroy', $data->id) . '" method="POST" style="display:inline;">
+        if (auth()->user()->can('mulldarta-edit')) {
+            $buttons .= '<a href="'.route('mudda_darta.edit', $data->id).'" class="edit p-2"><i class="fas fa-edit fa-lg"></i></a>';
+        }
+
+        if (auth()->user()->can('mulldarta-delete')) {
+            $buttons .= '<form action="' . route('mudda_darta.destroy', $data->id) . '" method="POST" style="display:inline;">
                         '.csrf_field().'
                         '.method_field('DELETE').'
                         <button type="submit" class="btn-delete" style="border:none; background:none; color:red; padding:0;">
                             <i class="fas fa-trash-alt fa-lg"></i>
                         </button>
-                      </form>';
+                    </form>';
+        }
 
-        return $editBtn . $deleteBtn;
+        return $buttons;
     }
 
     public function create(Request $request)

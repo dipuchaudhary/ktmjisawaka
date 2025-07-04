@@ -76,7 +76,7 @@
                             </div>
                         </div>
 
-                        {{-- <div class="col-md-6">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label for="roles">Role</label>
                                 <select id="roles"
@@ -84,14 +84,17 @@
                                         multiple
                                         class="form-control roles @error('roles') is-invalid @enderror"
                                         style="width: 100%;">
-                                    <option value="admin" {{ collect(old('roles', []))->contains('admin') ? 'selected' : '' }}>Admin</option>
-                                    <option value="user" {{ collect(old('roles', []))->contains('user') ? 'selected' : '' }}>User</option>
+                                    @foreach ($roles as $value => $label)
+                                        <option value="{{ $value }}" {{ in_array($value,$userRoles) ? 'selected' : '' }}>
+                                            {{ $label }}
+                                        </option>
+                                    @endforeach
                                 </select>
                                 @error('roles')
                                     <span class="invalid-feedback d-block">{{ $message }}</span>
                                 @enderror
                             </div>
-                        </div> --}}
+                        </div>
 
                     </div> <!-- /.row -->
                 </div> <!-- /.card-body -->
@@ -108,10 +111,14 @@
 @stop
 
 @section('css')
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@1.5.2/dist/select2-bootstrap4.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">
+          <style>
+        /* Selected item */
+        .select2-container--default .select2-selection--multiple .select2-selection__choice {
+            background-color: #007bff;
+            color: #fff;
+        }
+    </style>
 @endsection
 
 @section('js')
