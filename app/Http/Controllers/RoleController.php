@@ -2,17 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Role;
+use DB;
+
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
+use App\Http\Controllers\Controller;
+use Spatie\Permission\Models\Permission;
+
 
 class RoleController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        $roles = Role::latest()->paginate(5);
+        return view('backend.role.index',compact('roles'));
     }
 
     /**
@@ -20,7 +27,8 @@ class RoleController extends Controller
      */
     public function create()
     {
-        //
+        $permissions = Permission::all();
+        return view('backend.role.create',compact('permissions'));
     }
 
     /**
@@ -28,7 +36,14 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'name' => 'required|unique:roles,name',
+            'permissions' => 'required',
+        ]);
+        $role = Role::create(['name' => $request->input('name')]);
+        $role->syncPermissions($request->input('permissions'));
+        return redirect()->route('roles.index')
+                        ->with('success','Role created successfully');
     }
 
     /**
@@ -42,9 +57,12 @@ class RoleController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Role $role)
+    public function edit($id)
     {
-        //
+        $role = Role::findOrFail($id);
+        $permissions = Permission::get();
+        $rolePermissions = $role->permissions()->pluck('name')->toArray();
+        return view('backend.role.edit',compact('role','permissions','rolePermissions'));
     }
 
     /**

@@ -11,6 +11,7 @@ use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\PatraChallaniController;
 use App\Http\Controllers\PunarabedanController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\RoleController;
 use App\Models\AviyogChallani;
 
 Route::get('/', [FrontendController::class, 'index'])->name('home');
@@ -54,4 +55,5 @@ Route::prefix('admin')->middleware(['auth'])->group(function() {
     Route::get('/challani', [ChallaniController::class,'index'])->name('challani.index');
     Route::post('/challani/store', [ChallaniController::class,'storeOrUpdate'])->name('challani.store');
     Route::resource('users', UserController::class);
+    Route::resource('roles', RoleController::class);
 });

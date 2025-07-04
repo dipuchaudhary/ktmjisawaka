@@ -14,12 +14,12 @@
     </div>
 @endsession
         <div class="pull-left">
-            <h2>Users Management</h2>
+            <h2>Role Management</h2>
         </div>
     </div>
 </div>
 <div class="card mb-4">
-                 <div class="card-header"> <a class="btn btn-success float-right" href="{{ route('users.create') }}"> Create User</a></div>
+                  <div class="card-header"><a class="btn btn-success float-right" href="{{ route('roles.create') }}"> Create Role</a></div>
                   <!-- /.card-header -->
                   <div class="card-body">
                     <table class="table table-bordered">
@@ -27,19 +27,17 @@
                         <tr>
                           <th style="width: 10px">#</th>
                           <th>Name</th>
-                          <th>Email</th>
                           <th>Action</th>
                         </tr>
                       </thead>
                       <tbody>
-                        @foreach ($users as $index => $user)
+                        @foreach ($roles as $index => $role)
                         <tr class="align-middle">
                           <td>{{ $loop->iteration }}</td>
-                          <td>{{ $user->name }}</td>
-                          <td>{{ $user->email }}</td>
+                          <td>{{ $role->name }}</td>
                           <td>
-                            <form action="{{ route('users.destroy', $user->id) }}" method="POST">
-                                <a class="btn btn-primary btn-sm" href="{{ route('users.edit', $user->id) }}"><i class="fa-solid fas fa-edit"></i> Edit</a>
+                            <form action="{{ route('roles.destroy', $role->id) }}" method="POST">
+                                <a class="btn btn-primary btn-sm" href="{{ route('roles.edit', $role->id) }}"><i class="fa-solid fas fa-edit"></i> Edit</a>
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger btn-sm"><i class="fa-solid fas fa-trash"></i> Delete</button>
@@ -53,7 +51,7 @@
                   <!-- /.card-body -->
                   <div class="card-footer clearfix">
                     <div class="float-right">
-                        {{ $users->onEachSide(1)->links('pagination::bootstrap-4') }}
+                        {{ $roles->onEachSide(1)->links('pagination::bootstrap-4') }}
                     </div>
                 </div>
                 </div>

@@ -26,6 +26,7 @@ class PermissionTableSeeder extends Seeder
            'bankingdarta-list',
            'bankingdarta-create',
            'bankingdarta-edit',
+           'bankingdarta-delete',
            'patrachallani-list',
            'patrachallani-create',
            'patrachallani-edit',
