@@ -28,13 +28,37 @@
                             <a href="{{ route('punarabedan.index') }}" class="nav-item nav-link {{ request()->is('punarabedan') ? 'active' : '' }}">पुनरावेदन</a>
                             <a href="#" class="nav-item nav-link {{ request()->is('contact') ? 'active' : '' }}">सम्पर्क ठेगाना</a>
                         </div>
-                        <div class="social ml-auto">
-                            <a href=""><i class="fab fa-twitter"></i></a>
-                            <a href=""><i class="fab fa-facebook-f"></i></a>
-                            <a href=""><i class="fab fa-linkedin-in"></i></a>
-                            <a href=""><i class="fab fa-instagram"></i></a>
-                            <a href=""><i class="fab fa-youtube"></i></a>
-                        </div>
+                        <div class="navbar-nav ml-auto">
+                        @guest
+                            @if (Route::has('login'))
+                                <div class="nav-item">
+                                    <a href="{{ route('login') }}" class="nav-link btn btn-sm px-3">
+                                        <i class="fas fa-sign-in-alt me-1"></i> {{ __('Login') }}
+                                    </a>
+                                </div>
+                            @endif
+                        @else
+                            <div class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                     {{ Auth::user()->name }}
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark">
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('logout') }}"
+                                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                        <i class="fas fa-sign-out-alt me-2"></i> {{ __('Logout') }}
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                            @csrf
+                                        </form>
+                                    </li>
+                                </ul>
+                            </div>
+                        @endguest
+                    </div>
                     </div>
                 </nav>
             </div>
