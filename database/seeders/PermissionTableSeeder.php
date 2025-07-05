@@ -39,6 +39,10 @@ class PermissionTableSeeder extends Seeder
            'punarabedan-create',
            'punarabedan-edit',
            'punarabedan-delete',
+           'user-list',
+           'user-create',
+           'user-edit',
+           'user-delete',
 
         ];
 

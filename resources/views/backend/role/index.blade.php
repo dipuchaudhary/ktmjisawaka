@@ -19,7 +19,9 @@
     </div>
 </div>
 <div class="card mb-4">
+                    @can('role-create')
                   <div class="card-header"><a class="btn btn-success float-right" href="{{ route('roles.create') }}"> Create Role</a></div>
+                     @endcan
                   <!-- /.card-header -->
                   <div class="card-body">
                     <table class="table table-bordered">
@@ -30,6 +32,7 @@
                           <th>Action</th>
                         </tr>
                       </thead>
+                       @can('role-list')
                       <tbody>
                         @foreach ($roles as $index => $role)
                         <tr class="align-middle">
@@ -37,15 +40,20 @@
                           <td>{{ $role->name }}</td>
                           <td>
                             <form action="{{ route('roles.destroy', $role->id) }}" method="POST">
+                                @can('role-edit')
                                 <a class="btn btn-primary btn-sm" href="{{ route('roles.edit', $role->id) }}"><i class="fa-solid fas fa-edit"></i> Edit</a>
+                                @endcan
                                 @csrf
                                 @method('DELETE')
+                                @can('role-delete')
                                 <button type="submit" class="btn btn-danger btn-sm"><i class="fa-solid fas fa-trash"></i> Delete</button>
+                                 @endcan
                             </form>
                           </td>
                         </tr>
                         @endforeach
                       </tbody>
+                       @endcan
                     </table>
                   </div>
                   <!-- /.card-body -->

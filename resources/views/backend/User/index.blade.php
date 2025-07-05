@@ -19,8 +19,10 @@
     </div>
 </div>
 <div class="card mb-4">
+                @can('user-create')
                  <div class="card-header"> <a class="btn btn-success float-right" href="{{ route('users.create') }}"> Create User</a></div>
-                  <!-- /.card-header -->
+                 @endcan
+                 <!-- /.card-header -->
                   <div class="card-body">
                     <table class="table table-bordered">
                       <thead>
@@ -32,6 +34,7 @@
                           <th>Action</th>
                         </tr>
                       </thead>
+                      @can('user-list')
                       <tbody>
                         @foreach ($users as $index => $user)
                         <tr class="align-middle">
@@ -47,15 +50,20 @@
                         </td>
                           <td>
                             <form action="{{ route('users.destroy', $user->id) }}" method="POST">
+                                @can('user-edit')
                                 <a class="btn btn-primary btn-sm" href="{{ route('users.edit', $user->id) }}"><i class="fa-solid fas fa-edit"></i> Edit</a>
+                                @endcan
                                 @csrf
                                 @method('DELETE')
+                                @can('user-delete')
                                 <button type="submit" class="btn btn-danger btn-sm"><i class="fa-solid fas fa-trash"></i> Delete</button>
+                                @endcan
                             </form>
                           </td>
                         </tr>
                         @endforeach
                       </tbody>
+                      @endcan
                     </table>
                   </div>
                   <!-- /.card-body -->

@@ -63,7 +63,7 @@ return [
     |
     */
 
-    'logo' => '<b>Login</b>',
+    'logo' => '<b>Dashboard</b>',
     'logo_img' => 'frontend/img/logo.png',
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
@@ -311,6 +311,11 @@ return [
         ],
 
         // Sidebar items:
+        [
+            'text' => 'Dashboard',
+            'url' => 'admin/home',
+            'icon' => 'fas fa-w fa-tachometer-alt',
+        ],
         [
             'text' => 'Challani',
             'url' => 'admin/challani',
