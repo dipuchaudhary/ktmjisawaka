@@ -63,7 +63,7 @@ return [
     |
     */
 
-    'logo' => '<b>Admin</b>LTE',
+    'logo' => '<b>Login</b>',
     'logo_img' => 'frontend/img/logo.png',
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
@@ -327,9 +327,9 @@ return [
             'icon' => 'fas fa-fw fa-user-plus',
         ],
         [
-            'text' => 'change_password',
-            'url' => 'admin/settings',
-            'icon' => 'fas fa-fw fa-lock',
+            'text' => 'Go to Website',
+            'url' => '/',
+            'icon' => 'fas fa-fw fa-home',
         ],
     ],
 

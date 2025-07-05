@@ -15,6 +15,7 @@ use Yajra\DataTables\Facades\DataTables;
 
 class MuddaDartaController extends Controller
 {
+
     protected $rules = [
             'anusandhan_garne_nikaye' => 'required',
             'mudda_name' => 'required',
@@ -44,7 +45,7 @@ class MuddaDartaController extends Controller
         {
             $data = MuddaDarta::select('id', 'anusandhan_garne_nikaye', 'mudda_number', 'mudda_name', 'jaherwala_name','pratiwadi_name','mudda_stithi','mudda_date','sarkariwakil_name','faat_name');
 
-            return Datatables::of($data)
+            return Datatables::eloquent($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($data) {
                         return $this->getActionButtons($data);
@@ -70,7 +71,7 @@ class MuddaDartaController extends Controller
             $buttons .= '<form action="' . route('mudda_darta.destroy', $data->id) . '" method="POST" style="display:inline;">
                         '.csrf_field().'
                         '.method_field('DELETE').'
-                        <button type="submit" class="btn-delete" style="border:none; background:none; color:red; padding:0;">
+                        <button type="submit" class="btn-delete" onclick="return confirm(\'Are you sure?\')" style="border:none; background:none; color:red; padding:0;">
                             <i class="fas fa-trash-alt fa-lg"></i>
                         </button>
                     </form>';

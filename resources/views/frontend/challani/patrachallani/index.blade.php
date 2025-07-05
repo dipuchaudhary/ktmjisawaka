@@ -59,8 +59,13 @@
             dom: '<"d-flex justify-content-between align-items-right mb-3"lBf>rtip',
             buttons: [
                 { extend: 'excel', className: 'btn btn-success' },
-                { extend: 'pdf', className: 'btn btn-danger' },
-                { extend: 'print', className: 'btn btn-info' }
+                { extend: 'pdf', className: 'btn btn-danger',charset: 'UTF-8',
+                    customize: function(doc) {
+                    doc.defaultStyle = {
+                    font: 'Devnagari'
+                    };
+                    }
+                },
             ],
             language: {
                 zeroRecords: "कुनै डाटा फेला परेन",

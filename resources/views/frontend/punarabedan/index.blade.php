@@ -31,7 +31,7 @@
     </div>
     @endsection
     @push('datatable_scripts')
-    <script type="text/javascript">
+        <script type="text/javascript">
         $(document).ready(function () {
             const hasActions = @json(auth()->user()->can('punarabedan-edit') || auth()->user()->can('punarabedan-delete'));
             let columns = [
@@ -64,7 +64,13 @@
             dom: '<"d-flex justify-content-between align-items-right mb-3"lBf>rtip',
             buttons: [
                 { extend: 'excel', className: 'btn btn-success' },
-                { extend: 'pdf', className: 'btn btn-danger' },
+                { extend: 'pdf', className: 'btn btn-danger',charset: 'UTF-8',
+                    customize: function(doc) {
+                    doc.defaultStyle = {
+                    font: 'Devnagari'
+                    };
+                    }
+                },
                 { extend: 'print', className: 'btn btn-info' },
             ],
             language: {

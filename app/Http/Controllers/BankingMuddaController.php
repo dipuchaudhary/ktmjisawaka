@@ -19,10 +19,11 @@ class BankingMuddaController extends Controller
      */
     public function index()
     {
-        $data = BankingMudda::select('id', 'anusandhan_garne_nikaye', 'mudda_number', 'mudda_name', 'jaherwala_name','pratiwadi_name','mudda_stithi','mudda_date','sarkariwakil_name','challani_number','status')->get();
          if(request()->ajax())
         {
-            return Datatables::of($data)
+            $query = BankingMudda::select('id', 'anusandhan_garne_nikaye', 'mudda_number', 'mudda_name', 'jaherwala_name','pratiwadi_name','mudda_stithi','mudda_date','sarkariwakil_name','challani_number','status');
+
+            return Datatables::eloquent($query)
                    ->addIndexColumn()
                    ->addColumn('status', function ($data) {
                     if ($data->status == 0 || $data->status === false) {
@@ -46,6 +47,7 @@ class BankingMuddaController extends Controller
      */
     protected function getActionButtons($data)
     {
+        if (!auth()->check()) return '';
         $buttons = '';
 
         if (auth()->user()->can('bankingdarta-edit')) {
@@ -56,7 +58,7 @@ class BankingMuddaController extends Controller
             $buttons .= '<form action="'.route('banking_mudda.destroy', $data->id).'" method="POST" style="display:inline;">
                                     <input type="hidden" name="_token" value="' . csrf_token() . '">
                                     <input type="hidden" name="_method" value="DELETE">
-                                    <button type="submit" style="border:none; background:none; color:red; padding:0;">
+                                    <button type="submit" class="btn-delete" onclick="return confirm(\'Are you sure?\')" style="border:none; background:none; color:red; padding:0;">
                                         <i class="fas fa-trash-alt fa-lg"></i>
                                     </button>
                                 </form>';

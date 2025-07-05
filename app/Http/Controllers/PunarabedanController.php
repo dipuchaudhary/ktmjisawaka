@@ -42,11 +42,12 @@ class PunarabedanController extends Controller
      * Display a listing of the resource.
      */
     public function index() {
-        $data = Punarabedan::select('id', 'mudda_number', 'jaherwala_name','pratiwadi_name','mudda_name','faisala_date','faisala_pramanikaran_date','punarabedan','punarabedan_date','punarabedan_challani_number','status')->get();
-        // dd($data->status);
+
         if(request()->ajax())
         {
-            return Datatables::of($data)
+            $query = Punarabedan::select('id', 'mudda_number', 'jaherwala_name','pratiwadi_name','mudda_name','faisala_date','faisala_pramanikaran_date','punarabedan','punarabedan_date','punarabedan_challani_number','status');
+
+            return Datatables::eloquent($query)
                 ->addIndexColumn()
                  ->addColumn('status', function ($data) {
                     if ($data->status == 0 || $data->status === false) {
@@ -70,6 +71,7 @@ class PunarabedanController extends Controller
      */
     protected function getActionButtons($data)
     {
+        if (!auth()->check()) return '';
         $buttons = '';
 
         if (auth()->user()->can('punarabedan-edit')) {
@@ -80,7 +82,7 @@ class PunarabedanController extends Controller
             $buttons .= '<form action="'.route('punarabedan.destroy', $data->id).'" method="POST" style="display:inline;">
                                     <input type="hidden" name="_token" value="' . csrf_token() . '">
                                     <input type="hidden" name="_method" value="DELETE">
-                                    <button type="submit" style="border:none; background:none; color:red; padding:0;">
+                                    <button type="submit" class="btn-delete" onclick="return confirm(\'Are you sure?\')" style="border:none; background:none; color:red; padding:0;">
                                         <i class="fas fa-trash-alt fa-lg"></i>
                                     </button>
                                 </form>';
@@ -106,9 +108,7 @@ class PunarabedanController extends Controller
 
     public function update(Request $request, $id){
         $punarabedan = Punarabedan::findOrFail($id);
-
         $this->validate($request, $this->rules, $this->customMessages);
-        // dd($punarabedan->toArray());
         $punarabedan->update([
             'mudda_number' => $request->input('mudda_number'),
             'jaherwala_name' => $request->input('jaherwala_name'),
@@ -147,5 +147,12 @@ class PunarabedanController extends Controller
 
         return redirect()->route('punarabedan.index')
         ->with('success', 'पुनरावेदन सफलतापूर्वक अपडेट भयो।');
+    }
+
+    public function destroy($id){
+        $punarabedan = Punarabedan::findOrFail($id);
+        $punarabedan->delete();
+        return redirect()->route('punarabedan.index')
+        ->with('success', 'पुनरावेदन सफलतापूर्वक मेटियो।');
     }
 }

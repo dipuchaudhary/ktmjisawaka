@@ -21,11 +21,13 @@ class AviyogChallaniController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(){
-        $data = AviyogChallani::select('id', 'challani_date','challani_number','mudda_number','mudda_name','jaherwala_name','pratiwadi_name','sarkariwakil_name','faat_name','anusandhan_garne_nikaye','status')->get();
+
          if(request()->ajax())
         {
             try {
-                return Datatables::of($data)
+                $query = AviyogChallani::select('id', 'challani_date','challani_number','mudda_number','mudda_name','jaherwala_name','pratiwadi_name','sarkariwakil_name','faat_name','anusandhan_garne_nikaye','status');
+
+                return Datatables::eloquent($query)
                     ->addIndexColumn()
                      ->addColumn('status', function ($data) {
                     if ($data->status == 0 || $data->status === false) {
@@ -44,7 +46,7 @@ class AviyogChallaniController extends Controller
             \Log::error('DataTables error: ' . $e->getMessage());
         }
         }
-        return view('frontend.challani.aviyog challani.index',compact('data'));
+        return view('frontend.challani.aviyog challani.index');
     }
 
     /**
@@ -52,6 +54,7 @@ class AviyogChallaniController extends Controller
      */
     protected function getActionButtons($data)
     {
+        if (!auth()->check()) return '';
         $buttons = '';
 
         if (auth()->user()->can('aviyog-edit')) {
@@ -62,7 +65,7 @@ class AviyogChallaniController extends Controller
             $buttons .= '<form action="'.route('aviyog_challani.destroy', $data->id).'" method="POST" style="display:inline;">
                                     <input type="hidden" name="_token" value="' . csrf_token() . '">
                                     <input type="hidden" name="_method" value="DELETE">
-                                    <button type="submit" style="border:none; background:none; color:red; padding:0;">
+                                    <button type="submit" class="btn-delete" onclick="return confirm(\'Are you sure?\')" style="border:none; background:none; color:red; padding:0;">
                                         <i class="fas fa-trash-alt fa-lg"></i>
                                     </button>
                                 </form>';
@@ -160,6 +163,9 @@ class AviyogChallaniController extends Controller
     }
 
     public function destroy($id){
-
+        $aviyogchallani = AviyogChallani::findOrFail($id);
+        $aviyogchallani->delete();
+        return redirect()->route('aviyog_challani.index')
+        ->with('success', 'अभियोग चलानी सफलतापूर्वक मेटियो।');
     }
 }

@@ -28,6 +28,7 @@
                           <th style="width: 10px">#</th>
                           <th>Name</th>
                           <th>Email</th>
+                          <th>Role</th>
                           <th>Action</th>
                         </tr>
                       </thead>
@@ -37,6 +38,13 @@
                           <td>{{ $loop->iteration }}</td>
                           <td>{{ $user->name }}</td>
                           <td>{{ $user->email }}</td>
+                          <td>
+                            @if (!empty($user->getRoleNames()))
+                                @foreach ($user->getRoleNames() as $rolename)
+                                    <label class="badge bg-primary mx-1">{{ $rolename }}</label>
+                                @endforeach
+                                @endif
+                        </td>
                           <td>
                             <form action="{{ route('users.destroy', $user->id) }}" method="POST">
                                 <a class="btn btn-primary btn-sm" href="{{ route('users.edit', $user->id) }}"><i class="fa-solid fas fa-edit"></i> Edit</a>

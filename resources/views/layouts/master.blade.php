@@ -111,6 +111,14 @@
         <!-- Print button -->
         <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
 
+        <script>
+             pdfMake.fonts = {
+                Devnagari: {
+                    normal: '{{ asset("frontend/fonts/NotoSansDevanagari-Regular.ttf") }}',
+                    bold: '{{ asset("frontend/fonts/NotoSansDevanagari-Bold.ttf") }}'
+                }
+            };
+        </script>
         @stack('datatable_scripts')
         @stack('scripts')
     </body>

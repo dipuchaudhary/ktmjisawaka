@@ -19,6 +19,7 @@ Route::get('/', [FrontendController::class, 'index'])->name('home');
 Auth::routes();
 
 // mudda darta routes
+Route::group(['middleware' => ['auth']], function() {
 Route::get('/mudda-darta', [MuddaDartaController::class, 'index'])->name('mudda_darta.index');
 Route::get('/mudda-darta/create', [MuddaDartaController::class, 'create'])->name('mudda_darta.create');
 Route::post('/mudda-darta/store', [MuddaDartaController::class, 'store'])->name('mudda_darta.store');
@@ -38,21 +39,21 @@ Route::get('/patra-challani/create', [PatraChallaniController::class, 'create'])
 Route::post('/patra-challani/store', [PatraChallaniController::class, 'store'])->name('patra_challani.store');
 Route::get('/patra-challani/{id}/edit', [PatraChallaniController::class, 'edit'])->name('patra_challani.edit');
 Route::post('/patra-challani/update/{id}',[PatraChallaniController::class, 'update'])->name('patra_challani.update');
-Route::post('/patra-challani/delete/{id}',[PatraChallaniController::class, 'destroy'])->name('patra_challani.destroy');
+Route::delete('/patra-challani/delete/{id}',[PatraChallaniController::class, 'destroy'])->name('patra_challani.destroy');
 //aviyog challani routes
 Route::get('/aviyog-challani', [AviyogChallaniController::class, 'index'])->name('aviyog_challani.index');
 Route::get('/aviyog-challani/{id}/edit', [AviyogChallaniController::class, 'edit'])->name('aviyog_challani.edit');
 Route::post('/aviyog-challani/update/{id}',[AviyogChallaniController::class, 'update'])->name('aviyog_challani.update');
-Route::post('/aviyog-challani/delete/{id}',[AviyogChallaniController::class, 'destroy'])->name('aviyog_challani.destroy');
+Route::delete('/aviyog-challani/delete/{id}',[AviyogChallaniController::class, 'destroy'])->name('aviyog_challani.destroy');
 
 //Punarabedan routes
 Route::get('/punarabedan',[PunarabedanController::class,'index'])->name('punarabedan.index');
 Route::get('/punarabedan/{id}/edit',[PunarabedanController::class,'edit'])->name('punarabedan.edit');
 Route::post('/punarabedan/update/{id}',[PunarabedanController::class, 'update'])->name('punarabedan.update');
-Route::post('/punarabedan/delete/{id}',[PunarabedanController::class, 'destroy'])->name('punarabedan.destroy');
-
+Route::delete('/punarabedan/delete/{id}',[PunarabedanController::class, 'destroy'])->name('punarabedan.destroy');
+});
 Route::prefix('admin')->middleware(['auth'])->group(function() {
-    Route::get('/', [HomeController::class, 'index'])->name('dashboard');
+    Route::get('/home', [HomeController::class, 'index'])->name('dashboard');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

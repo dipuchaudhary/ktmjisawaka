@@ -18,10 +18,10 @@ class PatraChallaniController extends Controller
      */
     public function index()
     {
-        $data = PatraChallani::select('id', 'karyalaya_name','challani_date','challani_number','mudda_number','challani_subject','bodartha','verified_by','kaifiyat','status')->get();
          if(request()->ajax())
         {
-            return Datatables::of($data)
+            $query = PatraChallani::select('id', 'karyalaya_name','challani_date','challani_number','mudda_number','challani_subject','bodartha','verified_by','kaifiyat','status');
+            return Datatables::eloquent($query)
                    ->addIndexColumn()
                     ->addColumn('status', function ($data) {
                     if ($data->status == 0 || $data->status === false) {
@@ -45,6 +45,7 @@ class PatraChallaniController extends Controller
      */
     protected function getActionButtons($data)
     {
+        if (!auth()->check()) return '';
         $buttons = '';
 
         if (auth()->user()->can('patrachallani-edit')) {
@@ -55,7 +56,7 @@ class PatraChallaniController extends Controller
             $buttons .= '<form action="'.route('patra_challani.destroy', $data->id).'" method="POST" style="display:inline;">
                                     <input type="hidden" name="_token" value="' . csrf_token() . '">
                                     <input type="hidden" name="_method" value="DELETE">
-                                    <button type="submit" style="border:none; background:none; color:red; padding:0;">
+                                    <button type="submit" class="btn-delete" onclick="return confirm(\'Are you sure?\')" style="border:none; background:none; color:red; padding:0;">
                                         <i class="fas fa-trash-alt fa-lg"></i>
                                     </button>
                                 </form>';
@@ -191,6 +192,9 @@ class PatraChallaniController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $patrachallani = PatraChallani::findOrFail($id);
+        $patrachallani->delete();
+        return redirect()->route('patra_challani.index')
+        ->with('success', 'चलानी पत्र सफलतापूर्वक मेटियो।');
     }
 }
