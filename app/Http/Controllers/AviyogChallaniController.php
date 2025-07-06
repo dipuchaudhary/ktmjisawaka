@@ -97,7 +97,7 @@ class AviyogChallaniController extends Controller
             'jaherwala_name' => 'required',
             'pratiwadi_name' => 'required',
             'mudda_name' => 'required',
-            'upload_file' => 'nullable|file|mimes:pdf|max:10240',
+            'upload_file' => 'nullable|file|mimes:pdf|max:51200',
         ];
         $customMessages = [
            'anusandhan_garne_nikaye.required' => 'अनुसन्धान गर्ने निकाय अनिवार्य छ।',

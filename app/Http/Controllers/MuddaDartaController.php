@@ -23,7 +23,6 @@ class MuddaDartaController extends Controller
             'pratiwadi_name' => 'required',
             'mudda_stithi' => 'required',
             'mudda_date' => 'required',
-            'mudda_pathayko_date' => 'required',
         ];
     protected $customMessages = [
            'anusandhan_garne_nikaye.required' => 'अनुसन्धान गर्ने निकाय अनिवार्य छ।',
@@ -32,7 +31,6 @@ class MuddaDartaController extends Controller
            'pratiwadi_name.required' => 'प्रतिवादीको नाम अनिवार्य छ।',
            'mudda_stithi.required' => 'मुद्दा स्थिति अनिवार्य छ।',
            'mudda_date.required' => 'मुद्दा दर्ता मिति अनिवार्य छ।',
-           'mudda_pathayko_date.required' => 'मुद्दा पठाएको मिति अनिवार्य छ।',
         ];
 
     /**

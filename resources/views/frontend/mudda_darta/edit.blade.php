@@ -60,7 +60,7 @@
             </div>
             <div class="row">
                 <div class="col-md-3 mb-3">
-                    <label for="मुद्दा दर्ता मिति" class="form-label">मुद्दा दर्ता मिति <span style="color:red">*</span></label>
+                    <label for="मुद्दा दर्ता मिति" class="form-label">मुद्दा दर्ता मिति </label>
                     <input type="text" class="form-control date-picker @error('mudda_date') is-invalid @enderror" id="mudda_date" name="mudda_date" value="{{ $mudda->mudda_date }}">
                     @error('mudda_date')
                         <div class="alert alert-danger">{{ $message }}</div>
