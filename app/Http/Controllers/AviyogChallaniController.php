@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use auth;
+use App\Models\Challani;
 use Illuminate\Http\Request;
 use App\Models\AviyogChallani;
-use App\Models\Challani;
 use App\Models\ChallaniFormat;
 use Illuminate\Support\Facades\Session;
-use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Storage;
+use Yajra\DataTables\Facades\DataTables;
 
 class AviyogChallaniController extends Controller
 {
@@ -25,7 +26,7 @@ class AviyogChallaniController extends Controller
          if(request()->ajax())
         {
             try {
-                $query = AviyogChallani::select('id', 'challani_date','challani_number','mudda_number','mudda_name','jaherwala_name','pratiwadi_name','sarkariwakil_name','faat_name','anusandhan_garne_nikaye','status');
+                $query = AviyogChallani::select('id', 'challani_date','challani_number','mudda_number','mudda_name','jaherwala_name','pratiwadi_name','sarkariwakil_name','faat_name','anusandhan_garne_nikaye','user_name','status');
 
                 return Datatables::eloquent($query)
                     ->addIndexColumn()
@@ -146,6 +147,7 @@ class AviyogChallaniController extends Controller
             'faat_name'               => $request->input('faat_name'),
             'kaifiyat'                => $request->input('kaifiyat'),
             'file'                    => $fileurl,
+            'user_name'               => auth()->user()->name,
             'status'                  => true,
         ]);
 

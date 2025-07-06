@@ -1,11 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
+use auth;
+use App\Models\Challani;
+use App\Models\Punarabedan;
 use App\Models\BankingMudda;
 use Illuminate\Http\Request;
 use App\Models\AviyogChallani;
-use App\Models\Punarabedan;
-use App\Models\Challani;
 use App\Models\ChallaniFormat;
 use Illuminate\Support\Facades\Session;
 use Yajra\DataTables\Facades\DataTables;
@@ -21,7 +22,7 @@ class BankingMuddaController extends Controller
     {
          if(request()->ajax())
         {
-            $query = BankingMudda::select('id', 'anusandhan_garne_nikaye', 'mudda_number', 'mudda_name', 'jaherwala_name','pratiwadi_name','mudda_stithi','mudda_date','sarkariwakil_name','challani_number','status');
+            $query = BankingMudda::select('id', 'anusandhan_garne_nikaye', 'mudda_number', 'mudda_name', 'jaherwala_name','pratiwadi_name','mudda_stithi','mudda_date','sarkariwakil_name','challani_number','user_name','status');
 
             return Datatables::eloquent($query)
                    ->addIndexColumn()
@@ -124,6 +125,7 @@ class BankingMuddaController extends Controller
             'mudda_pathayko_date' => $request->input('mudda_pathayko_date'),
             'status' => $request->input('status'),
             'kaifiyat' => $request->input('kaifiyat'),
+            'user_name' => auth()->user()->name,
         ];
 
         if ($request->input('status') == '1' || $request->status === 1 ||$request->input('status') === true) {
@@ -214,7 +216,8 @@ class BankingMuddaController extends Controller
             'mudda_pathayko_date' => $request->input('mudda_pathayko_date'),
             'challani_number' => $request->status ? $request->input('challani_number') : $bankingmudda->challani_number,
             'status' => $request->input('status'),
-            'kaifiyat' => $request->input('kaifiyat')
+            'kaifiyat' => $request->input('kaifiyat'),
+            'user_name' => auth()->user()->name,
         ]);
         $this->updateAviyogchallani($bankingmudda,$request);
         $this->updatePunarabedan($bankingmudda,$request);

@@ -20,6 +20,7 @@
                     <th>मुद्दा दर्ता मिति</th>
                     <th>सरकारी वकील</th>
                     <th>चलानी नं.</th>
+                    <th>प्रयोगकर्ता</th>
                     <th>Status</th>
                      @if(auth()->user()->can('bankingdarta-edit') || auth()->user()->can('bankingdarta-delete'))
                     <th width="105px">Action</th>
@@ -44,6 +45,7 @@
                 { data: 'mudda_date', name: 'mudda_date' },
                 { data: 'sarkariwakil_name', name: 'sarkariwakil_name' },
                 { data: 'challani_number', name: 'challani_number' },
+                { data: 'user_name', name: 'user_name' },
                 { data: 'status', name: 'sarkariwakil_name' },
         ];
 

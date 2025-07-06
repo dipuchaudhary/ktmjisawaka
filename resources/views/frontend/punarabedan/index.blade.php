@@ -14,6 +14,7 @@
                 <th rowspan="2" >फैसला मिति</th>
                 <th rowspan="2" >फैसला प्रमाणीकरण मिति</th>
                 <th colspan="3" class="text-center">कार्यालयबाट भएको पुनरावेदन सम्बन्धी कारवाही</th>
+                <th rowspan="2">प्रयोगकर्ता</th>
                 <th rowspan="2">Status</th>
                 @if(auth()->user()->can('punarabedan-edit') || auth()->user()->can('punarabedan-delete'))
                     <th rowspan="2" width="105px">Action</th>
@@ -45,6 +46,7 @@
                 { data: 'punarabedan', name: 'punarabedan' },
                 { data: 'punarabedan_date', name: 'punarabedan_date' },
                 { data: 'punarabedan_challani_number', name: 'punarabedan_challani_number' },
+                { data: 'user_name', name: 'user_name' },
                 { data: 'status', name: 'status' },
 
             ];

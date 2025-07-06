@@ -20,6 +20,7 @@
                     <th>मुद्दा दर्ता मिति</th>
                     <th>सरकारी वकील</th>
                     <th>फाँट</th>
+                    <th>प्रयोगकर्ता</th>
                     @if(auth()->user()->can('mulldarta-edit') || auth()->user()->can('mulldarta-delete'))
                     <th width="105px">Action</th>
                     @endif
@@ -42,7 +43,8 @@
             { data: 'mudda_stithi', name: 'mudda_stithi' },
             { data: 'mudda_date', name: 'mudda_date' },
             { data: 'sarkariwakil_name', name: 'sarkariwakil_name' },
-            { data: 'faat_name', name: 'faat_name' }
+            { data: 'faat_name', name: 'faat_name' },
+            { data: 'user_name', name: 'user_name' }
         ];
 
         if (hasActions) {

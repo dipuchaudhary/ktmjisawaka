@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use auth;
 use App\Models\Challani;
-use App\Models\ChallaniFormat;
-use App\Models\PatraChallani;
 use Illuminate\Http\Request;
+use App\Models\PatraChallani;
+use App\Models\ChallaniFormat;
 use Illuminate\Support\Facades\Session;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -20,7 +21,7 @@ class PatraChallaniController extends Controller
     {
          if(request()->ajax())
         {
-            $query = PatraChallani::select('id', 'karyalaya_name','challani_date','challani_number','mudda_number','challani_subject','bodartha','verified_by','kaifiyat','status');
+            $query = PatraChallani::select('id', 'karyalaya_name','challani_date','challani_number','mudda_number','challani_subject','verified_by','challani_sakha','faat','user_name','status');
             return Datatables::eloquent($query)
                    ->addIndexColumn()
                     ->addColumn('status', function ($data) {
@@ -93,11 +94,19 @@ class PatraChallaniController extends Controller
             'karyalaya_name' => 'required',
             'challani_date' => 'required',
             'challani_subject' => 'required',
+            'challani_sakha' => 'required',
         ];
+         if ($request->challani_sakha === 'मुद्दा') {
+             $challani_sakha = $request->input('challani_sakha') . '-'. $request->input('faat');
+        } else {
+            $challani_sakha = $request->input('challani_sakha');
+        }
         $Messages = [
            'karyalaya_name.required' => 'पत्र चलान भएको कार्यालय अनिवार्य छ।',
            'challani_date.required' => 'चलानी मिति अनिवार्य छ।',
            'challani_subject.required' => 'चलानी विषय अनिवार्य छ।',
+           'challani_sakha.required' => 'चलानी गर्ने शाखा अनिवार्य छ।',
+           'faat.required' => 'फाँट अनिवार्य छ।',
         ];
 
         $this->validate($request, $rules, $Messages);
@@ -116,6 +125,9 @@ class PatraChallaniController extends Controller
             'bodartha' => $bodartha,
             'verified_by' => $request->input('verified_by'),
             'kaifiyat' => $request->input('kaifiyat'),
+            'challani_sakha' => $challani_sakha,
+            'faat' => $request->input('faat'),
+            'user_name' => auth()->user()->name,
             'status' => true,
         ]);
 
@@ -149,11 +161,20 @@ class PatraChallaniController extends Controller
             'karyalaya_name' => 'required',
             'challani_date' => 'required',
             'challani_subject' => 'required',
+            'challani_sakha' => 'required',
         ];
+         if ($request->challani_sakha === 'मुद्दा') {
+            $rules['faat'] = 'required';
+            $challani_sakha = $request->input('challani_sakha') . '-'. $request->input('faat');
+        } else {
+            $challani_sakha = $request->input('challani_sakha');
+        }
         $Messages = [
            'karyalaya_name.required' => 'पत्र चलान भएको कार्यालय अनिवार्य छ।',
            'challani_date.required' => 'चलानी मिति अनिवार्य छ।',
            'challani_subject.required' => 'चलानी विषय अनिवार्य छ।',
+           'challani_sakha.required' => 'चलानी गर्ने शाखा अनिवार्य छ।',
+           'faat.required' => 'फाँट अनिवार्य छ।',
         ];
 
         $patraChallani = PatraChallani::findOrFail($id);
@@ -163,6 +184,7 @@ class PatraChallaniController extends Controller
         } else {
             $bodartha= $request->input('bodartha');
         }
+
         // Store the data in the database
         $patraChallani->update([
             'karyalaya_name' => $request->input('karyalaya_name'),
@@ -173,6 +195,9 @@ class PatraChallaniController extends Controller
             'bodartha' => $bodartha,
             'verified_by' => $request->input('verified_by'),
             'kaifiyat' => $request->input('kaifiyat'),
+            'challani_sakha' => $challani_sakha,
+            'faat' => $request->input('faat'),
+            'user_name' => auth()->user()->name,
         ]);
 
         if ( isset($patraChallani) && $patraChallani->status == true ) {

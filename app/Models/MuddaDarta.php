@@ -24,6 +24,7 @@ class MuddaDarta extends Model
         'faat_name',
         'mudda_pathayko_date',
         'kaifiyat',
+        'user_name',
         'created_at',
     ];
 }

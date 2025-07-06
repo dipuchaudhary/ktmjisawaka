@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use auth;
+use App\Models\Challani;
 use App\Models\Punarabedan;
 use Illuminate\Http\Request;
-use App\Models\Challani;
 use App\Models\ChallaniFormat;
 use Illuminate\Support\Facades\Session;
 use Yajra\DataTables\Facades\DataTables;
@@ -45,7 +46,7 @@ class PunarabedanController extends Controller
 
         if(request()->ajax())
         {
-            $query = Punarabedan::select('id', 'mudda_number', 'jaherwala_name','pratiwadi_name','mudda_name','faisala_date','faisala_pramanikaran_date','punarabedan','punarabedan_date','punarabedan_challani_number','status');
+            $query = Punarabedan::select('id', 'mudda_number', 'jaherwala_name','pratiwadi_name','mudda_name','faisala_date','faisala_pramanikaran_date','punarabedan','punarabedan_date','punarabedan_challani_number','user_name','status');
 
             return Datatables::eloquent($query)
                 ->addIndexColumn()
@@ -135,6 +136,7 @@ class PunarabedanController extends Controller
             'sarkariwakil_name' => $request->input('sarkariwakil_name'),
             'kaifiyat' => $request->input('kaifiyat'),
             'status' => true,
+            'user_name' => auth()->user()->name,
         ]);
 
         if ( isset($punarabedan) && $punarabedan->status == true ) {

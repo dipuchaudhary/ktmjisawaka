@@ -16,6 +16,7 @@
                     <th>सरकारी वकील</th>
                     <th>फाँट</th>
                     <th>अनुसन्धान गर्ने निकाय</th>
+                    <th>प्रयोगकर्ता</th>
                     <th>Status</th>
                     @if(auth()->user()->can('aviyog-edit') || auth()->user()->can('aviyog-delete'))
                     <th width="105px">Action</th>
@@ -42,6 +43,7 @@
                 { data: 'sarkariwakil_name', name: 'sarkariwakil_name' },
                 { data: 'faat_name', name: 'faat_name' },
                 { data: 'anusandhan_garne_nikaye', name: 'anusandhan_garne_nikaye' },
+                { data: 'user_name', name: 'user_name' },
                 { data: 'status', name: 'status' },
             ];
 

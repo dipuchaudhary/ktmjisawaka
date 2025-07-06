@@ -17,8 +17,9 @@
                     <th>चलानी नं. </th>
                     <th>मुद्दा नं. </th>
                     <th>विषय</th>
-                    <th>बोधार्थ</th>
                     <th>दस्तखत गर्ने अधिकारी</th>
+                    <th>चलानी शाखा</th>
+                    <th>प्रयोगकर्ता</th>
                     <th>Status</th>
                     @if(auth()->user()->can('patrachallani-edit') || auth()->user()->can('patrachallani-delete'))
                     <th width="105px">Action</th>
@@ -41,8 +42,9 @@
                 { data: 'challani_number', name: 'challani_number' },
                 { data: 'mudda_number', name: 'mudda_number' },
                 { data: 'challani_subject', name: 'challani_subject' },
-                { data: 'bodartha', name: 'bodartha' },
                 { data: 'verified_by', name: 'verified_by' },
+                { data: 'challani_sakha', name: 'challani_sakha' },
+                { data: 'user_name', name: 'user_name' },
                 { data: 'status', name: 'status' },
             ];
 

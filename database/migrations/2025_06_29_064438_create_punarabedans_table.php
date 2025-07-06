@@ -37,6 +37,7 @@ return new class extends Migration
             $table->string('nirnaye_date')->nullable();
             $table->string('sarkariwakil_name')->nullable();
             $table->string('kaifiyat')->nullable();
+            $table->string('user_name')->nullable();
             $table->boolean('status')->default(false);
             $table->timestamps();
         });

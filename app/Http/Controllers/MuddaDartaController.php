@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use auth;
 use App\Models\MuddaDarta;
 use App\Models\Punarabedan;
 use Illuminate\Http\Request;
@@ -41,7 +42,7 @@ class MuddaDartaController extends Controller
     {
         if(request()->ajax())
         {
-            $data = MuddaDarta::select('id', 'anusandhan_garne_nikaye', 'mudda_number', 'mudda_name', 'jaherwala_name','pratiwadi_name','mudda_stithi','mudda_date','sarkariwakil_name','faat_name');
+            $data = MuddaDarta::select('id', 'anusandhan_garne_nikaye', 'mudda_number', 'mudda_name', 'jaherwala_name','pratiwadi_name','mudda_stithi','mudda_date','sarkariwakil_name','faat_name','user_name');
 
             return Datatables::eloquent($data)
                 ->addIndexColumn()
@@ -103,6 +104,7 @@ class MuddaDartaController extends Controller
             'sarkariwakil_name' => $request->input('sarkariwakil_name'),
             'faat_name' => $request->input('faat_name'),
             'mudda_pathayko_date' => $request->input('mudda_pathayko_date'),
+            'user_name' => auth()->user()->name,
             'kaifiyat' => $request->input('kaifiyat'),
         ]);
         // Create PatraChallani and Punarabedan using common fields
@@ -136,6 +138,7 @@ class MuddaDartaController extends Controller
             'sarkariwakil_name' => $request->input('sarkariwakil_name'),
             'faat_name' => $request->input('faat_name'),
             'mudda_pathayko_date' => $request->input('mudda_pathayko_date'),
+            'user_name' => auth()->user()->name,
             'kaifiyat' => $request->input('kaifiyat'),
         ]);
         $this->updateAviyogchallani($mudda,$request);

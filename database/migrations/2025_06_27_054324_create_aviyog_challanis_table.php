@@ -26,6 +26,7 @@ return new class extends Migration
             $table->string('faat_name')->nullable();
             $table->string('file')->nullable();
             $table->string('kaifiyat')->nullable();
+            $table->string('user_name')->nullable();
             $table->boolean('status')->default(false);
             $table->timestamps();
         });

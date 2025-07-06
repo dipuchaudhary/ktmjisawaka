@@ -39,6 +39,35 @@
                         <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
                 </div>
+                <div class="col-md-4 mb-3">
+                    <label for="चलानी शाखा" class="form-label">चलानी गर्ने शाखा</label>
+                    <select class="form-control" id="challani_sakha" name="challani_sakha">
+                            <option value="">छान्नुहोस्</option>
+                            <option value="सचिवालय">सचिवालय</option>
+                            <option value="प्रशासन">प्रशासन</option>
+                            <option value="लेखा">लेखा</option>
+                            <option value="भुद्दा">भुद्दा</option>
+                            <option value="पुनरावेदन">पुनरावेदन</option>
+                            <option value="बैकिङ्ग">बैकिङ्ग</option>
+                        </select>
+                    @error('challani_sakha')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="col-md-2 mb-3" id="faat-div">
+                    <label for="faat" class="form-label">फाँट</label>
+                    <select class="form-control" id="faat" name="faat">
+                            <option value="">छान्नुहोस्</option>
+                            <option value="क">क</option>
+                            <option value="ख">ख</option>
+                            <option value="ग">ग</option>
+                    </select>
+                    @error('faat')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror
+                </div>
+            </div>
+            <div class="row">
                 <div class="col-md-6 mb-3">
                     <label for="मुद्दा नं." class="form-label">मुद्दा नं.</label>
                     <input type="text" class="form-control @error('mudda_number') is-invalid @enderror" id="mudda_number" name="mudda_number" value="{{ old('mudda_number') }}" >
@@ -46,13 +75,13 @@
                         <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
                 </div>
-            </div>
-            <div class="row">
                 <div class="col-md-6 mb-3">
                     <label for="बोधार्थ" class="form-label">बोधार्थ </label>
                     <select class="challani-bodartha" name="bodartha[]" id="bodartha" multiple="multiple" style="width: 100%;">
                     </select>
                 </div>
+            </div>
+            <div class="row">
                 <div class="col-md-6 mb-3">
                     <label for="दस्तखत गर्ने अधिकारी" class="form-label">दस्तखत गर्ने अधिकारी</label>
                     <input type="text" class="form-control @error('verified_by') is-invalid @enderror" id="verified_by" name="verified_by" value="{{ old('verified_by') }}" >
@@ -60,8 +89,6 @@
                         <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
                 </div>
-            </div>
-            <div class="row">
                 <div class="col-md-6 mb-3">
                     <label for="कैफियत" class="form-label">कैफियत</label>
                     <textarea class="form-control" id="kaifiyat" name="kaifiyat" rows="3"></textarea>
@@ -100,6 +127,21 @@ $(document).ready(function() {
                 input.val('');
             }
         }
+    });
+
+    function toggle_challani() {
+        var selectedValue = $('#challani_sakha').val();
+        if (selectedValue == 'मुद्दा') {
+            $('#faat-div').show();
+        } else {
+            $('#faat-div').hide();
+            $('#faat').val('');
+        }
+    }
+    toggle_challani();
+    $('#challani_sakha').change(function() {
+        toggle_challani();
+
     });
 });
 

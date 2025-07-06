@@ -28,6 +28,7 @@ return new class extends Migration
             $table->string('faat_name')->nullable();
             $table->string('mudda_pathayko_date')->nullable();
             $table->string('kaifiyat')->nullable();
+            $table->string('user_name');
             $table->timestamps();
         });
     }

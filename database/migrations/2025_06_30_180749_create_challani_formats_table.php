@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('challani_formats', function (Blueprint $table) {
             $table->id();
-            $table->string('format_prefix');
+            $table->string('format_prefix')->default('2082/083');
             $table->boolean('is_active')->default(true);
             $table->timestamps();
         });

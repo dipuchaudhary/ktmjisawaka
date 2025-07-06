@@ -31,6 +31,7 @@ class Punarabedan extends Model
         'nirnaye_date',
         'sarkariwakil_name',
         'kaifiyat',
+        'user_name',
         'status',
         'created_at',
     ];

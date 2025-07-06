@@ -21,6 +21,9 @@ return new class extends Migration
             $table->string('bodartha')->nullable();
             $table->string('verified_by')->nullable();
             $table->string('kaifiyat')->nullable();
+            $table->string('challani_sakha');
+            $table->string('faat')->nullable();
+            $table->string('user_name');
             $table->boolean('status')->default(false);
             $table->timestamps();
         });

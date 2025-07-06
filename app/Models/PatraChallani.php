@@ -15,6 +15,9 @@ class PatraChallani extends Model
         'bodartha',
         'verified_by',
         'kaifiyat',
+        'challani_sakha',
+        'faat',
+        'user_name',
         'status',
         'created_at',
     ];
