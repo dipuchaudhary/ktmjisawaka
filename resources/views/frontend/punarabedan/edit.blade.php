@@ -39,14 +39,14 @@
             </div>
             <div class="row">
                 <div class="col-md-4 mb-3">
-                    <label for="चलानी मिति" class="form-label">फैसाला मिति <span style="color:red">*</span></label>
+                    <label for="चलानी मिति" class="form-label">फैसला मिति <span style="color:red">*</span></label>
                     <input type="text" class="form-control date-picker @error('faisala_date') is-invalid @enderror" id="faisala_date" name="faisala_date" value="{{ $punarabedan->faisala_date }}" >
                     @error('faisala_date')
                         <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
                 </div>
                 <div class="col-md-4 mb-3">
-                    <label for="चलानी मिति" class="form-label">फैसाला प्रमाणीकरण मिति <span style="color:red">*</span></label>
+                    <label for="चलानी मिति" class="form-label">फैसला प्रमाणीकरण मिति <span style="color:red">*</span></label>
                     <input type="text" class="form-control date-picker @error('faisala_pramanikaran_date') is-invalid @enderror" id="faisala_pramanikaran_date" name="faisala_pramanikaran_date" value="{{ $punarabedan->faisala_pramanikaran_date }}" >
                     @error('faisala_pramanikaran_date')
                         <div class="alert alert-danger">{{ $message }}</div>
@@ -62,7 +62,7 @@
             </div>
             <div class="row">
                 <div class="col-md-4 mb-3">
-                    <label for="फैसाला गर्ने निकाय" class="form-label">फैसाला गर्ने निकाय <span style="color:red">*</span></label>
+                    <label for="फैसाला गर्ने निकाय" class="form-label">फैसला गर्ने निकाय <span style="color:red">*</span></label>
                     <input type="text" class="form-control @error('faisala_garne_nikaye') is-invalid @enderror" id="faisala_garne_nikaye" name="faisala_garne_nikaye" value="{{ $punarabedan->faisala_garne_nikaye }}">
                     @error('faisala_garne_nikaye')
                         <div class="alert alert-danger">{{ $message }}</div>
@@ -100,7 +100,7 @@
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <fieldset class="border p-3 rounded">
-                        <legend class="float-none w-auto px-2" style="font-size: 1.1rem;">पुनरावेदन तहको फैसाला विवरण</legend>
+                        <legend class="float-none w-auto px-2" style="font-size: 1.1rem;">पुनरावेदन तहको फैसला विवरण</legend>
                         <?php  ?>
                         <div class="d-flex gap-3">
                         <div class="flex-fill text-center p-1">

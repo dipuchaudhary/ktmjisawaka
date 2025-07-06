@@ -1,7 +1,7 @@
 @extends('layouts.master')
     @section('content')
     <div class="container mt-5">
-        <h1> बैकिङ्ग मुद्दा चूली </h1>
+        <h1> बैकिङ्ग मुद्दा सूची </h1>
         @can('bankingdarta-create')
         <a href="{{ route('banking_mudda.create') }}" class="btn btn-primary float-right mb-5">
         नयाँ बैकिङ्ग मुद्दा दर्ता गर्नुहोस्
@@ -71,7 +71,7 @@
             ],
             language: {
                 zeroRecords: "कुनै डाटा फेला परेन",
-                info: "_TOTAL_ मध्य _START_ देखि _END_ प्रविष्टिहरू",
+                info: "_TOTAL_ मध्ये _START_ देखि _END_ प्रविष्टिहरू",
                 infoEmpty: "० प्रविष्टिहरू",
                 infoFiltered: "(कुल _MAX_ मध्येबाट छानिएको)",
             }
