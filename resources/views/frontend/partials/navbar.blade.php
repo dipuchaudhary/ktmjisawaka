@@ -45,6 +45,11 @@
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark">
                                     <li>
+                                        <a class="dropdown-item" href="{{ route('dashboard') }}">
+                                        <i class="fas fa-tachometer-alt me-2"></i> {{ __('Dashboard') }}
+                                        </a>
+                                    </li>
+                                    <li>
                                         <a class="dropdown-item" href="{{ route('logout') }}"
                                         onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                         <i class="fas fa-sign-out-alt me-2"></i> {{ __('Logout') }}

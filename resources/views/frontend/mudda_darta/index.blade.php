@@ -1,7 +1,7 @@
 @extends('layouts.master')
     @section('content')
     <div class="container mt-5">
-        <h1> Mudda list </h1>
+        <h1> मुल मुद्दा चूली </h1>
         @can('mulldarta-create')
         <a href="{{ route('mudda_darta.create') }}" class="btn btn-primary float-right mb-5">
           नयाँ मुल मुद्दा दर्ता सिर्जना गर्नुहोस्

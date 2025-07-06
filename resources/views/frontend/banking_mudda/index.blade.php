@@ -1,7 +1,7 @@
 @extends('layouts.master')
     @section('content')
     <div class="container mt-5">
-        <h1> Banking Mudda list </h1>
+        <h1> बैकिङ्ग मुद्दा चूली </h1>
         @can('bankingdarta-create')
         <a href="{{ route('banking_mudda.create') }}" class="btn btn-primary float-right mb-5">
         नयाँ बैकिङ्ग मुद्दा दर्ता गर्नुहोस्
