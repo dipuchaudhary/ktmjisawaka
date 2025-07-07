@@ -2,13 +2,6 @@
 @section('content')
 <div class="container mt-5">
     <h1>अभियोग चलानी सूची</h1>
-    @auth
-        @can('aviyog-create')
-        <a href="{{ route('aviyog_challani.create') }}" class="btn btn-primary float-right mb-5">
-            नयाँ अभियोग चलानी गर्नुहोस्
-        </a>
-        @endcan
-    @endauth
 
      <div class="alert alert-danger d-none" id="dataTableError">
         तालिका डाटा लोड गर्न असफल भयो। कृपया पृष्ठ रिफ्रेस गर्नुहोस् वा पछि प्रयास गर्नुहोस्।
