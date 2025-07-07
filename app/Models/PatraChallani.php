@@ -12,6 +12,8 @@ class PatraChallani extends Model
         'challani_number',
         'mudda_number',
         'challani_subject',
+        'jaherwala',
+        'pratiwadi',
         'bodartha',
         'verified_by',
         'kaifiyat',

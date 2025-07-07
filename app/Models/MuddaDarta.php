@@ -22,6 +22,7 @@ class MuddaDarta extends Model
         'jamma_din',
         'sarkariwakil_name',
         'faat_name',
+        'mudda_bibran',
         'mudda_pathayko_date',
         'kaifiyat',
         'user_name',

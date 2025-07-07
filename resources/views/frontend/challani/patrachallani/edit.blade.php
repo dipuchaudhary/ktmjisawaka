@@ -76,6 +76,34 @@
             </div>
             <div class="row">
                 <div class="col-md-6 mb-3">
+                    <label for="जाहेरवाला" class="form-label">जाहेरवाला </label>
+                   <select type="text" class="form-control custom-select2 @error('jaherwala') is-invalid @enderror" id="jaherwala" name="jaherwala[]" multiple="multiple" >
+                        @if (!empty($patrachallani->jaherwala))
+                        @foreach (explode(',', $patrachallani->jaherwala) as $value)
+                            <option value="{{ $value }}" selected>{{ $value }}</option>
+                        @endforeach
+                        @endif
+                    </select>
+                        @error('jaherwala')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="प्रतिवादी" class="form-label">प्रतिवादी </label>
+                    <select class="form-control custom-select2 @error('pratiwadi') is-invalid @enderror" id="pratiwadi" name="pratiwadi[]" multiple="multiple">
+                         @if (!empty($patrachallani->pratiwadi))
+                        @foreach (explode(',', $patrachallani->pratiwadi) as $value)
+                            <option value="{{ $value }}" selected>{{ $value }}</option>
+                        @endforeach
+                        @endif
+                    </select>
+                        @error('pratiwadi')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
                     <label for="मुद्दा नं." class="form-label">मुद्दा नं.</label>
                     <input type="text" class="form-control @error('mudda_number') is-invalid @enderror" id="mudda_number" name="mudda_number" value="{{ $patrachallani->mudda_number}}" >
                     @error('mudda_number')
@@ -84,7 +112,7 @@
                 </div>
                 <div class="col-md-6 mb-3">
                     <label for="बोधार्थ" class="form-label">बोधार्थ </label>
-                    <select class="challani-bodartha" name="bodartha[]" id="bodartha" multiple="multiple" style="width: 100%;">
+                    <select class="challani-bodartha custom-select2" name="bodartha[]" id="bodartha" multiple="multiple" style="width: 100%;">
                     @if (!empty($patrachallani->bodartha))
                         @foreach (explode(',', $patrachallani->bodartha) as $value)
                             <option value="{{ $value }}" selected>{{ $value }}</option>
@@ -114,32 +142,6 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
 $(document).ready(function() {
-    $('.challani-bodartha').select2({
-        tags: true,
-        placeholder: "विकल्प खोज्नुहोस् वा नयाँ टाइप गर्नुहोस्"
-    });
-
-    $('.challani-bodartha').on('keypress', function(e) {
-        if (e.which === 13) {
-            e.preventDefault();
-
-            let select = $(this);
-            let input = select.data('select2').dropdown.$search || select.data('select2').$selection.find('input.select2-search__field');
-            let value = input.val().trim();
-
-            if (value !== '') {
-                let exists = select.find('option').filter(function() {
-                    return $(this).text().toLowerCase() === value.toLowerCase();
-                }).length;
-
-                if (!exists) {
-                    let newOption = new Option(value, value, true, true);
-                    select.append(newOption).trigger('change');
-                }
-                input.val('');
-            }
-        }
-    });
 
     function toggle_challani() {
         var selectedValue = $('#challani_sakha').val();

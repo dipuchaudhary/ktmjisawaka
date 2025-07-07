@@ -24,6 +24,7 @@ class MuddaDartaController extends Controller
             'pratiwadi_name' => 'required',
             'mudda_stithi' => 'required',
             'mudda_date' => 'required',
+            'mudda_bibran' => 'required',
         ];
     protected $customMessages = [
            'anusandhan_garne_nikaye.required' => 'अनुसन्धान गर्ने निकाय अनिवार्य छ।',
@@ -32,6 +33,7 @@ class MuddaDartaController extends Controller
            'pratiwadi_name.required' => 'प्रतिवादीको नाम अनिवार्य छ।',
            'mudda_stithi.required' => 'मुद्दा स्थिति अनिवार्य छ।',
            'mudda_date.required' => 'मुद्दा दर्ता मिति अनिवार्य छ।',
+           'mudda_bibran.required' => 'मुद्दा विवरण अनिवार्य छ।',
         ];
 
     /**
@@ -42,12 +44,11 @@ class MuddaDartaController extends Controller
     {
         if(request()->ajax())
         {
-            $data = MuddaDarta::select('id', 'anusandhan_garne_nikaye', 'mudda_number', 'mudda_name', 'jaherwala_name','pratiwadi_name','mudda_stithi','mudda_date','sarkariwakil_name','faat_name','user_name');
-
-            return Datatables::eloquent($data)
+            $query = MuddaDarta::select('id', 'anusandhan_garne_nikaye', 'mudda_number', 'mudda_name', 'jaherwala_name','pratiwadi_name','mudda_stithi','mudda_date','sarkariwakil_name','faat_name','user_name');
+            return Datatables::eloquent($query)
                 ->addIndexColumn()
-                ->addColumn('action', function($data) {
-                        return $this->getActionButtons($data);
+                ->addColumn('action', function($query) {
+                        return $this->getActionButtons($query);
                 })
                 ->rawColumns(['action'])
                 ->make(true);
@@ -60,6 +61,7 @@ class MuddaDartaController extends Controller
      */
     protected function getActionButtons($data)
     {
+        if (!auth()->check()) return '';
         $buttons = '';
 
         if (auth()->user()->can('mulldarta-edit')) {
@@ -88,13 +90,25 @@ class MuddaDartaController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, $this->rules, $this->customMessages);
+
+        if (!empty($request->input('jaherwala_name')) ) {
+           $jaherwala_name = implode(',', $request->input('jaherwala_name'));
+        } else {
+            $jaherwala_name= $request->input('jaherwala_name');
+        }
+
+        if (!empty($request->input('pratiwadi_name')) ) {
+           $pratiwadi_name = implode(',', $request->input('pratiwadi_name'));
+        } else {
+            $pratiwadi_name= $request->input('pratiwadi_name');
+        }
         // Store the data in the database
         MuddaDarta::create([
             'anusandhan_garne_nikaye' => $request->input('anusandhan_garne_nikaye'),
             'mudda_number' => $request->input('mudda_number'),
             'mudda_name' => $request->input('mudda_name'),
-            'jaherwala_name' => $request->input('jaherwala_name'),
-            'pratiwadi_name' => $request->input('pratiwadi_name'),
+            'jaherwala_name' => $jaherwala_name,
+            'pratiwadi_name' => $pratiwadi_name,
             'pratiwadi_number' => $request->input('pratiwadi_number'),
             'mudda_stithi' => $request->input('mudda_stithi'),
             'mudda_date' => $request->input('mudda_date'),
@@ -104,15 +118,16 @@ class MuddaDartaController extends Controller
             'sarkariwakil_name' => $request->input('sarkariwakil_name'),
             'faat_name' => $request->input('faat_name'),
             'mudda_pathayko_date' => $request->input('mudda_pathayko_date'),
+            'mudda_bibran' => $request->input('mudda_bibran'),
             'user_name' => auth()->user()->name,
             'kaifiyat' => $request->input('kaifiyat'),
         ]);
         // Create PatraChallani and Punarabedan using common fields
-        $this->createAviyogChallani($request);
-        $this->createPunarabedan($request);
+        $this->createAviyogChallani($request,$jaherwala_name,$pratiwadi_name);
+        $this->createPunarabedan($request,$jaherwala_name,$pratiwadi_name);
 
         return redirect()->route('mudda_darta.index')
-        ->with('success', 'मुद्दा दर्ता सफल भयो।');
+        ->with('success', 'राय दर्ता सफल भयो।');
     }
     public function edit($id)
     {
@@ -123,12 +138,24 @@ class MuddaDartaController extends Controller
     {
         $mudda = MuddaDarta::findOrFail($id);
         $this->validate($request, $this->rules, $this->customMessages);
+
+        if (!empty($request->input('jaherwala_name')) ) {
+           $jaherwala_name = implode(',', $request->input('jaherwala_name'));
+        } else {
+            $jaherwala_name= $request->input('jaherwala_name');
+        }
+
+        if (!empty($request->input('pratiwadi_name')) ) {
+           $pratiwadi_name = implode(',', $request->input('pratiwadi_name'));
+        } else {
+            $pratiwadi_name= $request->input('pratiwadi_name');
+        }
         $mudda->update([
             'anusandhan_garne_nikaye' => $request->input('anusandhan_garne_nikaye'),
             'mudda_number' => $request->input('mudda_number'),
             'mudda_name' => $request->input('mudda_name'),
-            'jaherwala_name' => $request->input('jaherwala_name'),
-            'pratiwadi_name' => $request->input('pratiwadi_name'),
+            'jaherwala_name' => $jaherwala_name,
+            'pratiwadi_name' => $jaherwala_name,
             'pratiwadi_number' => $request->input('pratiwadi_number'),
             'mudda_stithi' => $request->input('mudda_stithi'),
             'mudda_date' => $request->input('mudda_date'),
@@ -138,21 +165,22 @@ class MuddaDartaController extends Controller
             'sarkariwakil_name' => $request->input('sarkariwakil_name'),
             'faat_name' => $request->input('faat_name'),
             'mudda_pathayko_date' => $request->input('mudda_pathayko_date'),
+             'mudda_bibran' => $request->input('mudda_bibran'),
             'user_name' => auth()->user()->name,
             'kaifiyat' => $request->input('kaifiyat'),
         ]);
-        $this->updateAviyogchallani($mudda,$request);
-        $this->updatePunarabedan($mudda,$request);
+        $this->updateAviyogchallani($mudda,$request,$pratiwadi_name,$jaherwala_name);
+        $this->updatePunarabedan($mudda,$request,$pratiwadi_name,$jaherwala_name);
         return redirect()->route('mudda_darta.index')
-        ->with('success', 'मुद्दा सफलतापूर्वक अपडेट भयो।');
+        ->with('success', 'राय सफलतापूर्वक अपडेट भयो।');
     }
 
-    protected function createAviyogChallani($request) {
+    protected function createAviyogChallani($request,$jaherwala_name,$pratiwadi_name) {
         AviyogChallani::create([
             'challani_date'            => null,
             'challani_number'          => null,
-            'jaherwala_name'           => $request->input('jaherwala_name'),
-            'pratiwadi_name'           => $request->input('pratiwadi_name'),
+            'jaherwala_name'           => $jaherwala_name,
+            'pratiwadi_name'           => $pratiwadi_name,
             'mudda_name'               => $request->input('mudda_name'),
             'gender'                   => null,
             'mudda_number'             => $request->input('mudda_number'),
@@ -163,23 +191,23 @@ class MuddaDartaController extends Controller
         ]);
     }
 
-    protected function createPunarabedan($request) {
+    protected function createPunarabedan($request,$jaherwala_name,$pratiwadi_name) {
         Punarabedan::create([
             'mudda_name'               => $request->input('mudda_name'),
-            'jaherwala_name'           => $request->input('jaherwala_name'),
-            'pratiwadi_name'           => $request->input('pratiwadi_name'),
+            'jaherwala_name'           => $jaherwala_name,
+            'pratiwadi_name'           => $pratiwadi_name,
             'mudda_number'             => $request->input('mudda_number'),
             'suchana_date'             => null,
         ]);
     }
 
-    protected function updateAviyogchallani($mudda, $request){
+    protected function updateAviyogchallani($mudda,$request,$pratiwadi_name,$jaherwala_name){
         $aviyogchallani = AviyogChallani::where('id', $mudda->id)->first();
 
         if ($aviyogchallani) {
             $aviyogchallani->update([
-                'jaherwala_name'           => $request->input('jaherwala_name'),
-                'pratiwadi_name'           => $request->input('pratiwadi_name'),
+                'jaherwala_name'           => $jaherwala_name,
+                'pratiwadi_name'           => $pratiwadi_name,
                 'mudda_name'               => $request->input('mudda_name'),
                 'mudda_number'             => $request->input('mudda_number'),
                 'sarkariwakil_name'        => $request->input('sarkariwakil_name'),
@@ -189,14 +217,14 @@ class MuddaDartaController extends Controller
         }
     }
 
-    protected function updatePunarabedan($mudda, $request){
+    protected function updatePunarabedan($mudda,$request,$pratiwadi_name,$jaherwala_name){
         $punarabedan = Punarabedan::where('id', $mudda->id)->first();
 
         if ($punarabedan) {
             $punarabedan->update([
             'mudda_name'               => $request->input('mudda_name'),
-            'jaherwala_name'           => $request->input('jaherwala_name'),
-            'pratiwadi_name'           => $request->input('pratiwadi_name'),
+            'jaherwala_name'           => $jaherwala_name,
+            'pratiwadi_name'           => $pratiwadi_name,
             'mudda_number'             => $request->input('mudda_number'),
             'sarkariwakil_name'        => $request->input('sarkariwakil_name'),
             ]);
@@ -208,6 +236,6 @@ class MuddaDartaController extends Controller
         $mudda = MuddaDarta::findOrFail($id);
         $mudda->delete();
         return redirect()->route('mudda_darta.index')
-        ->with('success', 'मुद्दा सफलतापूर्वक मेटियो।');
+        ->with('success', 'राय सफलतापूर्वक मेटियो।');
     }
 }

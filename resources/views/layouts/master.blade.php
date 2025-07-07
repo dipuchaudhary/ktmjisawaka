@@ -16,6 +16,7 @@
         <!-- CSS Libraries -->
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
         <link href="{{ asset('frontend/lib/slick/slick.css') }}" rel="stylesheet">
         <link href="{{ asset('frontend/lib/slick/slick-theme.css') }}" rel="stylesheet">
         <link rel="stylesheet" href="{{ asset('frontend/css/nepaliDatePicker.min.css') }}">
@@ -110,8 +111,37 @@
 
         <!-- Print button -->
         <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
         <script>
+        $(document).ready(function() {
+                $('.custom-select2').select2({
+                    tags: true,
+                    placeholder: "विकल्प खोज्नुहोस् वा नयाँ टाइप गर्नुहोस्"
+                });
+
+            $('.custom-select2').on('keypress', function(e) {
+                if (e.which === 13) {
+                    e.preventDefault();
+
+                    let select = $(this);
+                    let input = select.data('select2').dropdown.$search || select.data('select2').$selection.find('input.select2-search__field');
+                    let value = input.val().trim();
+
+                    if (value !== '') {
+                        let exists = select.find('option').filter(function() {
+                            return $(this).text().toLowerCase() === value.toLowerCase();
+                        }).length;
+
+                        if (!exists) {
+                            let newOption = new Option(value, value, true, true);
+                            select.append(newOption).trigger('change');
+                        }
+                        input.val('');
+                    }
+                }
+            });
+        });
              pdfMake.fonts = {
                 Devnagari: {
                     normal: '{{ asset("frontend/fonts/NotoSansDevanagari-Regular.ttf") }}',

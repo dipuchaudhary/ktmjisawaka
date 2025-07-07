@@ -12,9 +12,9 @@
                             <div class="nav-item" aria-expanded="false">
                                 <a href="#" class="nav-link dropdown-toggle {{ request()->is('mudda-darta') || request()->is('banking-mudda') ? 'active' : '' }}" data-bs-toggle="dropdown"> दर्ता </a>
                                 <div class="dropdown-menu">
-                                    <a href="{{ route('mudda_darta.index') }}" class="{{ request()->is('mudda-darta') ? 'active' : '' }} dropdown-item">मुल मुद्दा दर्ता</a>
+                                    <a href="{{ route('mudda_darta.index') }}" class="{{ request()->is('mudda-darta') ? 'active' : '' }} dropdown-item">राय दर्ता</a>
                                     <li><hr class="dropdown-divider"></li>
-                                    <a href="{{ route('banking_mudda.index') }}" class="{{ request()->is('banking-mudda') ? 'active' : '' }} dropdown-item">बैकिङ्ग मुद्दा दर्ता</a>
+                                    <a href="{{ route('banking_mudda.index') }}" class="{{ request()->is('banking-mudda') ? 'active' : '' }} dropdown-item">बैकिङ्ग राय दर्ता</a>
                                 </div>
                             </div>
                             <div class="nav-item" aria-expanded="false">

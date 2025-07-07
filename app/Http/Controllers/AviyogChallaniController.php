@@ -133,11 +133,23 @@ class AviyogChallaniController extends Controller
         $other  = isset($genderCounts['other']) ? (int) $genderCounts['other'] : 0;
         $total  = $male + $female + $child + $other;
 
+        if (!empty($request->input('jaherwala_name')) ) {
+           $jaherwala_name = implode(',', $request->input('jaherwala_name'));
+        } else {
+            $jaherwala_name= $request->input('jaherwala_name');
+        }
+
+        if (!empty($request->input('pratiwadi_name')) ) {
+           $pratiwadi_name = implode(',', $request->input('pratiwadi_name'));
+        } else {
+            $pratiwadi_name= $request->input('pratiwadi_name');
+        }
+
         $aviyogchallani->update([
             'challani_number'         => $request->input('challani_number'),
             'challani_date'           => $request->input('challani_date'),
-            'jaherwala_name'          => $request->input('jaherwala_name'),
-            'pratiwadi_name'          => $request->input('pratiwadi_name'),
+            'jaherwala_name'          => $jaherwala_name,
+            'pratiwadi_name'          => $pratiwadi_name,
             'mudda_name'              => $request->input('mudda_name'),
             'mudda_number'            => $request->input('mudda_number'),
             'gender'                  => json_encode($genderCounts),

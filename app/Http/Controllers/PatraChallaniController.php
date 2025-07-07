@@ -115,6 +115,18 @@ class PatraChallaniController extends Controller
         } else {
             $bodartha= $request->input('bodartha');
         }
+
+        if (!empty($request->input('jaherwala')) ) {
+           $jaherwala_name = implode(',', $request->input('jaherwala'));
+        } else {
+            $jaherwala_name= $request->input('jaherwala');
+        }
+
+        if (!empty($request->input('pratiwadi')) ) {
+           $pratiwadi_name = implode(',', $request->input('pratiwadi'));
+        } else {
+            $pratiwadi_name= $request->input('pratiwadi');
+        }
         // Store the data in the database
         PatraChallani::create([
             'karyalaya_name' => $request->input('karyalaya_name'),
@@ -122,6 +134,8 @@ class PatraChallaniController extends Controller
             'challani_number' => $request->input('challani_number'),
             'mudda_number' => $request->input('mudda_number'),
             'challani_subject' => $request->input('challani_subject'),
+            'jaherwala' => $jaherwala_name,
+            'pratiwadi' => $pratiwadi_name,
             'bodartha' => $bodartha,
             'verified_by' => $request->input('verified_by'),
             'kaifiyat' => $request->input('kaifiyat'),
@@ -185,6 +199,17 @@ class PatraChallaniController extends Controller
             $bodartha= $request->input('bodartha');
         }
 
+        if (!empty($request->input('jaherwala')) ) {
+           $jaherwala_name = implode(',', $request->input('jaherwala'));
+        } else {
+            $jaherwala_name= $request->input('jaherwala');
+        }
+
+        if (!empty($request->input('pratiwadi')) ) {
+           $pratiwadi_name = implode(',', $request->input('pratiwadi'));
+        } else {
+            $pratiwadi_name= $request->input('pratiwadi');
+        }
         // Store the data in the database
         $patraChallani->update([
             'karyalaya_name' => $request->input('karyalaya_name'),
@@ -192,6 +217,8 @@ class PatraChallaniController extends Controller
             'challani_number' => $request->input('challani_number'),
             'mudda_number' => $request->input('mudda_number'),
             'challani_subject' => $request->input('challani_subject'),
+            'jaherwala' => $jaherwala_name,
+            'pratiwadi' => $pratiwadi_name,
             'bodartha' => $bodartha,
             'verified_by' => $request->input('verified_by'),
             'kaifiyat' => $request->input('kaifiyat'),

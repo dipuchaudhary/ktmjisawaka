@@ -29,15 +29,27 @@
                 </div>
                 <div class="col-md-4 mb-3">
                     <label for="जाहेरवालाको नाम" class="form-label">जाहेरवालाको नाम <span style="color:red">*</span></label>
-                    <input type="text" class="form-control @error('jaherwala_name') is-invalid @enderror" id="jaherwala_name" name="jaherwala_name" value="{{ $aviyogchallani->jaherwala_name }}">
-                    @error('jaherwala_name')
+                    <select type="text" class="form-control custom-select2 @error('jaherwala_name') is-invalid @enderror" id="jaherwala_name" name="jaherwala_name[]" multiple="multiple">
+                    @if (!empty($aviyogchallani->jaherwala_name))
+                        @foreach (explode(',', $aviyogchallani->jaherwala_name) as $value)
+                            <option value="{{ $value }}" selected>{{ $value }}</option>
+                        @endforeach
+                        @endif
+                    </select>
+                        @error('jaherwala_name')
                         <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
                 </div>
                 <div class="col-md-4 mb-3">
                     <label for="प्रतिवादीको नाम" class="form-label">प्रतिवादीको नाम <span style="color:red">*</span></label>
-                    <input type="text" class="form-control @error('pratiwadi_name') is-invalid @enderror" id="pratiwadi_name" name="pratiwadi_name" value="{{ $aviyogchallani->pratiwadi_name }}">
-                    @error('pratiwadi_name')
+                    <select type="text" class="form-control custom-select2 @error('pratiwadi_name') is-invalid @enderror" id="pratiwadi_name" name="pratiwadi_name[]" multiple="multiple">
+                    @if (!empty($aviyogchallani->pratiwadi_name))
+                        @foreach (explode(',', $aviyogchallani->pratiwadi_name) as $value)
+                            <option value="{{ $value }}" selected>{{ $value }}</option>
+                        @endforeach
+                        @endif
+                    </select>
+                        @error('pratiwadi_name')
                         <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
                 </div>

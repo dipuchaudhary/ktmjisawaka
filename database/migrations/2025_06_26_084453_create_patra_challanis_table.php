@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('challani_number')->nullable();
             $table->string('mudda_number')->nullable();
             $table->string('challani_subject')->nullable();
+            $table->string('jaherwala')->nullable();
+            $table->string('pratiwadi')->nullable();
             $table->string('bodartha')->nullable();
             $table->string('verified_by')->nullable();
             $table->string('kaifiyat')->nullable();

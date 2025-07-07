@@ -24,8 +24,15 @@
                 </div>
                 <div class="col-md-4 mb-3">
                     <label for="जाहेरवालाको नाम" class="form-label">जाहेरवालाको नाम <span style="color:red">*</span></label>
-                    <input type="text" class="form-control @error('jaherwala_name') is-invalid @enderror" id="jaherwala_name" name="jaherwala_name" value="{{ $bankingmudda->jaherwala_name }}" >
-                    @error('jaherwala_name')
+                    <select type="text" class="form-control custom-select2 @error('jaherwala_name') is-invalid @enderror" id="jaherwala_name" name="jaherwala_name[]" multiple="multiple" >
+                        @if (!empty($bankingmudda->jaherwala_name))
+                       @foreach (explode(',', $bankingmudda->jaherwala_name) as $value)
+                            <option value="{{ $value }}" selected>{{ $value }}</option>
+                        @endforeach
+
+                        @endif
+                    </select>
+                        @error('jaherwala_name')
                         <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
                 </div>
@@ -33,8 +40,14 @@
             <div class="row">
                 <div class="col-md-4 mb-3">
                     <label for="प्रतिवादीको नाम" class="form-label">प्रतिवादीको नाम <span style="color:red">*</span></label>
-                    <input type="text" class="form-control @error('pratiwadi_name') is-invalid @enderror" id="pratiwadi_name" name="pratiwadi_name" value="{{ $bankingmudda->pratiwadi_name }}" >
-                    @error('pratiwadi_name')
+                    <select type="text" class="form-control custom-select2 @error('pratiwadi_name') is-invalid @enderror" id="pratiwadi_name" name="pratiwadi_name[]" multiple="multiple">
+                        @if (!empty($bankingmudda->jaherwala_name))
+                        @foreach (explode(',', $bankingmudda->jaherwala_name) as $value)
+                            <option value="{{ $value }}" selected>{{ $value }}</option>
+                        @endforeach
+                        @endif
+                    </select>
+                        @error('pratiwadi_name')
                         <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
                 </div>
@@ -78,7 +91,7 @@
                     </select>
                 </div>
                 <div class="col-md-3 mb-3">
-                    <label for="मुद्दा दर्ता मिति" class="form-label">मुद्दा दर्ता मिति <span style="color:red">*</span></label>
+                    <label for="मुद्दा दर्ता मिति" class="form-label">राय दर्ता मिति <span style="color:red">*</span></label>
                     <input type="text" class="form-control date-picker @error('mudda_date') is-invalid @enderror" id="mudda_date" name="mudda_date" value="{{ $bankingmudda->mudda_date }}">
                     @error('mudda_date')
                         <div class="alert alert-danger">{{ $message }}</div>
@@ -126,7 +139,7 @@
                     </select>
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary">Update</button>
     </form>
 </div>
 @endsection
