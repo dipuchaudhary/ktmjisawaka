@@ -95,8 +95,8 @@ class AviyogChallaniController extends Controller
             'anusandhan_garne_nikaye' => 'required',
             'challani_date' => 'required',
             'mudda_name' => 'required',
-            'jaherwala_name' => 'required',
-            'pratiwadi_name' => 'required',
+            'jaherwala_name' => 'required|array',
+            'pratiwadi_name' => 'required|array',
             'mudda_name' => 'required',
             'upload_file' => 'nullable|file|mimes:pdf|max:51200',
         ];

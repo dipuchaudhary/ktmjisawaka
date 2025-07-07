@@ -86,6 +86,7 @@ $(document).ready(function () {
         processing: true,
         serverSide: true,
         responsive: true,
+        scrollX: true,
         ajax: {
             url: "{{ route('banking_mudda.index') }}",
             error: function (xhr, error, thrown) {

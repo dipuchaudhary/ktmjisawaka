@@ -94,8 +94,8 @@ class BankingMuddaController extends Controller
 
         $rules = [
             'anusandhan_garne_nikaye' => 'required',
-            'jaherwala_name' => 'required',
-            'pratiwadi_name' => 'required',
+            'jaherwala_name' => 'required|array',
+            'pratiwadi_name' => 'required|array',
             'mudda_stithi' => 'required',
             'mudda_date' => 'required',
         ];

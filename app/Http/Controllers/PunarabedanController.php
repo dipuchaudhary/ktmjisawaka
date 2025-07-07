@@ -16,8 +16,8 @@ class PunarabedanController extends Controller
     protected $ChallaniNumber = '';
     protected $rules = [
             'mudda_name' => 'required',
-            'jaherwala_name' => 'required',
-            'pratiwadi_name' => 'required',
+            'jaherwala_name' => 'required|array',
+            'pratiwadi_name' => 'required|array',
             'faisala_date' => 'required',
             'faisala_pramanikaran_date' => 'required',
             'suchana_date' => 'required',

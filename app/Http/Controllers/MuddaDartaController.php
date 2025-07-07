@@ -20,8 +20,8 @@ class MuddaDartaController extends Controller
     protected $rules = [
             'anusandhan_garne_nikaye' => 'required',
             'mudda_name' => 'required',
-            'jaherwala_name' => 'required',
-            'pratiwadi_name' => 'required',
+            'jaherwala_name' => 'required|array',
+            'pratiwadi_name' => 'required|array',
             'mudda_stithi' => 'required',
             'mudda_date' => 'required',
             'mudda_bibran' => 'required',
