@@ -172,7 +172,7 @@ class BankingMuddaController extends Controller
     public function edit(string $id)
     {
         $bankingmudda = BankingMudda::findOrFail($id);
-        $latest = Challani::orderByDesc('id')->first();
+        $latest = BankingMudda::orderByDesc('id')->first();
         $challani_format = ChallaniFormat::value('format_prefix');
         $this->format = $challani_format;
         if ($latest && $latest->id) {

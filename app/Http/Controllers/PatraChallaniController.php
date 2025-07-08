@@ -71,7 +71,7 @@ class PatraChallaniController extends Controller
      */
     public function create()
     {
-        $latest = Challani::orderByDesc('id')->first();
+        $latest = PatraChallani::orderByDesc('id')->first();
         $challani_format = ChallaniFormat::value('format_prefix');
         $this->format = $challani_format;
         if ($latest && $latest->id) {

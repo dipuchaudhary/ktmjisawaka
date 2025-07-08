@@ -26,7 +26,7 @@ class AviyogChallaniController extends Controller
          if(request()->ajax())
         {
             try {
-                $query = AviyogChallani::select('id', 'challani_date','challani_number','mudda_number','mudda_name','jaherwala_name','pratiwadi_name','sarkariwakil_name','faat_name','anusandhan_garne_nikaye','user_name','status');
+                $query = AviyogChallani::select('id', 'challani_date','challani_number','mudda_number','mudda_name','jaherwala_name','pratiwadi_name','sarkariwakil_name','faat_name','anusandhan_garne_nikaye','user_name','status','file');
 
                 return Datatables::eloquent($query)
                     ->addIndexColumn()
@@ -55,11 +55,14 @@ class AviyogChallaniController extends Controller
      */
     protected function getActionButtons($data)
     {
-        if (!auth()->check()) return '';
         $buttons = '';
+        if (isset($data->file) && $data->file) {
+            $buttons .= '<a href="' . asset('storage/' . $data->file) . '" target="_blank" class="edit p-1"><i class="fa fa-eye fa-lg"></i></a>';
+        }
+        if (!auth()->check()) return '';
 
         if (auth()->user()->can('aviyog-edit')) {
-            $buttons .= '<a href="'.route('aviyog_challani.edit',$data->id).'" class="edit p-2"><i class="fas fa-edit fa-lg"></i></a>';
+            $buttons .= '<a href="'.route('aviyog_challani.edit',$data->id).'" class="edit p-1"><i class="fas fa-edit fa-lg"></i></a>';
         }
 
         if (auth()->user()->can('aviyog-delete')) {
