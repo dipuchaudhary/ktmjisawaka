@@ -12,8 +12,13 @@ use Yajra\DataTables\Facades\DataTables;
 
 class PunarabedanController extends Controller
 {
-    protected $format = '';
-    protected $ChallaniNumber = '';
+    protected string $format;
+
+    public function __construct()
+    {
+        $this->format = ChallaniFormat::value('format_prefix') ?? '2082/083';
+    }
+
     protected $rules = [
             'mudda_name' => 'required',
             'jaherwala_name' => 'required|array',
@@ -95,25 +100,28 @@ class PunarabedanController extends Controller
     public function edit($id){
         $punarabedan = Punarabedan::findOrFail($id);
         $latest = Challani::orderByDesc('id')->first();
-        $challani_format = ChallaniFormat::value('format_prefix');
-        $this->format = $challani_format;
-        if ($latest && $latest->id) {
-        $nextChallaniNumber = $challani_format .'-'. $latest->id+1;
-        $this->ChallaniNumber = $nextChallaniNumber;
-        } else {
-        $nextChallaniNumber = $challani_format .'-'. '1';
-        $this->ChallaniNumber = $nextChallaniNumber;
-        }
+
+        $nextId = $latest ? $latest->id + 1 : 1;
+        $nextChallaniNumber = $this->format . '-' . $nextId;
         return view('frontend.punarabedan.edit', compact('punarabedan','nextChallaniNumber'));
     }
 
     public function update(Request $request, $id){
         $punarabedan = Punarabedan::findOrFail($id);
         $this->validate($request, $this->rules, $this->customMessages);
+
+        $jaherwala_name = is_array($request->input('jaherwala_name'))
+                        ? implode(',', $request->input('jaherwala_name'))
+                        : $request->input('jaherwala_name');
+
+        $pratiwadi_name = is_array($request->input('pratiwadi_name'))
+                        ? implode(',', $request->input('pratiwadi_name'))
+                        : $request->input('pratiwadi_name');
+
         $punarabedan->update([
             'mudda_number' => $request->input('mudda_number'),
-            'jaherwala_name' => $request->input('jaherwala_name'),
-            'pratiwadi_name' => $request->input('pratiwadi_name'),
+            'jaherwala_name' => $jaherwala_name,
+            'pratiwadi_name' => $pratiwadi_name,
             'mudda_name' => $request->input('mudda_name'),
             'faisala_date' => $request->input('faisala_date'),
             'faisala_pramanikaran_date' => $request->input('faisala_pramanikaran_date'),

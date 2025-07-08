@@ -112,7 +112,7 @@
                 </div>
                 <div class="col-md-3 mb-3">
                     <label for="मुद्दा पठाएको मिति" class="form-label"> चलानी नं.(चलानी भएमा)</label>
-                    <input type="text" class="form-control" id="challani_number" name="challani_number" value="{{ toNepaliNumber($nextChallaniNumber) }}" readonly>
+                    <input type="text" class="form-control" id="challani_number" name="challani_number" value="{{ toNepaliNumber($ChallaniNumber) }}" readonly>
                 </div>
             </div>
             <div class="row">

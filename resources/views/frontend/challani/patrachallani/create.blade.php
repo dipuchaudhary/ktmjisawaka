@@ -9,7 +9,7 @@
                     <label for="चलानी नं." class="col-form-label">चलानी नं.</label>
                 </div>
                 <div class="col-auto">
-                    <input type="text" class="input-group-text mb-2" id="challani_number" name="challani_number" value="{{ toNepaliNumber($nextChallaniNumber) }}" readonly>
+                    <input type="text" class="input-group-text mb-2" id="challani_number" name="challani_number" value="{{ toNepaliNumber($ChallaniNumber) }}" readonly>
                 </div>
             </div>
             <div class="row">

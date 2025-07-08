@@ -55,7 +55,7 @@ $(document).ready(function () {
 
     // Column configuration
     const columns = [
-        { data: 'id', name: 'id' },
+        { data: 'id', name: 'id', visible:false },
         { data: 'anusandhan_garne_nikaye', name: 'anusandhan_garne_nikaye' },
         { data: 'mudda_number', name: 'mudda_number' },
         { data: 'mudda_name', name: 'mudda_name' },
@@ -117,6 +117,7 @@ $(document).ready(function () {
             info: "_TOTAL_ मध्य _START_ देखि _END_ प्रविष्टिहरू",
             infoEmpty: "० प्रविष्टिहरू",
             infoFiltered: "(कुल _MAX_ मध्येबाट छानिएको)",
+            processing: "डाटा लोड हुँदैछ... कृपया प्रतीक्षा गर्नुहोस्"
         }
     });
      $('body').on('click', '#reloadTable', function() {

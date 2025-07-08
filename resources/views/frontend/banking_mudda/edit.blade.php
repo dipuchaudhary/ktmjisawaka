@@ -123,7 +123,7 @@
                 </div>
                 <div class="col-md-3 mb-3">
                     <label for="मुद्दा पठाएको मिति" class="form-label"> चलानी नं.(चलानी भएमा)</label>
-                    <input type="text" class="form-control" id="challani_number" name="challani_number" value="{{ !empty($bankingmudda->challani_number) ? $bankingmudda->challani_number : toNepaliNumber($nextChallaniNumber) }}" readonly>
+                    <input type="text" class="form-control" id="challani_number" name="challani_number" value="{{ !empty($bankingmudda->challani_number) ? $bankingmudda->challani_number : toNepaliNumber($ChallaniNumber) }}" readonly>
                 </div>
             </div>
             <div class="row">
@@ -134,8 +134,8 @@
                 <div class="col-md-6 mb-3">
                     <label for="चलानी भएको/नभएको" class="form-label">चलानी अवस्था <span style="color:red">*</span></label>
                     <select class="form-select form-control @error('status') is-invalid @enderror" name="status" id="status">
-                        <option value="0" {{ $bankingmudda->mudda_stithi == '0' ? 'selected' : '' }}>चलानी नभएको</option>
-                        <option value="1" {{ $bankingmudda->mudda_stithi == '1' ? 'selected' : '' }}>चलानी भएको</option>
+                        <option value="0" {{ $bankingmudda->status == '0' ? 'selected' : '' }}>चलानी नभएको</option>
+                        <option value="1" {{ $bankingmudda->status == '1' ? 'selected' : '' }}>चलानी भएको</option>
                     </select>
                 </div>
             </div>

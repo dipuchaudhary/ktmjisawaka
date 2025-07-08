@@ -13,8 +13,12 @@ use Yajra\DataTables\Facades\DataTables;
 
 class AviyogChallaniController extends Controller
 {
-    protected $format = '';
-    protected $ChallaniNumber = '';
+    protected string $format;
+
+    public function __construct()
+    {
+        $this->format = ChallaniFormat::value('format_prefix') ?? '2082/083';
+    }
 
     /**
      * Display a listing of the resource.
@@ -79,17 +83,12 @@ class AviyogChallaniController extends Controller
     }
 
     public function edit($id){
-        $aviyogchallani = AviyogChallani::findorfail($id);
+        $aviyogchallani = AviyogChallani::findOrFail($id);
         $latest = Challani::orderByDesc('id')->first();
-        $challani_format = ChallaniFormat::value('format_prefix');
-        $this->format = $challani_format;
-        if ($latest && $latest->id) {
-        $nextChallaniNumber = $challani_format .'-'. $latest->id+1;
-        $this->ChallaniNumber = $nextChallaniNumber;
-        } else {
-        $nextChallaniNumber = $challani_format .'-'. '1';
-        $this->ChallaniNumber = $nextChallaniNumber;
-        }
+
+        $nextId = $latest ? $latest->id + 1 : 1;
+        $nextChallaniNumber = $this->format . '-' . $nextId;
+
         return view('frontend.challani.aviyog challani.edit',compact('aviyogchallani','nextChallaniNumber'));
     }
 
@@ -136,17 +135,13 @@ class AviyogChallaniController extends Controller
         $other  = isset($genderCounts['other']) ? (int) $genderCounts['other'] : 0;
         $total  = $male + $female + $child + $other;
 
-        if (!empty($request->input('jaherwala_name')) ) {
-           $jaherwala_name = implode(',', $request->input('jaherwala_name'));
-        } else {
-            $jaherwala_name= $request->input('jaherwala_name');
-        }
+        $jaherwala_name = is_array($request->input('jaherwala_name'))
+                        ? implode(',', $request->input('jaherwala_name'))
+                        : $request->input('jaherwala_name');
 
-        if (!empty($request->input('pratiwadi_name')) ) {
-           $pratiwadi_name = implode(',', $request->input('pratiwadi_name'));
-        } else {
-            $pratiwadi_name= $request->input('pratiwadi_name');
-        }
+        $pratiwadi_name = is_array($request->input('pratiwadi_name'))
+                        ? implode(',', $request->input('pratiwadi_name'))
+                        : $request->input('pratiwadi_name');
 
         $aviyogchallani->update([
             'challani_number'         => $request->input('challani_number'),

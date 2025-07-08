@@ -43,7 +43,7 @@ $(document).ready(function () {
 
     // Base columns configuration
     let columns = [
-        { data: 'id', name: 'id' },
+        { data: 'id', name: 'id', visible:false },
         { data: 'mudda_number', name: 'mudda_number' },
         { data: 'jaherwala_name', name: 'jaherwala_name' },
         { data: 'pratiwadi_name', name: 'pratiwadi_name' },
@@ -102,6 +102,7 @@ $(document).ready(function () {
             info: "_TOTAL_ मध्य _START_ देखि _END_ प्रविष्टिहरू",
             infoEmpty: "० प्रविष्टिहरू",
             infoFiltered: "(कुल _MAX_ मध्येबाट छानिएको)",
+            processing: "डाटा लोड हुँदैछ... कृपया प्रतीक्षा गर्नुहोस्"
         }
     });
 });

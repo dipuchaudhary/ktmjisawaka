@@ -13,7 +13,6 @@ use Yajra\DataTables\Facades\DataTables;
 class PatraChallaniController extends Controller
 {
     protected $format = '';
-    protected $ChallaniNumber = '';
     /**
      * Display a listing of the resource.
      */
@@ -72,17 +71,20 @@ class PatraChallaniController extends Controller
     public function create()
     {
         $latest = PatraChallani::orderByDesc('id')->first();
-        $challani_format = ChallaniFormat::value('format_prefix');
+        $challani_format = ChallaniFormat::value('format_prefix') ?? '2082/083';
+
         $this->format = $challani_format;
-        if ($latest && $latest->id) {
-        $nextChallaniNumber = $challani_format .'-'. $latest->id+1;
-        $this->ChallaniNumber = $nextChallaniNumber;
+
+        if ($latest && !empty($latest->challani_number)) {
+            $nextId = $latest->id + 1;
         } else {
-        $nextChallaniNumber = $challani_format .'-'. '1';
-        $this->ChallaniNumber = $nextChallaniNumber;
+            $nextId = 1;
         }
 
-        return view('frontend.challani.patrachallani.create',compact('nextChallaniNumber'));
+        $ChallaniNumber = $this->format . '-' . $nextId;
+
+        return view('frontend.challani.patrachallani.create', compact('ChallaniNumber'));
+
     }
 
     /**
@@ -110,23 +112,17 @@ class PatraChallaniController extends Controller
         ];
 
         $this->validate($request, $rules, $Messages);
-        if (!empty($request->input('bodartha')) ) {
-           $bodartha = implode(',', $request->input('bodartha'));
-        } else {
-            $bodartha= $request->input('bodartha');
-        }
+        $bodartha = is_array($request->input('bodartha'))
+                    ? implode(',', $request->input('bodartha'))
+                    : $request->input('bodartha');
 
-        if (!empty($request->input('jaherwala')) ) {
-           $jaherwala_name = implode(',', $request->input('jaherwala'));
-        } else {
-            $jaherwala_name= $request->input('jaherwala');
-        }
+        $jaherwala_name = is_array($request->input('jaherwala_name'))
+                        ? implode(',', $request->input('jaherwala_name'))
+                        : $request->input('jaherwala_name');
 
-        if (!empty($request->input('pratiwadi')) ) {
-           $pratiwadi_name = implode(',', $request->input('pratiwadi'));
-        } else {
-            $pratiwadi_name= $request->input('pratiwadi');
-        }
+        $pratiwadi_name = is_array($request->input('pratiwadi_name'))
+                        ? implode(',', $request->input('pratiwadi_name'))
+                        : $request->input('pratiwadi_name');
         // Store the data in the database
         PatraChallani::create([
             'karyalaya_name' => $request->input('karyalaya_name'),
@@ -214,7 +210,6 @@ class PatraChallaniController extends Controller
         $patraChallani->update([
             'karyalaya_name' => $request->input('karyalaya_name'),
             'challani_date' => $request->input('challani_date'),
-            'challani_number' => $request->input('challani_number'),
             'mudda_number' => $request->input('mudda_number'),
             'challani_subject' => $request->input('challani_subject'),
             'jaherwala' => $jaherwala_name,
@@ -226,14 +221,6 @@ class PatraChallaniController extends Controller
             'faat' => $request->input('faat'),
             'user_name' => auth()->user()->name,
         ]);
-
-        if ( isset($patraChallani) && $patraChallani->status == true ) {
-            $challaniNumber = $request->input('challani_number');
-            $exists = Challani::where('challani_number', $challaniNumber)->exists();
-            if (!$exists) {
-                Challani::create(['challani_number' => $challaniNumber]);
-            }
-        }
 
         return redirect()->route('patra_challani.index')
         ->with('success', 'चलानी पत्र सफलतापूर्वक अपडेट भयो।');

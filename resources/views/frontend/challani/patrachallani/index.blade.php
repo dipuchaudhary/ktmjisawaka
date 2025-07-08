@@ -45,7 +45,7 @@ $(document).ready(function () {
 
     // Base columns configuration
     let columns = [
-        { data: 'id', name: 'id' },
+        { data: 'id', name: 'id', visible:false, },
         { data: 'karyalaya_name', name: 'karyalaya_name' },
         { data: 'challani_date', name: 'challani_date' },
         { data: 'challani_number', name: 'challani_number' },
@@ -100,6 +100,7 @@ $(document).ready(function () {
                 info: "_TOTAL_ मध्ये _START_ देखि _END_ प्रविष्टिहरू",
                 infoEmpty: "० प्रविष्टिहरू",
                 infoFiltered: "(कुल _MAX_ मध्येबाट छानिएको)",
+                processing: "डाटा लोड हुँदैछ... कृपया प्रतीक्षा गर्नुहोस्"
             }
     });
     $('body').on('click', '#reloadTable', function() {

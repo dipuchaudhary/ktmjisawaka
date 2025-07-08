@@ -13,8 +13,12 @@ use Yajra\DataTables\Facades\DataTables;
 
 class BankingMuddaController extends Controller
 {
-    protected $format = '';
-    protected $ChallaniNumber = '';
+    protected string $format;
+
+    public function __construct()
+    {
+        $this->format = ChallaniFormat::value('format_prefix') ?? '2082/083';
+    }
     /**
      * Display a listing of the resource.
      */
@@ -23,7 +27,6 @@ class BankingMuddaController extends Controller
          if(request()->ajax())
         {
             $query = BankingMudda::select('id', 'anusandhan_garne_nikaye', 'mudda_number', 'mudda_name', 'jaherwala_name','pratiwadi_name','mudda_stithi','mudda_date','sarkariwakil_name','challani_number','user_name','status');
-
             return Datatables::eloquent($query)
                    ->addIndexColumn()
                    ->addColumn('status', function ($data) {
@@ -73,17 +76,13 @@ class BankingMuddaController extends Controller
      */
     public function create()
     {
-        $latest = Challani::orderByDesc('id')->first();
-        $challani_format = ChallaniFormat::value('format_prefix');
-        $this->format = $challani_format;
-        if ($latest && $latest->id) {
-        $nextChallaniNumber = $challani_format .'-'. $latest->id+1;
-        $this->ChallaniNumber = $nextChallaniNumber;
-        } else {
-        $nextChallaniNumber = $challani_format .'-'. '1';
-        $this->ChallaniNumber = $nextChallaniNumber;
-        }
-        return view('frontend.banking_mudda.create',compact('nextChallaniNumber'));
+        $count = BankingMudda::whereNotNull('challani_number')->count();
+
+        $nextId = $count + 1;
+
+        $ChallaniNumber = $this->format . '-' . $nextId;
+
+        return view('frontend.banking_mudda.create',compact('ChallaniNumber'));
     }
 
     /**
@@ -98,6 +97,7 @@ class BankingMuddaController extends Controller
             'pratiwadi_name' => 'required|array',
             'mudda_stithi' => 'required',
             'mudda_date' => 'required',
+            'status' => 'required|boolean',
         ];
         $Messages = [
            'anusandhan_garne_nikaye.required' => 'अनुसन्धान गर्ने निकाय अनिवार्य छ।',
@@ -109,17 +109,13 @@ class BankingMuddaController extends Controller
 
         $this->validate($request, $rules, $Messages);
 
-      if (!empty($request->input('jaherwala_name')) ) {
-           $jaherwala_name = implode(',', $request->input('jaherwala_name'));
-        } else {
-            $jaherwala_name= $request->input('jaherwala_name');
-        }
+        $jaherwala_name = is_array($request->input('jaherwala_name'))
+                        ? implode(',', $request->input('jaherwala_name'))
+                        : $request->input('jaherwala_name');
 
-        if (!empty($request->input('pratiwadi_name')) ) {
-           $pratiwadi_name = implode(',', $request->input('pratiwadi_name'));
-        } else {
-            $pratiwadi_name= $request->input('pratiwadi_name');
-        }
+        $pratiwadi_name = is_array($request->input('pratiwadi_name'))
+                        ? implode(',', $request->input('pratiwadi_name'))
+                        : $request->input('pratiwadi_name');
         // Store the data in the database
         $Insertdata = [
             'anusandhan_garne_nikaye' => $request->input('anusandhan_garne_nikaye'),
@@ -140,14 +136,8 @@ class BankingMuddaController extends Controller
             'user_name' => auth()->user()->name,
         ];
 
-        if ($request->input('status') == '1' || $request->status === 1 ||$request->input('status') === true) {
-
+        if ($request->input('status') == '1' || $request->input('status') === true) {
             $Insertdata['challani_number'] = $request->input('challani_number');
-            $challaniNumber = $request->input('challani_number');
-            $exists = Challani::where('challani_number', $challaniNumber)->exists();
-            if (!$exists) {
-                Challani::create(['challani_number' => $challaniNumber]);
-            }
         }
 
         BankingMudda::create($Insertdata);
@@ -172,17 +162,14 @@ class BankingMuddaController extends Controller
     public function edit(string $id)
     {
         $bankingmudda = BankingMudda::findOrFail($id);
-        $latest = BankingMudda::orderByDesc('id')->first();
-        $challani_format = ChallaniFormat::value('format_prefix');
-        $this->format = $challani_format;
-        if ($latest && $latest->id) {
-        $nextChallaniNumber = $challani_format .'-'. $latest->id+1;
-        $this->ChallaniNumber = $nextChallaniNumber;
-        } else {
-        $nextChallaniNumber = $challani_format .'-'. '1';
-        $this->ChallaniNumber = $nextChallaniNumber;
-        }
-        return view('frontend.banking_mudda.edit', compact('bankingmudda','nextChallaniNumber'));
+        $count = BankingMudda::whereNotNull('challani_number')->count();
+
+        $nextId = $count + 1;
+
+        $ChallaniNumber = $this->format . '-' . $nextId;
+
+
+        return view('frontend.banking_mudda.edit', compact('bankingmudda','ChallaniNumber'));
     }
 
      protected function createAviyog($request,$jaherwala_name,$pratiwadi_name) {
@@ -215,6 +202,7 @@ class BankingMuddaController extends Controller
             'anusandhan_garne_nikaye' => 'required',
             'mudda_stithi' => 'required',
             'mudda_date' => 'required',
+            'challani_number' => 'nullable|unique:banking_muddas,challani_number,' . $id,
         ];
         $Messages = [
            'anusandhan_garne_nikaye.required' => 'अनुसन्धान गर्ने निकाय अनिवार्य छ।',
@@ -224,18 +212,17 @@ class BankingMuddaController extends Controller
         $bankingmudda = BankingMudda::findOrFail($id);
         $this->validate($request, $rules, $Messages);
 
-        if (!empty($request->input('jaherwala_name')) ) {
-           $jaherwala_name = implode(',', $request->input('jaherwala_name'));
-        } else {
-            $jaherwala_name= $request->input('jaherwala_name');
-        }
+        $jaherwala_name = is_array($request->input('jaherwala_name'))
+                        ? implode(',', $request->input('jaherwala_name'))
+                        : $request->input('jaherwala_name');
 
-        if (!empty($request->input('pratiwadi_name')) ) {
-           $pratiwadi_name = implode(',', $request->input('pratiwadi_name'));
-        } else {
-            $pratiwadi_name= $request->input('pratiwadi_name');
-        }
-        $bankingmudda->update([
+        $pratiwadi_name = is_array($request->input('pratiwadi_name'))
+                        ? implode(',', $request->input('pratiwadi_name'))
+                        : $request->input('pratiwadi_name');
+
+        $challaniNumber = $request->input('challani_number');
+        $shouldAssignChallani = $request->status && !BankingMudda::where('challani_number', $challaniNumber)->where('id', '!=', $bankingmudda->id)->exists();
+        $updatedata = [
             'anusandhan_garne_nikaye' => $request->input('anusandhan_garne_nikaye'),
             'mudda_number' => $request->input('mudda_number'),
             'mudda_name' => $request->input('mudda_name'),
@@ -250,21 +237,17 @@ class BankingMuddaController extends Controller
             'sarkariwakil_name' => $request->input('sarkariwakil_name'),
             'faat_name' => $request->input('faat_name'),
             'mudda_pathayko_date' => $request->input('mudda_pathayko_date'),
-            'challani_number' => $request->status ? $request->input('challani_number') : $bankingmudda->challani_number,
             'status' => $request->input('status'),
             'kaifiyat' => $request->input('kaifiyat'),
             'user_name' => auth()->user()->name,
-        ]);
+        ];
+
+        $updatedata['challani_number'] = $shouldAssignChallani ? $challaniNumber : $bankingmudda->challani_number;
+        $bankingmudda->update($updatedata);
+
         $this->updateAviyogchallani($bankingmudda,$request,$jaherwala_name,$pratiwadi_name);
         $this->updatePunarabedan($bankingmudda,$request,$jaherwala_name,$pratiwadi_name);
 
-        if ( isset($bankingmudda) && $bankingmudda->status == true ) {
-            $challaniNumber = $request->input('challani_number');
-            $exists = Challani::where('challani_number', $challaniNumber)->exists();
-            if (!$exists) {
-                Challani::create(['challani_number' => $challaniNumber]);
-            }
-        }
         return redirect()->route('banking_mudda.index')
         ->with('success', 'बैकिङ्ग मुद्दा सफलतापूर्वक अपडेट भयो।');
     }

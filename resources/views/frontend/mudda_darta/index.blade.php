@@ -47,7 +47,7 @@
         const hasActions = @json(auth()->check() && (auth()->user()->can('mulldarta-edit') || auth()->user()->can('mulldarta-delete')));
 
         let columns = [
-            { data: 'id', name: 'id' },
+            { data: 'id', name: 'id', visible:false },
             { data: 'anusandhan_garne_nikaye', name: 'anusandhan_garne_nikaye' },
             { data: 'mudda_number', name: 'mudda_number' },
             { data: 'mudda_name', name: 'mudda_name' },
