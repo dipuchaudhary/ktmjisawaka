@@ -37,7 +37,7 @@
                     @enderror
                 </div>
                 <div class="col-md-4 mb-3">
-                    <label for="चलानी शाखा" class="form-label">चलानी गर्ने शाखा</label>
+                    <label for="चलानी शाखा" class="form-label">चलानी गर्ने शाखा <span style="color:red">*</span></label>
                     <select class="form-control" id="challani_sakha" name="challani_sakha">
                             <option value="">छान्नुहोस्</option>
                             <option value="सचिवालय">सचिवालय</option>

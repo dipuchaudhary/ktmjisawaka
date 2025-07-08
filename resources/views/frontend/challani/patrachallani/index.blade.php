@@ -46,15 +46,15 @@ $(document).ready(function () {
     // Base columns configuration
     let columns = [
         { data: 'id', name: 'id', visible:false, },
-        { data: 'karyalaya_name', name: 'karyalaya_name' },
-        { data: 'challani_date', name: 'challani_date' },
-        { data: 'challani_number', name: 'challani_number' },
-        { data: 'mudda_number', name: 'mudda_number' },
-        { data: 'challani_subject', name: 'challani_subject' },
-        { data: 'verified_by', name: 'verified_by' },
-        { data: 'challani_sakha', name: 'challani_sakha' },
-        { data: 'user_name', name: 'user_name' },
-        { data: 'status', name: 'status' }
+        { data: 'karyalaya_name', name: 'karyalaya_name', className: 'exportable' },
+        { data: 'challani_date', name: 'challani_date', className: 'exportable' },
+        { data: 'challani_number', name: 'challani_number', className: 'exportable' },
+        { data: 'mudda_number', name: 'mudda_number', className: 'exportable' },
+        { data: 'challani_subject', name: 'challani_subject', className: 'exportable' },
+        { data: 'verified_by', name: 'verified_by', className: 'exportable' },
+        { data: 'challani_sakha', name: 'challani_sakha', className: 'exportable' },
+        { data: 'user_name', name: 'user_name', className: 'exportable' },
+        { data: 'status', name: 'status', className: 'exportable' }
     ];
 
     // Add action column only if user has permission
@@ -84,16 +84,41 @@ $(document).ready(function () {
         },
         columns: columns,
        dom: '<"d-flex justify-content-between align-items-right mb-3"lBf>rtip',
-            buttons: [
-                { extend: 'excel', className: 'btn btn-success' },
-                { extend: 'pdf', className: 'btn btn-danger',charset: 'UTF-8',
-                    customize: function(doc) {
-                    doc.defaultStyle = {
-                    font: 'Devnagari'
-                    };
+       buttons: [
+                { extend: 'excel', className: 'btn btn-success', exportOptions: {
+                        modifier: {
+                            search: 'applied',
+                            order: 'applied',
+                            page: 'all'
+                        },
+                        columns: '.exportable'
                     }
                 },
-                { extend: 'print', className: 'btn btn-info' }
+                { extend: 'pdf', className: 'btn btn-danger',charset: 'UTF-8',
+                    customize: function(doc) {
+                        doc.defaultStyle = {
+                        font: 'Devnagari'
+                        };
+                    },
+
+                    exportOptions: {
+                        modifier: {
+                            search: 'applied',
+                            order: 'applied',
+                            page: 'all'
+                        },
+                        columns: '.exportable'
+                    }
+                },
+                { extend: 'print', className: 'btn btn-info', exportOptions: {
+                        modifier: {
+                            search: 'applied',
+                            order: 'applied',
+                            page: 'all'
+                        },
+                        columns: '.exportable'
+                    }
+                }
             ],
             language: {
                 zeroRecords: "कुनै डाटा फेला परेन",

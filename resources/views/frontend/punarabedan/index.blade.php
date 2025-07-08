@@ -44,17 +44,17 @@ $(document).ready(function () {
     // Base columns configuration
     let columns = [
         { data: 'id', name: 'id', visible:false },
-        { data: 'mudda_number', name: 'mudda_number' },
-        { data: 'jaherwala_name', name: 'jaherwala_name' },
-        { data: 'pratiwadi_name', name: 'pratiwadi_name' },
-        { data: 'mudda_name', name: 'mudda_name' },
-        { data: 'faisala_date', name: 'faisala_date' },
-        { data: 'faisala_pramanikaran_date', name: 'faisala_pramanikaran_date' },
-        { data: 'punarabedan', name: 'punarabedan' },
-        { data: 'punarabedan_date', name: 'punarabedan_date' },
-        { data: 'punarabedan_challani_number', name: 'punarabedan_challani_number' },
-        { data: 'user_name', name: 'user_name' },
-        { data: 'status', name: 'status' }
+        { data: 'mudda_number', name: 'mudda_number', className: 'exportable' },
+        { data: 'jaherwala_name', name: 'jaherwala_name', className: 'exportable' },
+        { data: 'pratiwadi_name', name: 'pratiwadi_name', className: 'exportable' },
+        { data: 'mudda_name', name: 'mudda_name', className: 'exportable' },
+        { data: 'faisala_date', name: 'faisala_date', className: 'exportable' },
+        { data: 'faisala_pramanikaran_date', name: 'faisala_pramanikaran_date', className: 'exportable' },
+        { data: 'punarabedan', name: 'punarabedan', className: 'exportable' },
+        { data: 'punarabedan_date', name: 'punarabedan_date', className: 'exportable' },
+        { data: 'punarabedan_challani_number', name: 'punarabedan_challani_number', className: 'exportable' },
+        { data: 'user_name', name: 'user_name', className: 'exportable' },
+        { data: 'status', name: 'status', className: 'exportable' }
     ];
 
     // Add action column only if user has permission
@@ -84,7 +84,15 @@ $(document).ready(function () {
         columns: columns,
         dom: '<"d-flex justify-content-between align-items-right mb-3"lBf>rtip',
         buttons: [
-            { extend: 'excel', className: 'btn btn-success' },
+            { extend: 'excel', className: 'btn btn-success', exportOptions: {
+                        modifier: {
+                            search: 'applied',
+                            order: 'applied',
+                            page: 'all'
+                        },
+                        columns: '.exportable'
+                    }
+            },
             {
                 extend: 'pdf',
                 className: 'btn btn-danger',
@@ -93,9 +101,26 @@ $(document).ready(function () {
                     doc.defaultStyle = {
                         font: 'Devnagari'
                     };
-                }
+                },
+                exportOptions: {
+                        modifier: {
+                            search: 'applied',
+                            order: 'applied',
+                            page: 'all'
+                        },
+                        columns: '.exportable'
+                    }
             },
-            { extend: 'print', className: 'btn btn-info' },
+            { extend: 'print', className: 'btn btn-info', exportOptions: {
+                        modifier: {
+                            search: 'applied',
+                            order: 'applied',
+                            page: 'all'
+                        },
+                        columns: '.exportable'
+                    }
+
+            },
         ],
         language: {
             zeroRecords: "कुनै डाटा फेला परेन",
