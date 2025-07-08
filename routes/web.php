@@ -14,7 +14,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoleController;
 use App\Models\AviyogChallani;
 
-Route::get('/', [FrontendController::class, 'index'])->name('home');
+Route::get('/', [FrontendController::class, 'index'])->name('frontend.home');
 
 Auth::routes();
 
@@ -54,7 +54,7 @@ Route::post('/punarabedan/update/{id}',[PunarabedanController::class, 'update'])
 Route::delete('/punarabedan/delete/{id}',[PunarabedanController::class, 'destroy'])->name('punarabedan.destroy');
 });
 Route::prefix('admin')->middleware(['auth'])->group(function() {
-    Route::get('/home', [HomeController::class, 'index'])->name('dashboard');
+    Route::get('/home', [HomeController::class, 'index'])->name('admin.dashboard');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

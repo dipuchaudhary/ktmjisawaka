@@ -45,7 +45,7 @@
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark">
                                     <li>
-                                        <a class="dropdown-item" href="{{ route('dashboard') }}">
+                                        <a class="dropdown-item" href="{{ route('admin.dashboard') }}">
                                         <i class="fas fa-tachometer-alt me-2"></i> {{ __('Dashboard') }}
                                         </a>
                                     </li>
