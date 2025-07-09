@@ -16,9 +16,7 @@
         तालिका डाटा लोड गर्न असफल भयो। कृपया पृष्ठ रिफ्रेस गर्नुहोस् वा पछि प्रयास गर्नुहोस्।
     </div>
 
-    <div class="card shadow-sm">
-        <div class="card-body p-0">
-            <table id="muddaTable" class="table table-hover table-striped mb-0">
+            <table id="muddaTable" class="table table-hover data-table">
                 <thead class="thead-light">
                     <tr>
                         <th>ID</th>
@@ -42,9 +40,7 @@
                 </thead>
                 <tbody></tbody>
             </table>
-        </div>
     </div>
-</div>
 @endsection
 
 @push('datatable_scripts')

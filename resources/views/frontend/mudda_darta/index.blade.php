@@ -5,7 +5,7 @@
     @auth
         @can('mulldarta-create')
         <a href="{{ route('mudda_darta.create') }}" class="btn btn-primary float-right mb-5">
-            नयाँ राय दर्ता सिर्जना गर्नुहोस्
+          <i class="fas fa-plus"></i> नयाँ राय दर्ता सिर्जना गर्नुहोस्
         </a>
         @endcan
     @endauth
@@ -14,8 +14,8 @@
         तालिका डाटा लोड गर्न असफल भयो। कृपया पृष्ठ रिफ्रेस गर्नुहोस् वा पछि प्रयास गर्नुहोस्।
     </div>
 
-    <table id="muddaTable" class="table table-bordered data-table">
-        <thead>
+    <table id="muddaTable" class="table table-bordered table-hover data-table">
+        <thead class="thead-light">
             <tr>
                 <th>ID</th>
                 <th>अनुसन्धान गर्ने निकाय</th>

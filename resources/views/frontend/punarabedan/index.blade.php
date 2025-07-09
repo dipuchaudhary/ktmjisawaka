@@ -5,8 +5,8 @@
     <div class="alert alert-danger d-none" id="dataTableError">
         तालिका डाटा लोड गर्न असफल भयो। कृपया पृष्ठ रिफ्रेस गर्नुहोस् वा पछि प्रयास गर्नुहोस्।
     </div>
-    <table id="muddaTable" class="table table-bordered data-table">
-        <thead>
+    <table id="muddaTable" class="table table-bordered table-hover data-table">
+        <thead class="thead-light">
             <tr>
                 <th rowspan="2">ID</th>
                 <th rowspan="2">मुद्दा नं.</th>

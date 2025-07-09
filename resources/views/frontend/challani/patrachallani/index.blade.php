@@ -4,7 +4,7 @@
     <h1>पत्र चलानी सूची</h1>
     @can('patrachallani-create')
     <a href="{{ route('patra_challani.create') }}" class="btn btn-primary float-right mb-5">
-        नयाँ पत्र चलानी गर्नुहोस्
+        <i class="fas fa-plus"></i> नयाँ पत्र चलानी गर्नुहोस्
     </a>
     @endcan
 
@@ -12,8 +12,8 @@
         तालिका डाटा लोड गर्न असफल भयो। कृपया पृष्ठ रिफ्रेस गर्नुहोस् वा पछि प्रयास गर्नुहोस्।
     </div>
 
-    <table id="patraChallaniTable" class="table table-bordered data-table">
-        <thead>
+    <table id="patraChallaniTable" class="table table-bordered table-hover data-table">
+        <thead class="thead-light">
             <tr>
                 <th>ID</th>
                 <th>पत्र चलानी भएको कार्यालय</th>

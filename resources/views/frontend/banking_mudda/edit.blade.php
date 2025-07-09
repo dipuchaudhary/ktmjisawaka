@@ -2,6 +2,9 @@
 @section('content')
 <div class="container mt-5">
     <h3 class="mb-5">बैकिङ्ग मुद्दा दर्ता फारम</h3>
+    <a href="{{ route('banking_mudda.index') }}" class="btn btn-success mb-5">
+       <i class="fas fa-arrow-left"></i> पछाडि जानुहोस्
+    </a>
     <form class="container" method="POST" action="{{ route('banking_mudda.update', $bankingmudda->id) }}" enctype="multipart/form-data">
             @csrf
             <div class="row">

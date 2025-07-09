@@ -5,6 +5,9 @@
 @section('content')
 <div class="container mt-5">
     <h3 class="mb-5">अभियोग चलानी फारम</h3>
+    <a href="{{ route('aviyog_challani.index') }}" class="btn btn-success mb-5">
+       <i class="fas fa-arrow-left"></i> पछाडि जानुहोस्
+    </a>
     <form class="container" method="POST" action="{{ route('aviyog_challani.update',$aviyogchallani->id) }}" enctype="multipart/form-data">
             @csrf
             <div class="row g-3 align-items-center mb-5">
