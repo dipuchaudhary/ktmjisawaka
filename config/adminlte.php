@@ -325,11 +325,13 @@ return [
             'text' => 'Role Management',
             'url' => 'admin/roles',
             'icon' => 'fas fa-fw fa-address-book',
+            'can' => 'role-list',
         ],
         [
             'text' => 'User Management',
             'url' => 'admin/users',
             'icon' => 'fas fa-fw fa-user-plus',
+            'can' => 'user-list',
         ],
         [
             'text' => 'Go to Website',
