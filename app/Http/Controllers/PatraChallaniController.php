@@ -204,17 +204,13 @@ class PatraChallaniController extends Controller
             $bodartha= $request->input('bodartha');
         }
 
-        if (!empty($request->input('jaherwala')) ) {
-           $jaherwala_name = implode(',', $request->input('jaherwala'));
-        } else {
-            $jaherwala_name= $request->input('jaherwala');
-        }
+        $jaherwala_name = is_array($request->input('jaherwala_name'))
+                        ? implode(',', $request->input('jaherwala_name'))
+                        : $request->input('jaherwala_name');
 
-        if (!empty($request->input('pratiwadi')) ) {
-           $pratiwadi_name = implode(',', $request->input('pratiwadi'));
-        } else {
-            $pratiwadi_name= $request->input('pratiwadi');
-        }
+        $pratiwadi_name = is_array($request->input('pratiwadi_name'))
+                        ? implode(',', $request->input('pratiwadi_name'))
+                        : $request->input('pratiwadi_name');
         // Store the data in the database
         $patraChallani->update([
             'karyalaya_name' => $request->input('karyalaya_name'),

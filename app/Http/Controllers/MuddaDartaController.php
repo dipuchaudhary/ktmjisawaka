@@ -96,17 +96,13 @@ class MuddaDartaController extends Controller
     {
         $this->validate($request, $this->rules, $this->customMessages);
 
-        if (!empty($request->input('jaherwala_name')) ) {
-           $jaherwala_name = implode(',', $request->input('jaherwala_name'));
-        } else {
-            $jaherwala_name= $request->input('jaherwala_name');
-        }
+        $jaherwala_name = is_array($request->input('jaherwala_name'))
+                        ? implode(',', $request->input('jaherwala_name'))
+                        : $request->input('jaherwala_name');
 
-        if (!empty($request->input('pratiwadi_name')) ) {
-           $pratiwadi_name = implode(',', $request->input('pratiwadi_name'));
-        } else {
-            $pratiwadi_name= $request->input('pratiwadi_name');
-        }
+        $pratiwadi_name = is_array($request->input('pratiwadi_name'))
+                        ? implode(',', $request->input('pratiwadi_name'))
+                        : $request->input('pratiwadi_name');
         // Store the data in the database
         MuddaDarta::create([
             'anusandhan_garne_nikaye' => $request->input('anusandhan_garne_nikaye'),
