@@ -7,6 +7,7 @@ use App\Models\Challani;
 use App\Models\Punarabedan;
 use Illuminate\Http\Request;
 use App\Models\ChallaniFormat;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Session;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -98,6 +99,11 @@ class PunarabedanController extends Controller
     }
 
     public function edit($id){
+
+        if (!Gate::allows('punarabedan-edit')) {
+             abort(403, 'You do not have permissions');
+        }
+
         $punarabedan = Punarabedan::findOrFail($id);
         $latest = Challani::orderByDesc('id')->first();
 
@@ -160,6 +166,11 @@ class PunarabedanController extends Controller
     }
 
     public function destroy($id){
+
+        if (!Gate::allows('punarabedan-delete')) {
+             abort(403, 'You do not have permissions');
+        }
+
         $punarabedan = Punarabedan::findOrFail($id);
         $punarabedan->delete();
         return redirect()->route('punarabedan.index')

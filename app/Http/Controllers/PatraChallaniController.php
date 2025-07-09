@@ -7,6 +7,7 @@ use App\Models\Challani;
 use Illuminate\Http\Request;
 use App\Models\PatraChallani;
 use App\Models\ChallaniFormat;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Session;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -70,6 +71,10 @@ class PatraChallaniController extends Controller
      */
     public function create()
     {
+        if (!Gate::allows('patrachallani-create')) {
+             abort(403, 'You do not have permissions');
+        }
+
         $latest = PatraChallani::orderByDesc('id')->first();
         $challani_format = ChallaniFormat::value('format_prefix') ?? '2082/083';
 
@@ -158,6 +163,10 @@ class PatraChallaniController extends Controller
      */
     public function edit($id)
     {
+        if (!Gate::allows('patrachallani-edit')) {
+             abort(403, 'You do not have permissions');
+        }
+
         $patrachallani = PatraChallani::findOrFail($id);
         return view('frontend.challani.patrachallani.edit', compact('patrachallani'));
     }
@@ -231,6 +240,9 @@ class PatraChallaniController extends Controller
      */
     public function destroy($id)
     {
+        if (!Gate::allows('patrachallani-delete')) {
+             abort(403, 'You do not have permissions');
+        }
         $patrachallani = PatraChallani::findOrFail($id);
         $patrachallani->delete();
         return redirect()->route('patra_challani.index')

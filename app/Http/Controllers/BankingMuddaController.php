@@ -8,6 +8,7 @@ use App\Models\BankingMudda;
 use Illuminate\Http\Request;
 use App\Models\AviyogChallani;
 use App\Models\ChallaniFormat;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Session;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -76,6 +77,10 @@ class BankingMuddaController extends Controller
      */
     public function create()
     {
+        if (!Gate::allows('bankingdarta-create')) {
+             abort(403, 'You do not have permissions');
+        }
+
         $count = BankingMudda::whereNotNull('challani_number')->count();
 
         $nextId = $count + 1;
@@ -161,6 +166,10 @@ class BankingMuddaController extends Controller
      */
     public function edit(string $id)
     {
+        if (!Gate::allows('bankingdarta-edit')) {
+             abort(403, 'You do not have permissions');
+        }
+
         $bankingmudda = BankingMudda::findOrFail($id);
         $count = BankingMudda::whereNotNull('challani_number')->count();
 
@@ -286,6 +295,10 @@ class BankingMuddaController extends Controller
      */
     public function destroy(string $id)
     {
+        if (!Gate::allows('bankingdarta-delete')) {
+             abort(403, 'You do not have permissions');
+        }
+
         $bankingmudda = BankingMudda::findOrFail($id);
         $bankingmudda->delete();
         return redirect()->route('banking_mudda.index')

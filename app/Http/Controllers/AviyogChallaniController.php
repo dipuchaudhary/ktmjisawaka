@@ -7,6 +7,7 @@ use App\Models\Challani;
 use Illuminate\Http\Request;
 use App\Models\AviyogChallani;
 use App\Models\ChallaniFormat;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
@@ -83,6 +84,9 @@ class AviyogChallaniController extends Controller
     }
 
     public function edit($id){
+        if (!Gate::allows('aviyogchallani-edit')) {
+             abort(403, 'You do not have permissions');
+        }
         $aviyogchallani = AviyogChallani::findOrFail($id);
         $latest = Challani::orderByDesc('id')->first();
 
@@ -178,6 +182,9 @@ class AviyogChallaniController extends Controller
     }
 
     public function destroy($id){
+        if (!Gate::allows('aviyogchallani-delete')) {
+             abort(403, 'You do not have permissions');
+        }
         $aviyogchallani = AviyogChallani::findOrFail($id);
         $aviyogchallani->delete();
         return redirect()->route('aviyog_challani.index')

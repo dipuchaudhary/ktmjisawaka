@@ -9,6 +9,7 @@ use App\Models\PatraChallani;
 use App\Models\AviyogChallani;
 use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Gate;
 use App\DataTables\MuddaDartaDataTable;
 use Illuminate\Support\Facades\Session;
 use Spatie\Permission\Models\Permission;
@@ -83,6 +84,10 @@ class MuddaDartaController extends Controller
 
     public function create(Request $request)
     {
+        if (!Gate::allows('mulldarta-create')) {
+             abort(403, 'You do not have permissions');
+        }
+
         return view('frontend.mudda_darta.create');
 
     }
@@ -131,6 +136,10 @@ class MuddaDartaController extends Controller
     }
     public function edit($id)
     {
+        if (!Gate::allows('mulldarta-edit')) {
+             abort(403, 'You do not have permissions');
+        }
+
         $mudda = MuddaDarta::findOrFail($id);
         return view('frontend.mudda_darta.edit', compact('mudda'));
     }
@@ -233,6 +242,10 @@ class MuddaDartaController extends Controller
 
     public function destroy($id)
     {
+        if (!Gate::allows('mulldarta-delete')) {
+             abort(403, 'You do not have permissions');
+        }
+
         $mudda = MuddaDarta::findOrFail($id);
         $mudda->delete();
         return redirect()->route('mudda_darta.index')
