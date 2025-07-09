@@ -18,6 +18,10 @@ class RoleController extends Controller
      */
     public function index()
     {
+        if (!Gate::allows('role-list')) {
+             abort(403, 'You do not have permissions');
+        }
+
         $roles = Role::latest()->paginate(5);
         return view('backend.role.index',compact('roles'));
     }
@@ -27,6 +31,9 @@ class RoleController extends Controller
      */
     public function create()
     {
+        if (!Gate::allows('role-create')) {
+             abort(403, 'You do not have permissions');
+        }
         $permissions = Permission::all();
         return view('backend.role.create',compact('permissions'));
     }
@@ -59,6 +66,10 @@ class RoleController extends Controller
      */
     public function edit($id)
     {
+        if (!Gate::allows('role-edit')) {
+             abort(403, 'You do not have permissions');
+        }
+
         $role = Role::findOrFail($id);
         $permissions = Permission::get();
         $rolePermissions = $role->permissions()->pluck('name')->toArray();
@@ -89,6 +100,10 @@ class RoleController extends Controller
      */
     public function destroy(Role $role)
     {
+        if (!Gate::allows('role-delete')) {
+             abort(403, 'You do not have permissions');
+        }
+
         $role->delete();
         return redirect()->route('roles.index')
                 ->with('success','Role deleted successfully');

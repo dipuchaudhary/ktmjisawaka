@@ -84,7 +84,8 @@ class AviyogChallaniController extends Controller
     }
 
     public function edit($id){
-        if (!Gate::allows('aviyogchallani-edit')) {
+
+        if (!Gate::allows('aviyog-edit')) {
              abort(403, 'You do not have permissions');
         }
         $aviyogchallani = AviyogChallani::findOrFail($id);
@@ -182,7 +183,7 @@ class AviyogChallaniController extends Controller
     }
 
     public function destroy($id){
-        if (!Gate::allows('aviyogchallani-delete')) {
+        if (!Gate::allows('aviyog-delete')) {
              abort(403, 'You do not have permissions');
         }
         $aviyogchallani = AviyogChallani::findOrFail($id);

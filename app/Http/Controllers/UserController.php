@@ -15,6 +15,10 @@ class UserController extends Controller
      */
     public function index()
     {
+        if (!Gate::allows('user-list')) {
+             abort(403, 'You do not have permissions');
+        }
+
         $users = User::latest()->paginate(5);
         return view('backend.user.index',compact('users'));
     }
@@ -24,6 +28,10 @@ class UserController extends Controller
      */
     public function create()
     {
+        if (!Gate::allows('user-create')) {
+             abort(403, 'You do not have permissions');
+        }
+
         $roles = Role::pluck('name','name')->all();
         return view('backend.user.create', compact('roles'));
     }
@@ -62,6 +70,10 @@ class UserController extends Controller
      */
     public function edit(string $id)
     {
+        if (!Gate::allows('user-edit')) {
+             abort(403, 'You do not have permissions');
+        }
+
         $user = User::findOrFail($id);
         $roles = Role::pluck('name','name')->all();
         $userRoles = $user->roles->pluck('name','name')->all();
@@ -98,6 +110,10 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
+        if (!Gate::allows('user-delete')) {
+             abort(403, 'You do not have permissions');
+        }
+
         User::find($id)->delete();
         return redirect()->route('users.index')
                 ->with('success','User deleted successfully');
