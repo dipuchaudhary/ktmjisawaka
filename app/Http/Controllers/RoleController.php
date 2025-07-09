@@ -7,6 +7,7 @@ use DB;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Gate;
 use Spatie\Permission\Models\Permission;
 
 
