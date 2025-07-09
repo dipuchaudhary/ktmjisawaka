@@ -18,6 +18,7 @@ class AviyogChallani extends Model
         'mudda_number',
         'sarkariwakil_name',
         'anusandhan_garne_nikaye',
+        'pesh_karyala',
         'faat_name',
         'file',
         'kaifiyat',

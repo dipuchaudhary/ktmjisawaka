@@ -20,13 +20,10 @@
                 <th>सरकारी वकील</th>
                 <th>फाँट</th>
                 <th>अनुसन्धान गर्ने निकाय</th>
+                <th>अभियोग/निर्णय(पेश भएको कार्यालय)</th>
                 <th>प्रयोगकर्ता</th>
                 <th>Status</th>
-                @auth
-                    @if(auth()->user()->can('aviyog-edit') || auth()->user()->can('aviyog-delete'))
-                        <th width="105px">Action</th>
-                    @endif
-                @endauth
+                <th width="105px">Action</th>
             </tr>
         </thead>
         <tbody></tbody>
@@ -37,8 +34,6 @@
 @push('datatable_scripts')
 <script type="text/javascript">
     $(document).ready(function () {
-        // Check if user is authenticated and has permissions
-        const hasActions = @json(auth()->check() && (auth()->user()->can('aviyog-edit') || auth()->user()->can('aviyog-delete')));
 
         let columns = [
             { data: 'id', name: 'id', visible:false },
@@ -51,19 +46,11 @@
             { data: 'sarkariwakil_name', name: 'sarkariwakil_name', className: 'exportable' },
             { data: 'faat_name', name: 'faat_name', className: 'exportable' },
             { data: 'anusandhan_garne_nikaye', name: 'anusandhan_garne_nikaye', className: 'exportable' },
+            { data: 'pesh_karyala', name: 'pesh_karyala', className: 'exportable' },
             { data: 'user_name', name: 'user_name', className: 'exportable' },
             { data: 'status', name: 'status', className: 'exportable' },
+            { data: 'action', name: 'action',  orderable: false, searchable: false, className: 'text-center' },
         ];
-
-        if (hasActions) {
-            columns.push({
-                data: 'action',
-                name: 'action',
-                orderable: false,
-                searchable: false,
-                className: 'text-center'
-            });
-        }
 
         $('#muddaTable').DataTable({
             "order": [[0, "desc"]],

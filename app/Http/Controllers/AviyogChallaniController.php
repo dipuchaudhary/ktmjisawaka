@@ -30,7 +30,7 @@ class AviyogChallaniController extends Controller
          if(request()->ajax())
         {
             try {
-                $query = AviyogChallani::select('id', 'challani_date','challani_number','mudda_number','mudda_name','jaherwala_name','pratiwadi_name','sarkariwakil_name','faat_name','anusandhan_garne_nikaye','user_name','status','file');
+                $query = AviyogChallani::select('id', 'challani_date','challani_number','mudda_number','mudda_name','jaherwala_name','pratiwadi_name','sarkariwakil_name','faat_name','anusandhan_garne_nikaye','user_name','status','file','pesh_karyala');
 
                 return Datatables::eloquent($query)
                     ->addIndexColumn()
@@ -63,7 +63,7 @@ class AviyogChallaniController extends Controller
         if (isset($data->file) && $data->file) {
             $buttons .= '<a href="' . asset('storage/' . $data->file) . '" target="_blank" class="edit p-1"><i class="fa fa-eye fa-lg"></i></a>';
         }
-        if (!auth()->check()) return '';
+        if (!auth()->check()) return $buttons;
 
         if (auth()->user()->can('aviyog-edit')) {
             $buttons .= '<a href="'.route('aviyog_challani.edit',$data->id).'" class="edit p-1"><i class="fas fa-edit fa-lg"></i></a>';
@@ -101,6 +101,7 @@ class AviyogChallaniController extends Controller
             'pratiwadi_name' => 'required|array',
             'mudda_name' => 'required',
             'upload_file' => 'nullable|file|mimes:pdf|max:51200',
+            'pesh_karyala' => 'required',
         ];
         $customMessages = [
            'anusandhan_garne_nikaye.required' => 'अनुसन्धान गर्ने निकाय अनिवार्य छ।',
@@ -110,6 +111,7 @@ class AviyogChallaniController extends Controller
            'mudda_name.required' => 'मुद्दा किसिम अनिवार्य छ।',
            'upload_file' => 'pdf फाइल मात्र अपलोड गर्नुहोस्।',
            'challani_date' => 'चलानी मिति अनिवार्य छ।',
+           'pesh_karyala' => 'पेश भएको कार्यालय अनिवार्य छ।',
         ];
 
         $this->validate($request, $rules, $customMessages);
@@ -153,6 +155,7 @@ class AviyogChallaniController extends Controller
             'gender'                  => json_encode($genderCounts),
             'gender_counts'           => toNepaliNumber($total),
             'anusandhan_garne_nikaye' => $request->input('anusandhan_garne_nikaye'),
+            'pesh_karyala'            => $request->input('pesh_karyala'),
             'sarkariwakil_name'       => $request->input('sarkariwakil_name'),
             'faat_name'               => $request->input('faat_name'),
             'kaifiyat'                => $request->input('kaifiyat'),

@@ -136,7 +136,7 @@ $(document).ready(function () {
             ],
         language: {
             zeroRecords: "कुनै डाटा फेला परेन",
-            info: "_TOTAL_ मध्य _START_ देखि _END_ प्रविष्टिहरू",
+            info: "_TOTAL_ मध्ये _START_ देखि _END_ प्रविष्टिहरू",
             infoEmpty: "० प्रविष्टिहरू",
             infoFiltered: "(कुल _MAX_ मध्येबाट छानिएको)",
             processing: "डाटा लोड हुँदैछ... कृपया प्रतीक्षा गर्नुहोस्"

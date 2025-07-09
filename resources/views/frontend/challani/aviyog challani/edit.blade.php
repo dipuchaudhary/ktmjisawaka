@@ -95,21 +95,28 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-4 mb-3">
+                <div class="col-md-3 mb-3">
                     <label for="अनुसन्धान गर्ने निकाय" class="form-label">अनुसन्धान गर्ने निकाय </label>
-                    <input type="text" class="form-control @error('anusandhan_garne_nikaye') is-invalid @enderror" id="anusandhan_garne_nikaye" name="anusandhan_garne_nikaye" value="{{ $aviyogchallani->anusandhan_garne_nikaye }}" >
+                    <input type="text" class="form-control @error('anusandhan_garne_nikaye') is-invalid @enderror" id="anusandhan_garne_nikaye" name="anusandhan_garne_nikaye" value="{{ $aviyogchallani->anusandhan_garne_nikaye }}">
                     @error('anusandhan_garne_nikaye')
                         <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
                 </div>
-                <div class="col-md-4 mb-3">
+                <div class="col-md-3 mb-3">
+                    <label for="अनुसन्धान गर्ने निकाय" class="form-label">अभियोग/निर्णय (पेश भएको कार्यालय) </label>
+                    <input type="text" class="form-control @error('pesh_karyala') is-invalid @enderror" id="pesh_karyala" name="pesh_karyala" value="{{ $aviyogchallani->pesh_karyala }}" placeholder="पेश भएको कार्यालय">
+                    @error('pesh_karyala')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="col-md- mb-3">
                     <label for="सरकारी वकील" class="form-label">सरकारी वकील</label>
                     <input type="text" class="form-control @error('sarkariwakil_name') is-invalid @enderror" id="sarkariwakil_name" name="sarkariwakil_name" value="{{ $aviyogchallani->sarkariwakil_name }}" >
                     @error('sarkariwakil_name')
                         <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
                 </div>
-                <div class="col-md-4 mb-3">
+                <div class="col-md-3 mb-3">
                     <label for="फाँट" class="form-label">फाँट</label>
                     <select class="form-select form-control" name="faat_name" id="faat_name">
                         <option value="" {{ empty($aviyogchallani->faat_name) ? 'selected' : '' }}>--एउटाको विकल्प रोज्नुहोस।--</option>
