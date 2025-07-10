@@ -23,7 +23,6 @@ class MuddaDarta extends Model
         'sarkariwakil_name',
         'faat_name',
         'mudda_bibran',
-        'mudda_pathayko_date',
         'kaifiyat',
         'user_name',
         'created_at',

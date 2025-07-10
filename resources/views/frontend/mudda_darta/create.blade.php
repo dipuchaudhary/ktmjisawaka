@@ -114,14 +114,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-4 mb-3">
-                    <label for="मुद्दा पठाएको मिति" class="form-label">मुद्दा पठाएको मिति </label>
-                    <input type="text" class="form-control date-picker @error('mudda_pathayko_date') is-invalid @enderror" id="mudda_pathayko_date" name="mudda_pathayko_date" value="{{ old('mudda_pathayko_date') }}">
-                    @error('mudda_pathayko_date')
-                        <div class="alert alert-danger">{{ $message }}</div>
-                    @enderror
-                </div>
-                <div class="col-md-4 mb-3">
+                <div class="col-md-6 mb-3">
                     <label for="कैफियत" class="form-label">कैफियत</label>
                     <textarea class="form-control" id="kaifiyat" name="kaifiyat" rows="3"></textarea>
                 </div>
