@@ -131,7 +131,7 @@ class AviyogChallaniController extends Controller
             $file = $request->file('upload_file');
             $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
             $extension = $file->getClientOriginalExtension();
-            $filename = $originalName .'.'. $extension;
+            $filename = $originalName . '_' . time() . '.' . $extension;
             $fileurl = $file->storeAs('aviyogfile', $filename, 'public');
         }
 
