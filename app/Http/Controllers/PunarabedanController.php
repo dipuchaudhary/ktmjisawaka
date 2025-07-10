@@ -29,9 +29,8 @@ class PunarabedanController extends Controller
             'suchana_date' => 'required',
             'faisala_garne_nikaye' => 'required',
             'punarabedan' => 'required',
-            'punarabedan_date' => 'required',
-            'punarabedan_challani_number' => 'required',
         ];
+
     protected $customMessages = [
            'mudda_name.required' => 'मुद्दाको नाम अनिवार्य छ।',
            'jaherwala_name.required' => 'जाहेरवालाको नाम अनिवार्य छ।',
@@ -80,7 +79,7 @@ class PunarabedanController extends Controller
     {
         if (!auth()->check()) return '';
         $buttons = '';
-
+        $buttons = '<div style="display: inline-flex; align-items: center; gap: 8px;">';
         if (auth()->user()->can('punarabedan-edit')) {
             $buttons .= '<a href="'.route('punarabedan.edit',$data->id).'" class="edit p-2"><i class="fas fa-edit fa-lg"></i></a>';
         }
@@ -94,7 +93,7 @@ class PunarabedanController extends Controller
                                     </button>
                                 </form>';
         }
-
+        $buttons .= '</div>';
         return $buttons;
     }
 
@@ -123,6 +122,13 @@ class PunarabedanController extends Controller
         $pratiwadi_name = is_array($request->input('pratiwadi_name'))
                         ? implode(',', $request->input('pratiwadi_name'))
                         : $request->input('pratiwadi_name');
+        if ($request->input('punarabedan') == 'सफल') {
+            $punarabedan_date = null;
+            $punarabedan_challani_number = null;
+        } else {
+            $punarabedan_date = $request->input('punarabedan_date');
+            $punarabedan_challani_number = $request->input('punarabedan_challani_number');
+        }
 
         $punarabedan->update([
             'mudda_number' => $request->input('mudda_number'),
@@ -143,8 +149,8 @@ class PunarabedanController extends Controller
             'faisala_xatipurti' => $request->input('faisala_xatipurti'),
             'faisala_bigo' => $request->input('faisala_bigo'),
             'punarabedan' => $request->input('punarabedan'),
-            'punarabedan_date' => $request->input('punarabedan_date'),
-            'punarabedan_challani_number' => $request->input('punarabedan_challani_number'),
+            'punarabedan_date' => $punarabedan_date,
+            'punarabedan_challani_number' => $punarabedan_challani_number,
             'nirnaye' => $request->input('nirnaye'),
             'nirnaye_date' => $request->input('nirnaye_date'),
             'sarkariwakil_name' => $request->input('sarkariwakil_name'),
@@ -153,7 +159,7 @@ class PunarabedanController extends Controller
             'user_name' => auth()->user()->name,
         ]);
 
-        if ( isset($punarabedan) && $punarabedan->status == true ) {
+        if ( isset($punarabedan) && $punarabedan->status == true && $request->input('punarabedan') !== 'सफल' ) {
             $challaniNumber = $request->input('punarabedan_challani_number');
             $exists = Challani::where('challani_number', $challaniNumber)->exists();
             if (!$exists) {

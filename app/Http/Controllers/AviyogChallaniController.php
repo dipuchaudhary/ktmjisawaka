@@ -61,6 +61,7 @@ class AviyogChallaniController extends Controller
     protected function getActionButtons($data)
     {
         $buttons = '';
+        $buttons = '<div style="display: inline-flex; align-items: center; gap: 8px;">';
         if (isset($data->file) && $data->file) {
             $buttons .= '<a href="' . asset('storage/' . $data->file) . '" target="_blank" class="edit p-1"><i class="fa fa-eye fa-lg"></i></a>';
         }
@@ -79,7 +80,7 @@ class AviyogChallaniController extends Controller
                                     </button>
                                 </form>';
         }
-
+        $buttons .= '</div>';
         return $buttons;
     }
 

@@ -13,14 +13,14 @@
             <div class="row g-3 align-items-center mb-5">
                 <div class="col-md-2 mb-3">
                     <label for="मुद्दा नं." class="form-label">मुद्दा नं.</label>
-                    <input type="text" class="form-control @error('mudda_number') is-invalid @enderror" id="mudda_number" name="mudda_number" value="{{ $punarabedan->mudda_number }}" >
+                    <input type="text" class="form-control @error('mudda_number') is-invalid @enderror" id="mudda_number" name="mudda_number" value="{{ $punarabedan->mudda_number }}" readonly>
                     @error('mudda_number')
                         <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
                 </div>
                 <div class="col-md-4 mb-3">
                     <label for="जाहेरवालाको नाम" class="form-label">जाहेरवालाको नाम <span style="color:red">*</span></label>
-                    <select type="text" class="form-control custom-select2 @error('jaherwala_name') is-invalid @enderror" id="jaherwala_name" name="jaherwala_name[]" multiple="multiple">
+                    <select type="text" class="form-control @error('jaherwala_name') is-invalid @enderror" id="jaherwala_name" name="jaherwala_name[]" multiple="multiple" readonly>
                     @if (!empty($punarabedan->jaherwala_name))
                         @foreach (explode(',', $punarabedan->jaherwala_name) as $value)
                             <option value="{{ $value }}" selected>{{ $value }}</option>
@@ -33,7 +33,7 @@
                 </div>
                 <div class="col-md-4 mb-3">
                     <label for="प्रतिवादीको नाम" class="form-label">प्रतिवादीको नाम <span style="color:red">*</span></label>
-                    <select type="text" class="form-control custom-select2 @error('pratiwadi_name') is-invalid @enderror" id="pratiwadi_name" name="pratiwadi_name[]" multiple="multiple">
+                    <select type="text" class="form-control @error('pratiwadi_name') is-invalid @enderror" id="pratiwadi_name" name="pratiwadi_name[]" multiple="multiple" readonly>
                     @if (!empty($punarabedan->pratiwadi_name))
                         @foreach (explode(',', $punarabedan->pratiwadi_name) as $value)
                             <option value="{{ $value }}" selected>{{ $value }}</option>
@@ -46,7 +46,7 @@
                 </div>
                 <div class="col-md-2 mb-3">
                     <label for="मुद्दाको नाम" class="form-label">मुद्दाको नाम <span style="color:red">*</span></label>
-                    <input type="text" class="form-control @error('mudda_name') is-invalid @enderror" id="mudda_name" name="mudda_name" value="{{ $punarabedan->mudda_name }}">
+                    <input type="text" class="form-control @error('mudda_name') is-invalid @enderror" id="mudda_name" name="mudda_name" value="{{ $punarabedan->mudda_name }}" readonly>
                     @error('mudda_name')
                         <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
@@ -94,19 +94,19 @@
                         </div>
                         <div class="flex-fill text-center p-1">
                             <label for="जरिवाना" class="form-label">जरिवाना</label>
-                            <input type="text" class="form-control" id="pra_jariwana" name="pra_jariwana" placeholder="0" value="{{ $punarabedan->pra_jariwana }}">
+                            <input type="text" class="form-control nep-number" id="pra_jariwana" name="pra_jariwana" placeholder="0" value="{{ $punarabedan->pra_jariwana }}">
                         </div>
                         <div class="flex-fill text-center p-1">
                             <label for="क्षतिपूर्ति" class="form-label">क्षतिपूर्ति</label>
-                            <input type="text" class="form-control" id="pra_xatipurti" name="pra_xatipurti" placeholder="0" value="{{ $punarabedan->pra_xatipurti }}">
+                            <input type="text" class="form-control nep-number" id="pra_xatipurti" name="pra_xatipurti" placeholder="0" value="{{ $punarabedan->pra_xatipurti }}">
                         </div>
                         <div class="flex-fill text-center p-1">
                             <label for="विगो" class="form-label">विगो</label>
-                            <input type="text" class="form-control" id="pra_bigo" name="pra_bigo" placeholder="0" value="{{ $punarabedan->pra_bigo }}">
+                            <input type="text" class="form-control nep-number" id="pra_bigo" name="pra_bigo" placeholder="0" value="{{ $punarabedan->pra_bigo }}">
                         </div>
                         <div class="flex-fill text-center p-1">
                             <label for="मूल्तवी" class="form-label">मूल्तवी</label>
-                            <input type="text" class="form-control" id="pra_multabi" name="pra_multabi" placeholder="0" value="{{ $punarabedan->pra_multabi }}">
+                            <input type="text" class="form-control" id="pra_multabi" name="pra_multabi" placeholder="" value="{{ $punarabedan->pra_multabi }}">
                         </div>
                         </div>
                     </fieldset>
@@ -124,15 +124,15 @@
                         </div>
                         <div class="flex-fill text-center p-1">
                             <label for="जरिवाना" class="form-label">जरिवाना</label>
-                            <input type="text" class="form-control" id="faisala_jariwana" name="faisala_jariwana" placeholder="0" value="{{ $punarabedan->faisala_jariwana }}">
+                            <input type="text" class="form-control nep-number" id="faisala_jariwana" name="faisala_jariwana" placeholder="0" value="{{ $punarabedan->faisala_jariwana }}">
                         </div>
                         <div class="flex-fill text-center p-1">
                             <label for="क्षतिपूर्ति" class="form-label">क्षतिपूर्ति</label>
-                            <input type="text" class="form-control" id="faisala_xatipurti" name="faisala_xatipurti" placeholder="0" value="{{ $punarabedan->faisala_xatipurti }}">
+                            <input type="text" class="form-control nep-number" id="faisala_xatipurti" name="faisala_xatipurti" placeholder="0" value="{{ $punarabedan->faisala_xatipurti }}">
                         </div>
                         <div class="flex-fill text-center p-1">
                             <label for="विगो" class="form-label">विगो</label>
-                            <input type="text" class="form-control" id="faisala_bigo" name="faisala_bigo" placeholder="0" value="{{ $punarabedan->faisala_bigo }}">
+                            <input type="text" class="form-control nep-number" id="faisala_bigo" name="faisala_bigo" placeholder="0" value="{{ $punarabedan->faisala_bigo }}">
                         </div>
                         </div>
                     </fieldset>
@@ -140,7 +140,6 @@
                 <div class="col-md-6 mb-3">
                     <fieldset class="border p-3 rounded">
                         <legend class="float-none w-auto px-2" style="font-size: 1.1rem;">कार्यालयबाट भएको पुनरावेदन सम्बन्धी कारवाही</legend>
-                        <?php  ?>
                         <div class="d-flex gap-3">
                         <div class="flex-fill text-center p-1">
                             <label for="पुवे/दो.पा" class="form-label">पुवे/दो.पा <span style="color:red">*</span></label>
@@ -149,12 +148,13 @@
                                 <option value="गर्ने" {{ $punarabedan->punarabedan == 'गर्ने' ? 'selected' : '' }}>पुनरावेदन गर्ने</option>
                                 <option value="नगर्ने" {{ $punarabedan->punarabedan == 'नगर्ने' ? 'selected' : '' }}>पुनरावेदन नगर्ने</option>
                                 <option value="दो.पा" {{ $punarabedan->punarabedan == 'दो.पा' ? 'selected' : '' }}>दो.पा</option>
+                                <option value="सफल" {{ $punarabedan->punarabedan == 'सफल' ? 'selected' : '' }}>सफल</option>
                             </select>
                             @error('punarabedan')
                                 <div class="alert alert-danger">{{ $message }}</div>
                             @enderror
                         </div>
-                        <div class="flex-fill text-center p-1">
+                        <div class="flex-fill text-center p-1 " id="challani-num-div">
                             <label for="चलानी नं." class="form-label">चलानी नं. <span style="color:red">*</span></label>
                             <input type="text" class="form-control  @error('punarabedan_challani_number') is-invalid @enderror" id="punarabedan_challani_number" name="punarabedan_challani_number"
                             value="{{ (isset($punarabedan) && $punarabedan->status == true)
@@ -162,10 +162,19 @@
                                         : toNepaliNumber($nextChallaniNumber) }}" readonly>
 
                         </div>
-                        <div class="flex-fill text-center p-1">
+                        <div class="flex-fill text-center p-1 " id="challani-date-div">
                             <label for="चलानी मिति" class="form-label">चलानी मिति <span style="color:red">*</span></label>
                             <input type="text" class="form-control date-picker @error('punarabedan_date') is-invalid @enderror" id="punarabedan_date" name="punarabedan_date" value="{{ $punarabedan->punarabedan_date }}" >
                             @error('punarabedan_date')
+                                <div class="alert alert-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        </div>
+                        <div class="row" id="pesh_karyala-div">
+                        <div class="text-center p-1">
+                            <label for="पेश भएको कार्यालय" class="form-label">पेश भएको कार्यालय </label>
+                            <input type="text" class="form-control  @error('punarabedan_pesh_karyala') is-invalid @enderror" id="punarabedan_pesh_karyala" name="punarabedan_pesh_karyala" value="{{ $punarabedan->punarabedan_pesh_karyala }}" >
+                            @error('punarabedan_pesh_karyala')
                                 <div class="alert alert-danger">{{ $message }}</div>
                             @enderror
                         </div>
@@ -211,6 +220,14 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
 $(document).ready(function() {
+
+    $('#pratiwadi_name, #jaherwala_name')
+    .prop('readonly', true)
+    .on('focus mousedown keypress paste', function (e) {
+        e.preventDefault();
+        $(this).blur();
+    });
+
     $('.challani-bodartha').select2({
         tags: true,
         placeholder: "विकल्प खोज्नुहोस् वा नयाँ टाइप गर्नुहोस्"
@@ -236,6 +253,28 @@ $(document).ready(function() {
                 input.val('');
             }
         }
+    });
+
+    var challani_number = $('#punarabedan_challani_number').val();
+    function toggle_punarabedan() {
+        var selectedValue = $('#punarabedan').val();
+        if (selectedValue == 'सफल') {
+            $('#challani-num-div').hide();
+            $('#challani-date-div').hide();
+            $('#pesh_karyala-div').hide();
+            $('#punarabedan_challani_number').val('');
+            $('#punarabedan_challani_date').val('');
+        } else {
+            $('#challani-num-div').show();
+            $('#challani-date-div').show();
+             $('#pesh_karyala-div').show();
+            $('#punarabedan_challani_number').val(challani_number);
+        }
+    }
+    toggle_punarabedan();
+    $('#punarabedan').change(function() {
+        toggle_punarabedan();
+
     });
 });
 

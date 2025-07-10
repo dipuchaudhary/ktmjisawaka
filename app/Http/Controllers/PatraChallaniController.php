@@ -48,7 +48,7 @@ class PatraChallaniController extends Controller
     {
         if (!auth()->check()) return '';
         $buttons = '';
-
+        $buttons = '<div style="display: inline-flex; align-items: center; gap: 8px;">';
         if (auth()->user()->can('patrachallani-edit')) {
             $buttons .= '<a href="'.route('patra_challani.edit',$data->id).'" class="edit p-2"><i class="fas fa-edit fa-lg"></i></a>';
         }
@@ -62,7 +62,7 @@ class PatraChallaniController extends Controller
                                     </button>
                                 </form>';
         }
-
+        $buttons .='</div>';
         return $buttons;
     }
 

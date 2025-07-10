@@ -64,7 +64,7 @@ class MuddaDartaController extends Controller
     {
         if (!auth()->check()) return '';
         $buttons = '';
-
+        $buttons = '<div style="display: inline-flex; align-items: center; gap: 8px;">';
         if (auth()->user()->can('mulldarta-edit')) {
             $buttons .= '<a href="'.route('mudda_darta.edit', $data->id).'" class="edit p-2"><i class="fas fa-edit fa-lg"></i></a>';
         }
@@ -78,7 +78,7 @@ class MuddaDartaController extends Controller
                         </button>
                     </form>';
         }
-
+        $buttons .='</div>';
         return $buttons;
     }
 
@@ -143,17 +143,13 @@ class MuddaDartaController extends Controller
         $mudda = MuddaDarta::findOrFail($id);
         $this->validate($request, $this->rules, $this->customMessages);
 
-        if (!empty($request->input('jaherwala_name')) ) {
-           $jaherwala_name = implode(',', $request->input('jaherwala_name'));
-        } else {
-            $jaherwala_name= $request->input('jaherwala_name');
-        }
+        $jaherwala_name = is_array($request->input('jaherwala_name'))
+                        ? implode(',', $request->input('jaherwala_name'))
+                        : $request->input('jaherwala_name');
 
-        if (!empty($request->input('pratiwadi_name')) ) {
-           $pratiwadi_name = implode(',', $request->input('pratiwadi_name'));
-        } else {
-            $pratiwadi_name= $request->input('pratiwadi_name');
-        }
+        $pratiwadi_name = is_array($request->input('pratiwadi_name'))
+                        ? implode(',', $request->input('pratiwadi_name'))
+                        : $request->input('pratiwadi_name');
         $mudda->update([
             'anusandhan_garne_nikaye' => $request->input('anusandhan_garne_nikaye'),
             'mudda_number' => $request->input('mudda_number'),
@@ -168,7 +164,7 @@ class MuddaDartaController extends Controller
             'jamma_din' => $request->input('jamma_din'),
             'sarkariwakil_name' => $request->input('sarkariwakil_name'),
             'faat_name' => $request->input('faat_name'),
-             'mudda_bibran' => $request->input('mudda_bibran'),
+            'mudda_bibran' => $request->input('mudda_bibran'),
             'user_name' => auth()->user()->name,
             'kaifiyat' => $request->input('kaifiyat'),
         ]);

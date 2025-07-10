@@ -32,7 +32,7 @@
                 </div>
                 <div class="col-md-4 mb-3">
                     <label for="जाहेरवालाको नाम" class="form-label">जाहेरवालाको नाम <span style="color:red">*</span></label>
-                    <select type="text" class="form-control custom-select2 @error('jaherwala_name') is-invalid @enderror" id="jaherwala_name" name="jaherwala_name[]" multiple="multiple">
+                    <select type="text" class="form-control @error('jaherwala_name') is-invalid @enderror" id="jaherwala_name" name="jaherwala_name[]" multiple="multiple">
                     @if (!empty($aviyogchallani->jaherwala_name))
                         @foreach (explode(',', $aviyogchallani->jaherwala_name) as $value)
                             <option value="{{ $value }}" selected>{{ $value }}</option>
@@ -45,7 +45,7 @@
                 </div>
                 <div class="col-md-4 mb-3">
                     <label for="प्रतिवादीको नाम" class="form-label">प्रतिवादीको नाम <span style="color:red">*</span></label>
-                    <select type="text" class="form-control custom-select2 @error('pratiwadi_name') is-invalid @enderror" id="pratiwadi_name" name="pratiwadi_name[]" multiple="multiple">
+                    <select type="text" class="form-control @error('pratiwadi_name') is-invalid @enderror" id="pratiwadi_name" name="pratiwadi_name[]" multiple="multiple">
                     @if (!empty($aviyogchallani->pratiwadi_name))
                         @foreach (explode(',', $aviyogchallani->pratiwadi_name) as $value)
                             <option value="{{ $value }}" selected>{{ $value }}</option>
@@ -60,14 +60,14 @@
             <div class="row">
                 <div class="col-md-3 mb-3">
                     <label for="मुद्दाको किसिम" class="form-label">मुद्दाको किसिम <span style="color:red">*</span></label>
-                    <input type="text" class="form-control @error('mudda_name') is-invalid @enderror" id="mudda_name" name="mudda_name" value="{{ $aviyogchallani->mudda_name }}" >
+                    <input type="text" class="form-control @error('mudda_name') is-invalid @enderror" id="mudda_name" name="mudda_name" value="{{ $aviyogchallani->mudda_name }}" readonly>
                     @error('mudda_name')
                         <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
                 </div>
                 <div class="col-md-3 mb-3">
                     <label for="मुद्दा नं." class="form-label">मुद्दा नं.</label>
-                    <input type="text" class="form-control @error('mudda_number') is-invalid @enderror" id="mudda_number" name="mudda_number" value="{{ $aviyogchallani->mudda_number }}" >
+                    <input type="text" class="form-control nep-number @error('mudda_number') is-invalid @enderror" id="mudda_number" name="mudda_number" value="{{ $aviyogchallani->mudda_number }}" readonly>
                     @error('mudda_number')
                         <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
@@ -79,19 +79,19 @@
                         <div class="d-flex gap-3">
                         <div class="flex-fill text-center p-1">
                             <label for="male_count" class="form-label">पुरुष संख्या</label>
-                            <input type="text" class="form-control" id="male_count" name="gender[male]" placeholder="0" value="{{ $gender['male'] ?? 0 }}">
+                            <input type="text" class="form-control nep-number" id="male_count" name="gender[male]" placeholder="0" value="{{ $gender['male'] ?? 0 }}">
                         </div>
                         <div class="flex-fill text-center p-1">
                             <label for="female_count" class="form-label">महिला संख्या</label>
-                            <input type="text" class="form-control" id="female_count" name="gender[female]" placeholder="0" value="{{ $gender['female'] ?? 0 }}">
+                            <input type="text" class="form-control nep-number" id="female_count" name="gender[female]" placeholder="0" value="{{ $gender['female'] ?? 0 }}">
                         </div>
                         <div class="flex-fill text-center p-1">
                             <label for="child_count" class="form-label">नाबालक संख्या</label>
-                            <input type="text" class="form-control" id="child_count" name="gender[child]" placeholder="0" value="{{ $gender['child'] ?? 0 }}">
+                            <input type="text" class="form-control nep-number" id="child_count" name="gender[child]" placeholder="0" value="{{ $gender['child'] ?? 0 }}">
                         </div>
                         <div class="flex-fill text-center p-1">
                             <label for="other_count" class="form-label">अन्य संख्या</label>
-                            <input type="text" class="form-control" id="other_count" name="gender[other]" placeholder="0" value="{{ $gender['other'] ?? 0 }}">
+                            <input type="text" class="form-control nep-number" id="other_count" name="gender[other]" placeholder="0" value="{{ $gender['other'] ?? 0 }}">
                         </div>
                         </div>
                     </fieldset>
@@ -157,6 +157,14 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
 $(document).ready(function() {
+
+     $('#pratiwadi_name, #jaherwala_name')
+    .prop('readonly', true)
+    .on('focus mousedown keypress paste', function (e) {
+        e.preventDefault();
+        $(this).blur();
+    });
+
     $('.challani-bodartha').select2({
         tags: true,
         placeholder: "विकल्प खोज्नुहोस् वा नयाँ टाइप गर्नुहोस्"

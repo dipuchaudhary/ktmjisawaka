@@ -56,7 +56,7 @@
                 </div>
                 <div class="col-md-4 mb-3">
                     <label for="प्रतिवादीको संख्या" class="form-label">प्रतिवादीको संख्या</label>
-                    <input type="text" class="form-control @error('pratiwadi_number') is-invalid @enderror" id="pratiwadi_number" name="pratiwadi_number" value="{{ $bankingmudda->pratiwadi_number }}" >
+                    <input type="text" class="form-control nep-number @error('pratiwadi_number') is-invalid @enderror" id="pratiwadi_number" name="pratiwadi_number" value="{{ $bankingmudda->pratiwadi_number }}" >
                     @error('pratiwadi_number')
                         <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
@@ -102,7 +102,7 @@
                 </div>
                 <div class="col-md-3 mb-3">
                     <label for="मुद्दा नं." class="form-label">मुद्दा नं.</label>
-                    <input type="text" class="form-control @error('mudda_number') is-invalid @enderror" id="mudda_number" name="mudda_number" value="{{ $bankingmudda->mudda_number }}" >
+                    <input type="text" class="form-control nep-number @error('mudda_number') is-invalid @enderror" id="mudda_number" name="mudda_number" value="{{ $bankingmudda->mudda_number }}" >
                     @error('mudda_number')
                         <div class="alert alert-danger">{{ $message }}</div>
                     @enderror

@@ -27,6 +27,7 @@ class Punarabedan extends Model
         'punarabedan',
         'punarabedan_date',
         'punarabedan_challani_number',
+        'punarabedan_pesh_karyala',
         'nirnaye',
         'nirnaye_date',
         'sarkariwakil_name',

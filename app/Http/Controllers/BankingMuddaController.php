@@ -54,6 +54,7 @@ class BankingMuddaController extends Controller
     {
         if (!auth()->check()) return '';
         $buttons = '';
+        $buttons = '<div style="display: inline-flex; align-items: center; gap: 8px;">';
 
         if (auth()->user()->can('bankingdarta-edit')) {
             $buttons .= '<a href="'.route('banking_mudda.edit',$data->id).'" class="edit p-2"><i class="fas fa-edit fa-lg"></i></a>';
@@ -68,7 +69,7 @@ class BankingMuddaController extends Controller
                                     </button>
                                 </form>';
         }
-
+        $buttons .='</div>';
         return $buttons;
     }
 

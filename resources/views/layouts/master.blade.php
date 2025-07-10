@@ -115,6 +115,15 @@
 
         <script>
         $(document).ready(function() {
+
+            const engToNep = s => String(s).replace(/[0-9]/g, d => '०१२३४५६७८९'[d]);
+
+            $(document).ready(function () {
+            $(".nep-number").on("keyup", function() {
+                    $converted_string = engToNep($(this).val());
+                    $(this).val($converted_string);
+            })
+            });
                 $('.custom-select2').select2({
                     tags: true,
                     placeholder: "विकल्प खोज्नुहोस् वा नयाँ टाइप गर्नुहोस्"

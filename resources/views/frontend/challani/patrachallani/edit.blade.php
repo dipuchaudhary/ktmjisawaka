@@ -108,7 +108,7 @@
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label for="मुद्दा नं." class="form-label">मुद्दा नं.</label>
-                    <input type="text" class="form-control @error('mudda_number') is-invalid @enderror" id="mudda_number" name="mudda_number" value="{{ $patrachallani->mudda_number}}" >
+                    <input type="text" class="form-control nep-number @error('mudda_number') is-invalid @enderror" id="mudda_number" name="mudda_number" value="{{ $patrachallani->mudda_number}}" >
                     @error('mudda_number')
                         <div class="alert alert-danger">{{ $message }}</div>
                     @enderror

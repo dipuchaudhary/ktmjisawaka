@@ -1,11 +1,11 @@
 @extends('layouts.master')
 @section('content')
-<div class="container mt-5">
+<div class="container mt-5 table-responsive" style="max-width: 85%;">
     <h1>पुनरावेदन सूची</h1>
     <div class="alert alert-danger d-none" id="dataTableError">
         तालिका डाटा लोड गर्न असफल भयो। कृपया पृष्ठ रिफ्रेस गर्नुहोस् वा पछि प्रयास गर्नुहोस्।
     </div>
-    <table id="muddaTable" class="table table-bordered table-hover data-table">
+    <table id="muddaTable" class="table table-bordered table-hover data-table table-sm">
         <thead class="thead-light">
             <tr>
                 <th rowspan="2">ID</th>
