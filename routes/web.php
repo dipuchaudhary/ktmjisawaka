@@ -8,6 +8,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\MuddaDartaController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FrontendController;
+use App\Http\Controllers\MuddaReportController;
 use App\Http\Controllers\PatraChallaniController;
 use App\Http\Controllers\PunarabedanController;
 use App\Http\Controllers\UserController;
@@ -23,6 +24,7 @@ Route::get('/mudda-darta', [MuddaDartaController::class, 'index'])->name('mudda_
 Route::get('/banking-mudda', [BankingMuddaController::class, 'index'])->name('banking_mudda.index');
 Route::get('/patra-challani', [PatraChallaniController::class, 'index'])->name('patra_challani.index');
 Route::get('/aviyog-challani', [AviyogChallaniController::class, 'index'])->name('aviyog_challani.index');
+Route::get('/overall-status', [MuddaReportController::class, 'overallStatus'])->name('mudda.overall_status');
 // mudda darta routes
 Route::group(['middleware' => ['auth']], function() {
 Route::get('/mudda-darta/create', [MuddaDartaController::class, 'create'])->name('mudda_darta.create');

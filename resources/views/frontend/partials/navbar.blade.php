@@ -12,7 +12,7 @@
                             <div class="nav-item" aria-expanded="false">
                                 <a href="#" class="nav-link dropdown-toggle {{ request()->is('mudda-darta') || request()->is('banking-mudda') ? 'active' : '' }}" data-bs-toggle="dropdown"> दर्ता </a>
                                 <div class="dropdown-menu">
-                                    <a href="{{ route('mudda_darta.index') }}" class="{{ request()->is('mudda-darta') ? 'active' : '' }} dropdown-item">राय दर्ता</a>
+                                    <a href="{{ route('mudda_darta.index') }}" class="{{ request()->is('mudda-darta') ? 'active' : '' }} dropdown-item">मुद्दा राय दर्ता</a>
                                     <li><hr class="dropdown-divider"></li>
                                     <a href="{{ route('banking_mudda.index') }}" class="{{ request()->is('banking-mudda') ? 'active' : '' }} dropdown-item">बैकिङ्ग राय दर्ता</a>
                                 </div>
@@ -26,6 +26,7 @@
                                 </div>
                             </div>
                             <a href="{{ route('punarabedan.index') }}" class="nav-item nav-link {{ request()->is('punarabedan') ? 'active' : '' }}">पुनरावेदन</a>
+                            <a href="{{ route('mudda.overall_status') }}" class="nav-item nav-link {{ request()->is('summary') ? 'active' : '' }}">मुद्दाको समग्र स्थिति</a>
                             <a href="#" class="nav-item nav-link {{ request()->is('contact') ? 'active' : '' }}">सम्पर्क ठेगाना</a>
                         </div>
                         <div class="navbar-nav ml-auto">
