@@ -22,8 +22,8 @@
                 <th>मुद्दा नं.</th>
                 <th>मुद्दाको किसिम</th>
                 <th>जाहेरवालाको नाम</th>
-                <th>प्रतिवादीको नाम</th>
-                <th>मुद्दाको स्थिति</th>
+                <th style="width: 100px;">प्रतिवादीको नाम</th>
+                <th>प्रतिवादी संख्या</th>
                 <th>मुद्दा दर्ता मिति</th>
                 <th>सरकारी वकील</th>
                 <th>फाँट</th>
@@ -45,7 +45,6 @@
     $(document).ready(function () {
         // Check if user is authenticated and has permissions
         const hasActions = @json(auth()->check() && (auth()->user()->can('mulldarta-edit') || auth()->user()->can('mulldarta-delete')));
-
         let columns = [
             { data: 'id', name: 'id', visible:false },
             { data: 'anusandhan_garne_nikaye', name: 'anusandhan_garne_nikaye', className: 'exportable' },
@@ -53,7 +52,7 @@
             { data: 'mudda_name', name: 'mudda_name', className: 'exportable' },
             { data: 'jaherwala_name', name: 'jaherwala_name', className: 'exportable' },
             { data: 'pratiwadi_name', name: 'pratiwadi_name', className: 'exportable' },
-            { data: 'mudda_stithi', name: 'mudda_stithi', className: 'exportable' },
+            { data: 'pratiwadi_number', name: 'pratiwadi_number', className: 'exportable' },
             { data: 'mudda_date', name: 'mudda_date', className: 'exportable' },
             { data: 'sarkariwakil_name', name: 'sarkariwakil_name', className: 'exportable' },
             { data: 'faat_name', name: 'faat_name', className: 'exportable' },

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('challani_date')->nullable();
             $table->string('challani_number')->nullable();
             $table->string('jaherwala_name');
-            $table->string('pratiwadi_name');
+            $table->text('pratiwadi_name')->nullable();
             $table->string('mudda_name');
             $table->json('gender')->nullable();
             $table->string('gender_counts')->nullable();
@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('sarkariwakil_name')->nullable();
             $table->string('anusandhan_garne_nikaye');
             $table->string('faat_name')->nullable();
-            $table->string('file')->nullable();
+            $table->string('upload_date')->nullable();
             $table->string('kaifiyat')->nullable();
             $table->string('user_name')->nullable();
             $table->boolean('status')->default(false);

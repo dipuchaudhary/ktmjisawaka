@@ -23,14 +23,14 @@
                 </div>
             </div>
             <div class="row">
-              <div class="col-md-4 mb-3">
+              <div class="col-md-3 mb-3">
                     <label for="चलानी मिति" class="form-label">चलानी मिति <span style="color:red">*</span></label>
                     <input type="text" class="form-control date-picker @error('challani_date') is-invalid @enderror" id="challani_date" name="challani_date" value="{{ $aviyogchallani->challani_date }}" >
                     @error('challani_date')
                         <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
                 </div>
-                <div class="col-md-4 mb-3">
+                <div class="col-md-3 mb-3">
                     <label for="जाहेरवालाको नाम" class="form-label">जाहेरवालाको नाम <span style="color:red">*</span></label>
                     <select type="text" class="form-control @error('jaherwala_name') is-invalid @enderror" id="jaherwala_name" name="jaherwala_name[]" multiple="multiple">
                     @if (!empty($aviyogchallani->jaherwala_name))
@@ -43,18 +43,47 @@
                         <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
                 </div>
-                <div class="col-md-4 mb-3">
-                    <label for="प्रतिवादीको नाम" class="form-label">प्रतिवादीको नाम <span style="color:red">*</span></label>
-                    <select type="text" class="form-control @error('pratiwadi_name') is-invalid @enderror" id="pratiwadi_name" name="pratiwadi_name[]" multiple="multiple">
-                    @if (!empty($aviyogchallani->pratiwadi_name))
-                        @foreach (explode(',', $aviyogchallani->pratiwadi_name) as $value)
-                            <option value="{{ $value }}" selected>{{ $value }}</option>
+                <div class="col-md-6 pratiwadi-input-group">
+                    @foreach(json_decode($aviyogchallani->pratiwadi_name, true) as $index => $pratiwadi)
+                        <div class="d-flex gap-3 border p-2 pratiwadi-group">
+                            <div class="flex-fill p-1">
+                                 @if ($loop->first)
+                                <label>प्रतिवादीको नाम <span style="color:red">*</span></label>
+                                @endif
+                                <input type="text" class="form-control" name="pratiwadi_name[]" id="pratiwadi_name" placeholder="प्रतिवादीको नाम"
+                                    value="{{ $pratiwadi['name'] }}">
+
+                                @error("pratiwadi_name.$index")
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="flex-fill p-1">
+                                @if ($loop->first)
+                                <label>मुद्दा स्थिति <span style="color:red">*</span></label>
+                                @endif
+                                <select name="mudda_sthiti[]" class="form-control" id="mudda_sthiti">
+                                    <option value="">--एउटाको विकल्प रोज्नुहोस।--</option>
+                                    @foreach(['फरार','पक्राउ','हाजिरि जमानीमा छोडेको','तामेली','नचल्ने'] as $status)
+                                        <option value="{{ $status }}"
+                                            {{ $pratiwadi['status'] == $status ? 'selected' : '' }}>
+                                            {{ $status }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error("mudda_sthiti.$index")
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="flex-fill p-1 d-flex align-items-end gap-2 align-center">
+                                <button type="button" class="btn btn-success btn-sm addBtn" style="margin-bottom:17px; margin-right:2px;">
+                                    <i class="fa fa-plus"></i>
+                                </button>
+                                <button type="button" class="btn btn-danger btn-sm removeBtn" style="margin-bottom:17px;">
+                                    <i class="fa fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
                         @endforeach
-                        @endif
-                    </select>
-                        @error('pratiwadi_name')
-                        <div class="alert alert-danger">{{ $message }}</div>
-                    @enderror
                 </div>
             </div>
             <div class="row">
@@ -135,17 +164,11 @@
                     <textarea class="form-control" id="kaifiyat" name="kaifiyat" rows="2">{{ $aviyogchallani->kaifiyat}}</textarea>
                 </div>
                 <div class="col-md-4 mb-3">
-                    <label for="अभियोग फाइल" class="form-label">अभियोग अपलोड गर्नुहोस्</label>
-                    <input class="" type="file" id="upload_file" name="upload_file" > <span>{{ $aviyogchallani->file }}</span>
-                    <input type="hidden" name="existing_file" value="{{ $aviyogchallani->file }}">
-                    @error('upload_file')
+                    <label for="अभियोग फाइल" class="form-label">अभियोग अपलोड भएको मितिः</label>
+                    <input class="form-control date-picker @error('upload_date') is-invalid @enderror" type="text" id="upload_date" name="upload_date" > <span>{{ $aviyogchallani->upload_date }}</span>
+                    @error('upload_date')
                         <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
-                      @if($aviyogchallani->file)
-                        <a href="{{ asset('storage/' . $aviyogchallani->file) }}" target="_blank" class="btn btn-sm btn-success mt-2">
-                            <i class="fas fa-download"></i> डाउनलोड फाइल
-                        </a>
-                    @endif
 
                 </div>
             </div>
@@ -158,7 +181,7 @@
 <script>
 $(document).ready(function() {
 
-     $('#pratiwadi_name, #jaherwala_name')
+     $('#pratiwadi_name, #jaherwala_name,#mudda_sthiti')
     .prop('readonly', true)
     .on('focus mousedown keypress paste', function (e) {
         e.preventDefault();

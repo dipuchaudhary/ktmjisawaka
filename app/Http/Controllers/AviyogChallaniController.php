@@ -35,7 +35,22 @@ class AviyogChallaniController extends Controller
 
                 return Datatables::eloquent($query)
                     ->addIndexColumn()
-                     ->addColumn('status', function ($data) {
+                    ->addColumn('pratiwadi_name', function($row) {
+                    if (is_string($row->pratiwadi_name)) {
+                        $data = json_decode($row->pratiwadi_name, true);
+                    }
+                    if (is_array($data)) {
+                        $html = '';
+                        foreach ($data as $pratiwadi) {
+                            $name = e($pratiwadi['name'] ?? '-');
+                            $status = e($pratiwadi['status'] ?? '-');
+                            $html .= "<small class='badge rounded-pill text-white bg-dark'>{$name} ({$status})</small><br>";
+                        }
+                        return $html;
+                    }
+                    return '-';
+                    })
+                    ->addColumn('status', function ($data) {
                     if ($data->status == 0 || $data->status === false) {
                             return '<span class="badge rounded-pill text-white bg-danger">Pending</span>';
                     } else {
@@ -46,7 +61,7 @@ class AviyogChallaniController extends Controller
                          return $this->getActionButtons($data);
                     })
 
-                    ->rawColumns(['status','action'])
+                    ->rawColumns(['pratiwadi_name','status','action'])
                     ->make(true);
             } catch (\Exception $e) {
             \Log::error('DataTables error: ' . $e->getMessage());
@@ -147,9 +162,17 @@ class AviyogChallaniController extends Controller
                         ? implode(',', $request->input('jaherwala_name'))
                         : $request->input('jaherwala_name');
 
-        $pratiwadi_name = is_array($request->input('pratiwadi_name'))
-                        ? implode(',', $request->input('pratiwadi_name'))
-                        : $request->input('pratiwadi_name');
+        $pratiwadiList = [];
+        $names = is_array($request->input('pratiwadi_name')) ? $request->input('pratiwadi_name') : [];
+        $sthiti = is_array($request->input('mudda_sthiti')) ? $request->input('mudda_sthiti') : [];
+
+        foreach ($names as $index => $name) {
+            $pratiwadiList[] = [
+                'name' => $name,
+                'status' => $sthiti[$index] ?? null,
+            ];
+        }
+        $pratiwadi_name = json_encode($pratiwadiList, JSON_UNESCAPED_UNICODE);
 
         $aviyogchallani->update([
             'challani_number'         => $request->input('challani_number'),

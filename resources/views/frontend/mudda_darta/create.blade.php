@@ -17,42 +17,45 @@
                 </div>
                 <div class="col-md-3 mb-3">
                     <label for="जाहेरवालाको नाम" class="form-label">जाहेरवालाको नाम <span style="color:red">*</span></label>
-                    <select type="text" class="form-control custom-select2 @error('jaherwala_name') is-invalid @enderror" id="jaherwala_name" name="jaherwala_name[]" value="{{ old('jaherwala_name') }}" multiple="multiple" >
+                    <select type="text" class="form-control custom-select2 @error('jaherwala_name') is-invalid @enderror" id="jaherwala_name" name="jaherwala_name[]" multiple="multiple" >
                     </select>
                     @error('jaherwala_name')
                         <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
                 </div>
-                    <div class="col-md-6">
-                        <div class="d-flex gap-3 border pratiwadi-group">
-                            <div class="flex-fill p-1">
-                                <label for="प्रतिवादीको नाम">प्रतिवादीको नाम</label>
-                                <input type="text" class="form-control" name="pratiwadi_name[]" placeholder="प्रतिवादीको नाम">
-                            </div>
-                            <div class="flex-fill p-1">
-                                <label for="मुद्दा स्थिति">मुद्दा स्थिति</label>
-                              <select name="mudda_sthiti[]" class="form-control">
-                                    <option selected value="">--एउटाको विकल्प रोज्नुहोस।--</option>
-                                    <option value="फरार">फरार</option>
-                                    <option value="पक्राउ">पक्राउ</option>
-                                    <option value="हाजिरि जमानीमा छोडेको">हाजिरि जमानीमा छोडेको</option>
-                                    <option value="तामेली">तामेली</option>
-                                    <option value="नचल्ने">मुद्दा नचल्ने</option>
-                                </select>
-                            </div>
-                            <div class="flex-fill p-1 d-flex align-items-end gap-2 align-center">
-                                <button type="button" class="btn btn-success btn-sm addBtn" style="margin-bottom:17px; margin-right:2px;">
-                                    <i class="fa fa-plus"></i>
-                                </button>
-                                <button type="button" class="btn btn-danger btn-sm removeBtn" style="margin-bottom:17px;">
-                                    <i class="fa fa-minus"></i>
-                                </button>
-                            </div>
+                <div class="col-md-6 pratiwadi-input-group">
+                    <div class="d-flex gap-3 border pratiwadi-group">
+                        <div class="flex-fill p-1">
+                            <label for="प्रतिवादीको नाम">प्रतिवादीको नाम <span style="color:red">*</span></label>
+                            <input type="text" class="form-control" name="pratiwadi_name[]" placeholder="प्रतिवादीको नाम" value="{{ old('pratiwadi_name.0') }}">
+                            @error('pratiwadi_name.0')
+                                <div class="alert alert-danger">{{ $message }}</div>
+                            @enderror
                         </div>
-                    @error('pratiwadi_name')
-                    <div class="alert alert-danger">{{ $message }}</div>
-                    @enderror
+                        <div class="flex-fill p-1">
+                            <label for="मुद्दा स्थिति">मुद्दा स्थिति <span style="color:red">*</span></label>
+                            <select name="mudda_sthiti[]" class="form-control">
+                                <option value="">--एउटाको विकल्प रोज्नुहोस।--</option>
+                                @foreach(['फरार','पक्राउ','हाजिरि जमानीमा छोडेको','तामेली','नचल्ने'] as $status)
+                                    <option value="{{ $status }}" {{ old('mudda_sthiti.0') == $status ? 'selected' : '' }}>
+                                        {{ $status }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('mudda_sthiti.0')
+                                <div class="alert alert-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="flex-fill p-1 d-flex align-items-end gap-2 align-center">
+                            <button type="button" class="btn btn-success btn-sm addBtn" style="margin-bottom:17px; margin-right:2px;">
+                                <i class="fa fa-plus"></i>
+                            </button>
+                            <button type="button" class="btn btn-danger btn-sm removeBtn" style="margin-bottom:17px;">
+                                <i class="fa fa-minus"></i>
+                            </button>
+                        </div>
                     </div>
+                </div>
             </div>
             <div class="row">
                 <div class="col-md-4 mb-3">
@@ -70,37 +73,23 @@
                     @enderror
                 </div>
                 <div class="col-md-4 mb-3">
-                <label for="मुद्दाको स्थिति" class="form-label">मुद्दाको स्थिति <span style="color:red">*</span></label>
-                <select class="form-select form-control @error('mudda_stithi') is-invalid @enderror" name="mudda_stithi" id="mudda_stithi">
-                    <option selected value="">--एउटाको विकल्प रोज्नुहोस।--</option>
-                    <option value="फरार">फरार</option>
-                    <option value="पक्राउ">पक्राउ</option>
-                    <option value="हाजिरि जमानीमा छोडेको">हाजिरि जमानीमा छोडेको</option>
-                    <option value="तामेली">तामेली</option>
-                    <option value="नचल्ने">मुद्दा नचल्ने</option>
-                </select>
-                @error('mudda_stithi')
-                        <div class="alert alert-danger">{{ $message }}</div>
-                    @enderror
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-3 mb-3">
                     <label for="मुद्दा दर्ता मिति" class="form-label">राय दर्ता मिति <span style="color:red">*</span></label>
                     <input type="text" class="form-control date-picker @error('mudda_date') is-invalid @enderror" id="mudda_date" name="mudda_date" value="{{ old('mudda_date') }}">
                     @error('mudda_date')
                         <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
                 </div>
-                <div class="col-md-3 mb-3">
+            </div>
+            <div class="row">
+                <div class="col-md-4 mb-3">
                     <label for="म्याद" class="form-label">सुरु म्याद</label>
                     <input type="text" class="form-control date-picker" id="mudda_suru_myad" name="mudda_suru_myad" value="{{ old('mudda_suru_myad') }}">
                 </div>
-                <div class="col-md-3 mb-3">
+                <div class="col-md-4 mb-3">
                     <label for="म्याद" class="form-label">म्याद थप</label>
                     <input type="text" class="form-control date-picker" id="mudda_myad_thap" name="mudda_myad_thap" value="{{ old('mudda_myad_thap') }}">
                 </div>
-                <div class="col-md-3 mb-3">
+                <div class="col-md-4 mb-3">
                     <label for="म्याद" class="form-label">जम्मा दिन</label>
                     <input type="text" class="form-control" id="jamma_din" name="jamma_din" value="{{ old('jamma_din') }}" readonly>
                 </div>
@@ -147,34 +136,6 @@
 @endsection
 @push('scripts')
 <script>
-
-// clone inputgroupt
-$(document).on('click', '.addBtn', function () {
-    let group = $(this).closest('.pratiwadi-group');
-    let cloned = group.clone();
-
-    // Remove labels
-    cloned.find('label').remove();
-
-    // Clear input/select values
-    cloned.find('input').val('');
-    cloned.find('select').val('');
-
-    // Append cloned group
-    group.closest('.col-md-6').append(cloned);
-});
-
-$(document).on('click', '.removeBtn', function () {
-    let allGroups = $(this).closest('.col-md-6').find('.pratiwadi-group');
-
-    if (allGroups.length > 1) {
-        $(this).closest('.pratiwadi-group').remove();
-    } else {
-        alert('कम्तिमा एउटा समूह आवश्यक छ।');
-    }
-});
-
-
 const nepToEng = s => s.replace(/[०-९]/g, d => '०१२३४५६७८९'.indexOf(d));
 const engToNep = s => String(s).replace(/[0-9]/g, d => '०१२३४५६७८९'[d]);
 

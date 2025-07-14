@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('mudda_number')->nullable();
             $table->string('jaherwala_name');
-            $table->text('pratiwadi_name');
+            $table->text('pratiwadi_name')->nullable();
             $table->string('mudda_name');
             $table->string('faisala_date')->nullable();
             $table->string('faisala_pramanikaran_date')->nullable();

@@ -41,37 +41,52 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-4 mb-3">
-                    <label for="प्रतिवादीको नाम" class="form-label">प्रतिवादीको नाम <span style="color:red">*</span></label>
-                    <select type="text" class="form-control custom-select2 @error('pratiwadi_name') is-invalid @enderror" id="pratiwadi_name" name="pratiwadi_name[]" multiple="multiple">
-                        @if (!empty($bankingmudda->jaherwala_name))
-                        @foreach (explode(',', $bankingmudda->jaherwala_name) as $value)
-                            <option value="{{ $value }}" selected>{{ $value }}</option>
+               <div class="col-md-8 pratiwadi-input-group">
+                    @foreach(json_decode($bankingmudda->pratiwadi_name, true) as $index => $pratiwadi)
+                        <div class="d-flex gap-3 border p-2 pratiwadi-group">
+                            <div class="flex-fill p-1">
+                                 @if ($loop->first)
+                                <label>प्रतिवादीको नाम <span style="color:red">*</span></label>
+                                @endif
+                                <input type="text" class="form-control" name="pratiwadi_name[]" placeholder="प्रतिवादीको नाम"
+                                    value="{{ $pratiwadi['name'] }}">
+
+                                @error("pratiwadi_name.$index")
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="flex-fill p-1">
+                                @if ($loop->first)
+                                <label>मुद्दा स्थिति <span style="color:red">*</span></label>
+                                @endif
+                                <select name="mudda_sthiti[]" class="form-control">
+                                    <option value="">--एउटाको विकल्प रोज्नुहोस।--</option>
+                                    @foreach(['फरार','पक्राउ','हाजिरि जमानीमा छोडेको','तामेली','नचल्ने'] as $status)
+                                        <option value="{{ $status }}"
+                                            {{ $pratiwadi['status'] == $status ? 'selected' : '' }}>
+                                            {{ $status }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error("mudda_sthiti.$index")
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="flex-fill p-1 d-flex align-items-end gap-2 align-center">
+                                <button type="button" class="btn btn-success btn-sm addBtn" style="margin-bottom:17px; margin-right:2px;">
+                                    <i class="fa fa-plus"></i>
+                                </button>
+                                <button type="button" class="btn btn-danger btn-sm removeBtn" style="margin-bottom:17px;">
+                                    <i class="fa fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
                         @endforeach
-                        @endif
-                    </select>
-                        @error('pratiwadi_name')
-                        <div class="alert alert-danger">{{ $message }}</div>
-                    @enderror
                 </div>
                 <div class="col-md-4 mb-3">
                     <label for="प्रतिवादीको संख्या" class="form-label">प्रतिवादीको संख्या</label>
                     <input type="text" class="form-control nep-number @error('pratiwadi_number') is-invalid @enderror" id="pratiwadi_number" name="pratiwadi_number" value="{{ $bankingmudda->pratiwadi_number }}" >
                     @error('pratiwadi_number')
-                        <div class="alert alert-danger">{{ $message }}</div>
-                    @enderror
-                </div>
-                <div class="col-md-4 mb-3">
-                <label for="मुद्दाको स्थिति" class="form-label">मुद्दाको स्थिति <span style="color:red">*</span></label>
-                <select class="form-select form-control @error('mudda_stithi') is-invalid @enderror" name="mudda_stithi" id="mudda_stithi">
-                    <option value="" {{ empty($bankingmudda->mudda_stithi) ? 'selected' : '' }}>--एउटाको विकल्प रोज्नुहोस।--</option>
-                    <option value="फरार" {{ $bankingmudda->mudda_stithi == 'फरार' ? 'selected' : '' }}>फरार</option>
-                    <option value="पक्राउ"{{ $bankingmudda->mudda_stithi == 'पक्राउ' ? 'selected' : '' }}>पक्राउ</option>
-                    <option value="हाजिरि जमानीमा छोडेको" {{ $bankingmudda->mudda_stithi == 'हाजिरि जमानीमा छोडेको' ? 'selected' : '' }}>हाजिरि जमानीमा छोडेको</option>
-                    <option value="तामेली" {{ $bankingmudda->mudda_stithi == 'तामेली' ? 'selected' : '' }}>हाजिरि जमानीमा छोडेको</option>
-                    <option value="नचल्ने" {{ $bankingmudda->mudda_stithi == 'नचल्ने' ? 'selected' : '' }}>मुद्दा नचल्ने</option>
-                </select>
-                @error('mudda_stithi')
                         <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
                 </div>

@@ -24,8 +24,8 @@
                         <th>अदालत मुद्दा नं.</th>
                         <th>मुद्दाको किसिम</th>
                         <th>जाहेरवालाको नाम</th>
-                        <th>प्रतिवादीको नाम</th>
-                        <th>मुद्दाको स्थिति</th>
+                        <th style="width: 100px;">प्रतिवादीको नाम</th>
+                        <th>प्रतिवादी संख्या</th>
                         <th>मुद्दा दर्ता मिति</th>
                         <th>सरकारी वकील</th>
                         <th>चलानी नं.</th>
@@ -57,7 +57,7 @@ $(document).ready(function () {
         { data: 'mudda_name', name: 'mudda_name', className: 'exportable' },
         { data: 'jaherwala_name', name: 'jaherwala_name', className: 'exportable' },
         { data: 'pratiwadi_name', name: 'pratiwadi_name', className: 'exportable' },
-        { data: 'mudda_stithi', name: 'mudda_stithi', className: 'exportable' },
+        { data: 'pratiwadi_number', name: 'pratiwadi_number', className: 'exportable' },
         { data: 'mudda_date', name: 'mudda_date', className: 'exportable' },
         { data: 'sarkariwakil_name', name: 'sarkariwakil_name', className: 'exportable' },
         { data: 'challani_number', name: 'challani_number', className: 'exportable' },

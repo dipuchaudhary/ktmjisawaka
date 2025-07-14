@@ -27,9 +27,24 @@ class BankingMuddaController extends Controller
     {
          if(request()->ajax())
         {
-            $query = BankingMudda::select('id', 'anusandhan_garne_nikaye', 'mudda_number', 'mudda_name', 'jaherwala_name','pratiwadi_name','mudda_stithi','mudda_date','sarkariwakil_name','challani_number','user_name','status');
+            $query = BankingMudda::select('id', 'anusandhan_garne_nikaye', 'mudda_number', 'mudda_name', 'jaherwala_name','pratiwadi_name','pratiwadi_number','mudda_date','sarkariwakil_name','challani_number','user_name','status');
             return Datatables::eloquent($query)
                    ->addIndexColumn()
+                   ->addColumn('pratiwadi_name', function($row) {
+                    if (is_string($row->pratiwadi_name)) {
+                        $data = json_decode($row->pratiwadi_name, true);
+                    }
+                    if (is_array($data)) {
+                        $html = '';
+                        foreach ($data as $pratiwadi) {
+                            $name = e($pratiwadi['name'] ?? '-');
+                            $status = e($pratiwadi['status'] ?? '-');
+                            $html .= "<small class='badge rounded-pill text-white bg-dark'>{$name} ({$status})</small><br>";
+                        }
+                        return $html;
+                    }
+                    return '-';
+                })
                    ->addColumn('status', function ($data) {
                     if ($data->status == 0 || $data->status === false) {
                             return '<span class="badge rounded-pill text-white bg-danger">Pending</span>';
@@ -41,7 +56,7 @@ class BankingMuddaController extends Controller
                         return $this->getActionButtons($data);
                    })
 
-                   ->rawColumns(['status','action'])
+                   ->rawColumns(['pratiwadi_name','status','action'])
                    ->make(true);
         }
        return view('frontend.banking_mudda.index');
@@ -101,15 +116,19 @@ class BankingMuddaController extends Controller
             'anusandhan_garne_nikaye' => 'required',
             'jaherwala_name' => 'required|array',
             'pratiwadi_name' => 'required|array',
-            'mudda_stithi' => 'required',
+            'pratiwadi_name.*' => 'required|string|max:255',
+            'mudda_sthiti' => 'required|array',
+            'mudda_sthiti.*' => 'required|string|in:फरार,पक्राउ,हाजिरि जमानीमा छोडेको,तामेली,नचल्ने',
             'mudda_date' => 'required',
             'status' => 'required|boolean',
         ];
         $Messages = [
            'anusandhan_garne_nikaye.required' => 'अनुसन्धान गर्ने निकाय अनिवार्य छ।',
            'jaherwala_name.required' => 'जाहेरवालाको नाम अनिवार्य छ।',
-           'pratiwadi_name.required' => 'प्रतिवादीको नाम अनिवार्य छ।',
-           'mudda_stithi.required' => 'मुद्दा स्थिति अनिवार्य छ।',
+           'pratiwadi_name.0.required' => 'प्रतिवादीको नाम अनिवार्य छ।',
+           'pratiwadi_name.*.required' => 'प्रतिवादीको नाम अनिवार्य छ।',
+           'mudda_sthiti.0.required' => 'मुद्दा स्थिति अनिवार्य छ।',
+           'mudda_stithi.*.required' => 'मुद्दा स्थिति अनिवार्य छ।',
            'mudda_date.required' => 'मुद्दा दर्ता मिति अनिवार्य छ।',
         ];
 
@@ -119,9 +138,17 @@ class BankingMuddaController extends Controller
                         ? implode(',', $request->input('jaherwala_name'))
                         : $request->input('jaherwala_name');
 
-        $pratiwadi_name = is_array($request->input('pratiwadi_name'))
-                        ? implode(',', $request->input('pratiwadi_name'))
-                        : $request->input('pratiwadi_name');
+        $pratiwadiList = [];
+        $names = is_array($request->input('pratiwadi_name')) ? $request->input('pratiwadi_name') : [];
+        $sthiti = is_array($request->input('mudda_sthiti')) ? $request->input('mudda_sthiti') : [];
+
+        foreach ($names as $index => $name) {
+            $pratiwadiList[] = [
+                'name' => $name,
+                'status' => $sthiti[$index] ?? null,
+            ];
+        }
+        $pratiwadi_name = json_encode($pratiwadiList, JSON_UNESCAPED_UNICODE);
         // Store the data in the database
         $Insertdata = [
             'anusandhan_garne_nikaye' => $request->input('anusandhan_garne_nikaye'),
@@ -130,7 +157,6 @@ class BankingMuddaController extends Controller
             'jaherwala_name' => $jaherwala_name,
             'pratiwadi_name' => $pratiwadi_name,
             'pratiwadi_number' => $request->input('pratiwadi_number'),
-            'mudda_stithi' => $request->input('mudda_stithi'),
             'mudda_bibran' => $request->input('mudda_bibran'),
             'pesi_karyala' => $request->input('pesi_karyala'),
             'mudda_date' => $request->input('mudda_date'),
@@ -210,13 +236,21 @@ class BankingMuddaController extends Controller
     {
         $rules = [
             'anusandhan_garne_nikaye' => 'required',
-            'mudda_stithi' => 'required',
+            'jaherwala_name' => 'required|array',
+            'pratiwadi_name' => 'required|array',
+            'pratiwadi_name.*' => 'required|string|max:255',
+            'mudda_sthiti' => 'required|array',
+            'mudda_sthiti.*' => 'required|string|in:फरार,पक्राउ,हाजिरि जमानीमा छोडेको,तामेली,नचल्ने',
             'mudda_date' => 'required',
-            'challani_number' => 'nullable|unique:banking_muddas,challani_number,' . $id,
+            'status' => 'required|boolean',
         ];
         $Messages = [
            'anusandhan_garne_nikaye.required' => 'अनुसन्धान गर्ने निकाय अनिवार्य छ।',
-           'mudda_stithi.required' => 'मुद्दा स्थिति अनिवार्य छ।',
+           'jaherwala_name.required' => 'जाहेरवालाको नाम अनिवार्य छ।',
+           'pratiwadi_name.0.required' => 'प्रतिवादीको नाम अनिवार्य छ।',
+           'pratiwadi_name.*.required' => 'प्रतिवादीको नाम अनिवार्य छ।',
+           'mudda_sthiti.0.required' => 'मुद्दा स्थिति अनिवार्य छ।',
+           'mudda_stithi.*.required' => 'मुद्दा स्थिति अनिवार्य छ।',
            'mudda_date.required' => 'मुद्दा दर्ता मिति अनिवार्य छ।',
         ];
         $bankingmudda = BankingMudda::findOrFail($id);
@@ -226,9 +260,17 @@ class BankingMuddaController extends Controller
                         ? implode(',', $request->input('jaherwala_name'))
                         : $request->input('jaherwala_name');
 
-        $pratiwadi_name = is_array($request->input('pratiwadi_name'))
-                        ? implode(',', $request->input('pratiwadi_name'))
-                        : $request->input('pratiwadi_name');
+        $pratiwadiList = [];
+        $names = is_array($request->input('pratiwadi_name')) ? $request->input('pratiwadi_name') : [];
+        $sthiti = is_array($request->input('mudda_sthiti')) ? $request->input('mudda_sthiti') : [];
+
+        foreach ($names as $index => $name) {
+            $pratiwadiList[] = [
+                'name' => $name,
+                'status' => $sthiti[$index] ?? null,
+            ];
+        }
+        $pratiwadi_name = json_encode($pratiwadiList, JSON_UNESCAPED_UNICODE);
 
         $challaniNumber = $request->input('challani_number');
         $shouldAssignChallani = $request->status && !BankingMudda::where('challani_number', $challaniNumber)->where('id', '!=', $bankingmudda->id)->exists();
@@ -239,7 +281,6 @@ class BankingMuddaController extends Controller
             'jaherwala_name' => $jaherwala_name,
             'pratiwadi_name' => $pratiwadi_name,
             'pratiwadi_number' => $request->input('pratiwadi_number'),
-            'mudda_stithi' => $request->input('mudda_stithi'),
             'mudda_bibran' => $request->input('mudda_bibran'),
             'pesi_karyala' => $request->input('pesi_karyala'),
             'mudda_date' => $request->input('mudda_date'),

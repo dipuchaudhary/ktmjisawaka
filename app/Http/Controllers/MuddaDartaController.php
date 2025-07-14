@@ -23,7 +23,9 @@ class MuddaDartaController extends Controller
             'mudda_name' => 'required',
             'jaherwala_name' => 'required|array',
             'pratiwadi_name' => 'required|array',
-            'mudda_stithi' => 'required',
+            'pratiwadi_name.*' => 'required|string|max:255',
+            'mudda_sthiti' => 'required|array',
+            'mudda_sthiti.*' => 'required|string|in:फरार,पक्राउ,हाजिरि जमानीमा छोडेको,तामेली,नचल्ने',
             'mudda_date' => 'required',
             'mudda_bibran' => 'required',
         ];
@@ -31,39 +33,13 @@ class MuddaDartaController extends Controller
            'anusandhan_garne_nikaye.required' => 'अनुसन्धान गर्ने निकाय अनिवार्य छ।',
            'mudda_name.required' => 'मुद्दाको किसिम अनिवार्य छ।',
            'jaherwala_name.required' => 'जाहेरवालाको नाम अनिवार्य छ।',
-           'pratiwadi_name.required' => 'प्रतिवादीको नाम अनिवार्य छ।',
-           'mudda_stithi.required' => 'मुद्दा स्थिति अनिवार्य छ।',
+           'pratiwadi_name.0.required' => 'प्रतिवादीको नाम अनिवार्य छ।',
+           'pratiwadi_name.*.required' => 'प्रतिवादीको नाम अनिवार्य छ।',
+           'mudda_sthiti.0.required' => 'मुद्दा स्थिति अनिवार्य छ।',
+           'mudda_stithi.*.required' => 'मुद्दा स्थिति अनिवार्य छ।',
            'mudda_date.required' => 'मुद्दा दर्ता मिति अनिवार्य छ।',
            'mudda_bibran.required' => 'मुद्दा विवरण अनिवार्य छ।',
         ];
-
-//           $request->validate([
-//         'pratiwadi_name' => 'required|array',
-//         'pratiwadi_name.*' => 'nullable|string',
-//         'mudda_sthiti' => 'required|array',
-//         'mudda_sthiti.*' => 'nullable|string',
-//     ]);
-
-//     // Combine inputs into an array of associative arrays
-//     $pratiwadiList = [];
-
-//     $names = $request->input('pratiwadi_name', []);
-//     $statuses = $request->input('mudda_sthiti', []);
-
-//     foreach ($names as $index => $name) {
-//         $pratiwadiList[] = [
-//             'name' => $name,
-//             'status' => $statuses[$index] ?? null,
-//         ];
-//     }
-
-//     // Store in DB as JSON
-//     $muddaDarta = new MuddaDarta();
-//     $muddaDarta->pratiwadis = json_encode($pratiwadiList, JSON_UNESCAPED_UNICODE);
-//     // Add other fields as needed
-//     @foreach(json_decode($muddaDarta->pratiwadis) as $pratiwadi)
-//     {{ $pratiwadi->name }} - {{ $pratiwadi->status }}
-// @endforeach
 
     /**
      * Display a listing of the resource.
@@ -73,13 +49,30 @@ class MuddaDartaController extends Controller
     {
         if(request()->ajax())
         {
-            $query = MuddaDarta::select('id', 'anusandhan_garne_nikaye', 'mudda_number', 'mudda_name', 'jaherwala_name','pratiwadi_name','mudda_stithi','mudda_date','sarkariwakil_name','faat_name','user_name');
+            $query = MuddaDarta::select('id', 'anusandhan_garne_nikaye', 'mudda_number', 'mudda_name', 'jaherwala_name','pratiwadi_name','pratiwadi_number','mudda_date','sarkariwakil_name','faat_name','user_name');
+
             return Datatables::eloquent($query)
                 ->addIndexColumn()
-                ->addColumn('action', function($query) {
-                        return $this->getActionButtons($query);
+                ->addColumn('pratiwadi_name', function($row) {
+                    if (is_string($row->pratiwadi_name)) {
+                        $data = json_decode($row->pratiwadi_name, true);
+                    }
+                    if (is_array($data)) {
+                        $html = '';
+                        foreach ($data as $pratiwadi) {
+                            $name = e($pratiwadi['name'] ?? '-');
+                            $status = e($pratiwadi['status'] ?? '-');
+                            $html .= "<small class='badge rounded-pill text-white bg-dark'>{$name} ({$status})</small><br>";
+                        }
+                        return $html;
+                    }
+                    return '-';
                 })
-                ->rawColumns(['action'])
+
+                ->addColumn('action', function($row) {
+                    return $this->getActionButtons($row);
+                })
+                ->rawColumns(['pratiwadi_name', 'action'])
                 ->make(true);
         }
         return view('frontend.mudda_darta.index');
@@ -122,15 +115,23 @@ class MuddaDartaController extends Controller
 
     public function store(Request $request)
     {
-        $this->validate($request, $this->rules, $this->customMessages);
 
+        $this->validate($request, $this->rules, $this->customMessages);
         $jaherwala_name = is_array($request->input('jaherwala_name'))
                         ? implode(',', $request->input('jaherwala_name'))
                         : $request->input('jaherwala_name');
+        $pratiwadiList = [];
+        $names = is_array($request->input('pratiwadi_name')) ? $request->input('pratiwadi_name') : [];
+        $sthiti = is_array($request->input('mudda_sthiti')) ? $request->input('mudda_sthiti') : [];
 
-        $pratiwadi_name = is_array($request->input('pratiwadi_name'))
-                        ? implode(',', $request->input('pratiwadi_name'))
-                        : $request->input('pratiwadi_name');
+        foreach ($names as $index => $name) {
+            $pratiwadiList[] = [
+                'name' => $name,
+                'status' => $sthiti[$index] ?? null,
+            ];
+        }
+        $pratiwadi_name = json_encode($pratiwadiList, JSON_UNESCAPED_UNICODE);
+
         // Store the data in the database
         MuddaDarta::create([
             'anusandhan_garne_nikaye' => $request->input('anusandhan_garne_nikaye'),
@@ -139,7 +140,6 @@ class MuddaDartaController extends Controller
             'jaherwala_name' => $jaherwala_name,
             'pratiwadi_name' => $pratiwadi_name,
             'pratiwadi_number' => $request->input('pratiwadi_number'),
-            'mudda_stithi' => $request->input('mudda_stithi'),
             'mudda_date' => $request->input('mudda_date'),
             'mudda_suru_myad' => $request->input('mudda_suru_myad'),
             'mudda_myad_thap' => $request->input('mudda_myad_thap'),
@@ -175,17 +175,24 @@ class MuddaDartaController extends Controller
                         ? implode(',', $request->input('jaherwala_name'))
                         : $request->input('jaherwala_name');
 
-        $pratiwadi_name = is_array($request->input('pratiwadi_name'))
-                        ? implode(',', $request->input('pratiwadi_name'))
-                        : $request->input('pratiwadi_name');
+        $pratiwadiList = [];
+        $names = is_array($request->input('pratiwadi_name')) ? $request->input('pratiwadi_name') : [];
+        $sthiti = is_array($request->input('mudda_sthiti')) ? $request->input('mudda_sthiti') : [];
+
+        foreach ($names as $index => $name) {
+            $pratiwadiList[] = [
+                'name' => $name,
+                'status' => $sthiti[$index] ?? null,
+            ];
+        }
+        $pratiwadi_name = json_encode($pratiwadiList, JSON_UNESCAPED_UNICODE);
         $mudda->update([
             'anusandhan_garne_nikaye' => $request->input('anusandhan_garne_nikaye'),
             'mudda_number' => $request->input('mudda_number'),
             'mudda_name' => $request->input('mudda_name'),
             'jaherwala_name' => $jaherwala_name,
-            'pratiwadi_name' => $jaherwala_name,
+            'pratiwadi_name' => $pratiwadi_name,
             'pratiwadi_number' => $request->input('pratiwadi_number'),
-            'mudda_stithi' => $request->input('mudda_stithi'),
             'mudda_date' => $request->input('mudda_date'),
             'mudda_suru_myad' => $request->input('mudda_suru_myad'),
             'mudda_myad_thap' => $request->input('mudda_myad_thap'),
@@ -196,8 +203,8 @@ class MuddaDartaController extends Controller
             'user_name' => auth()->user()->name,
             'kaifiyat' => $request->input('kaifiyat'),
         ]);
-        $this->updateAviyogchallani($mudda,$request,$pratiwadi_name,$jaherwala_name);
-        $this->updatePunarabedan($mudda,$request,$pratiwadi_name,$jaherwala_name);
+        // $this->updateAviyogchallani($mudda,$request,$pratiwadi_name,$jaherwala_name);
+        // $this->updatePunarabedan($mudda,$request,$pratiwadi_name,$jaherwala_name);
         return redirect()->route('mudda_darta.index')
         ->with('success', 'राय सफलतापूर्वक अपडेट भयो।');
     }
