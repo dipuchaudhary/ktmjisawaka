@@ -37,6 +37,34 @@ class MuddaDartaController extends Controller
            'mudda_bibran.required' => 'मुद्दा विवरण अनिवार्य छ।',
         ];
 
+//           $request->validate([
+//         'pratiwadi_name' => 'required|array',
+//         'pratiwadi_name.*' => 'nullable|string',
+//         'mudda_sthiti' => 'required|array',
+//         'mudda_sthiti.*' => 'nullable|string',
+//     ]);
+
+//     // Combine inputs into an array of associative arrays
+//     $pratiwadiList = [];
+
+//     $names = $request->input('pratiwadi_name', []);
+//     $statuses = $request->input('mudda_sthiti', []);
+
+//     foreach ($names as $index => $name) {
+//         $pratiwadiList[] = [
+//             'name' => $name,
+//             'status' => $statuses[$index] ?? null,
+//         ];
+//     }
+
+//     // Store in DB as JSON
+//     $muddaDarta = new MuddaDarta();
+//     $muddaDarta->pratiwadis = json_encode($pratiwadiList, JSON_UNESCAPED_UNICODE);
+//     // Add other fields as needed
+//     @foreach(json_decode($muddaDarta->pratiwadis) as $pratiwadi)
+//     {{ $pratiwadi->name }} - {{ $pratiwadi->status }}
+// @endforeach
+
     /**
      * Display a listing of the resource.
      */

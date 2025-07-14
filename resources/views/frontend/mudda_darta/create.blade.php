@@ -8,14 +8,14 @@
     <form class="container" method="POST" action="{{ route('mudda_darta.store') }}" enctype="multipart/form-data">
             @csrf
             <div class="row">
-                <div class="col-md-4 mb-3">
+                <div class="col-md-3 mb-3">
                     <label for="अनुसन्धान गर्ने निकाय" class="form-label">अनुसन्धान गर्ने निकाय <span style="color:red">*</span></label>
                     <input type="text" class="form-control @error('anusandhan_garne_nikaye') is-invalid @enderror" id="anusandhan_garne_nikaye" name="anusandhan_garne_nikaye" value="{{ old('anusandhan_garne_nikaye') }}">
                         @error('anusandhan_garne_nikaye')
                         <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
                 </div>
-                <div class="col-md-4 mb-3">
+                <div class="col-md-3 mb-3">
                     <label for="जाहेरवालाको नाम" class="form-label">जाहेरवालाको नाम <span style="color:red">*</span></label>
                     <select type="text" class="form-control custom-select2 @error('jaherwala_name') is-invalid @enderror" id="jaherwala_name" name="jaherwala_name[]" value="{{ old('jaherwala_name') }}" multiple="multiple" >
                     </select>
@@ -23,14 +23,36 @@
                         <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
                 </div>
-                <div class="col-md-4 mb-3">
-                    <label for="प्रतिवादीको नाम" class="form-label">प्रतिवादीको नाम <span style="color:red">*</span></label>
-                    <select type="text" class="form-control custom-select2 @error('pratiwadi_name') is-invalid @enderror" id="pratiwadi_name" name="pratiwadi_name[]" value="{{ old('pratiwadi_name') }}" multiple="multiple">
-                    </select>
-                        @error('pratiwadi_name')
-                        <div class="alert alert-danger">{{ $message }}</div>
+                    <div class="col-md-6">
+                        <div class="d-flex gap-3 border pratiwadi-group">
+                            <div class="flex-fill p-1">
+                                <label for="प्रतिवादीको नाम">प्रतिवादीको नाम</label>
+                                <input type="text" class="form-control" name="pratiwadi_name[]" placeholder="प्रतिवादीको नाम">
+                            </div>
+                            <div class="flex-fill p-1">
+                                <label for="मुद्दा स्थिति">मुद्दा स्थिति</label>
+                              <select name="mudda_sthiti[]" class="form-control">
+                                    <option selected value="">--एउटाको विकल्प रोज्नुहोस।--</option>
+                                    <option value="फरार">फरार</option>
+                                    <option value="पक्राउ">पक्राउ</option>
+                                    <option value="हाजिरि जमानीमा छोडेको">हाजिरि जमानीमा छोडेको</option>
+                                    <option value="तामेली">तामेली</option>
+                                    <option value="नचल्ने">मुद्दा नचल्ने</option>
+                                </select>
+                            </div>
+                            <div class="flex-fill p-1 d-flex align-items-end gap-2 align-center">
+                                <button type="button" class="btn btn-success btn-sm addBtn" style="margin-bottom:17px; margin-right:2px;">
+                                    <i class="fa fa-plus"></i>
+                                </button>
+                                <button type="button" class="btn btn-danger btn-sm removeBtn" style="margin-bottom:17px;">
+                                    <i class="fa fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                    @error('pratiwadi_name')
+                    <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
-                </div>
+                    </div>
             </div>
             <div class="row">
                 <div class="col-md-4 mb-3">
@@ -125,6 +147,33 @@
 @endsection
 @push('scripts')
 <script>
+
+// clone inputgroupt
+$(document).on('click', '.addBtn', function () {
+    let group = $(this).closest('.pratiwadi-group');
+    let cloned = group.clone();
+
+    // Remove labels
+    cloned.find('label').remove();
+
+    // Clear input/select values
+    cloned.find('input').val('');
+    cloned.find('select').val('');
+
+    // Append cloned group
+    group.closest('.col-md-6').append(cloned);
+});
+
+$(document).on('click', '.removeBtn', function () {
+    let allGroups = $(this).closest('.col-md-6').find('.pratiwadi-group');
+
+    if (allGroups.length > 1) {
+        $(this).closest('.pratiwadi-group').remove();
+    } else {
+        alert('कम्तिमा एउटा समूह आवश्यक छ।');
+    }
+});
+
 
 const nepToEng = s => s.replace(/[०-९]/g, d => '०१२३४५६७८९'.indexOf(d));
 const engToNep = s => String(s).replace(/[0-9]/g, d => '०१२३४५६७८९'[d]);
