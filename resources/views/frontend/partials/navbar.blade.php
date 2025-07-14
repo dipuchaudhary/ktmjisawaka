@@ -26,7 +26,7 @@
                                 </div>
                             </div>
                             <a href="{{ route('punarabedan.index') }}" class="nav-item nav-link {{ request()->is('punarabedan') ? 'active' : '' }}">पुनरावेदन</a>
-                            <a href="{{ route('mudda.overall_status') }}" class="nav-item nav-link {{ request()->is('summary') ? 'active' : '' }}">मुद्दाको समग्र स्थिति</a>
+                            <a href="{{ route('mudda.overall_status') }}" class="nav-item nav-link {{ request()->is('overall-status') ? 'active' : '' }}">मुद्दाको समग्र स्थिति</a>
                             <a href="#" class="nav-item nav-link {{ request()->is('contact') ? 'active' : '' }}">सम्पर्क ठेगाना</a>
                         </div>
                         <div class="navbar-nav ml-auto">

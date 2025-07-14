@@ -14,24 +14,25 @@
                 <th rowspan="2" scope="col">जाहेरवालाको नाम</th>
                 <th rowspan="2" scope="col">प्रतिवादीको नाम</th>
                 <th rowspan="2" scope="col">मुद्दाको नाम</th>
-                <th colspan="4" class="text-center">बैंकिङ मुद्दा विवरण</th>
-                <th colspan="4" class="text-center">अभियोग चलानी विवरण</th>
-                <th colspan="4" class="text-center">पुनरावेदन विवरण</th>
+                <th colspan="4" class="text-center bg-warning">बैंकिङ मुद्दा विवरण</th>
+                <th colspan="4" class="text-center bg-warning">अभियोग चलानी विवरण</th>
+                <th colspan="5" class="text-center bg-warning">पुनरावेदन विवरण</th>
             </tr>
             <tr>
                 <th scope="col">सरकारी वकिल</th>
                 <th scope="col">चलानी नं.</th>
-                <th scope="col">प्रयोगकर्ता</th>
+                <th scope="col">प्रविष्टकर्ता</th>
                 <th scope="col">स्थिति</th>
 
                 <th scope="col">अपलोड मिति</th>
                 <th scope="col">चलानी नं.</th>
-                <th scope="col">प्रयोगकर्ता</th>
+                <th scope="col">प्रविष्टकर्ता</th>
                 <th scope="col">स्थिति</th>
 
+                <th scope="col">पुवे/दो.पा</th>
                 <th scope="col">पुनरावेदन मिति</th>
                 <th scope="col">चलानी नं.</th>
-                <th scope="col">प्रयोगकर्ता</th>
+                <th scope="col">प्रविष्टकर्ता</th>
                 <th scope="col">स्थिति</th>
             </tr>
         </thead>
@@ -77,6 +78,7 @@ $(function () {
             { data: 'aviyog_user_name', name: 'aviyog_user_name',className: 'exportable', defaultContent: '-' },
             { data: 'aviyog_status', name: 'aviyog_status', orderable: false, searchable: false,className: 'exportable', defaultContent: '-' },
 
+            { data: 'punarabedan_dopa', name: 'punarabedan_dopa',className: 'exportable', defaultContent: '-' },
             { data: 'punarabedan_date', name: 'punarabedan_date',className: 'exportable', defaultContent: '-' },
             { data: 'punarabedan_challani_number', name: 'punarabedan_challani_number',className: 'exportable', defaultContent: '-' },
             { data: 'punarabedan_user_name', name: 'punarabedan_user_name',className: 'exportable', defaultContent: '-' },

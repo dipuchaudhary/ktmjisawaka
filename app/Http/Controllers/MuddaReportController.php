@@ -24,6 +24,7 @@ class MuddaReportController extends Controller
                     DB::raw('NULL as upload_date'),
                     DB::raw('NULL as user_name'),
                     DB::raw('NULL as status'),
+                    DB::raw('NULL as dopa'),
                     DB::raw("'mudda_darta' as source")
                 ]);
 
@@ -39,6 +40,7 @@ class MuddaReportController extends Controller
                     DB::raw('NULL as upload_date'),
                     'user_name',
                     'status',
+                    DB::raw('NULL as dopa'),
                     DB::raw("'banking_mudda' as source")
                 ]);
 
@@ -54,6 +56,7 @@ class MuddaReportController extends Controller
                     'upload_date',
                     'user_name',
                     'status',
+                    DB::raw('NULL as dopa'),
                     DB::raw("'aviyog_challani' as source")
                 ]);
 
@@ -69,6 +72,7 @@ class MuddaReportController extends Controller
                     'punarabedan_date as upload_date',
                     'user_name',
                     'status',
+                    'punarabedan as dopa',
                     DB::raw("'punarabedan' as source")
                 ]);
 
@@ -114,6 +118,7 @@ class MuddaReportController extends Controller
                     'aviyog_challani_number' => '',
                     'aviyog_user_name' => '',
                     'aviyog_status' => '',
+                    'punarabedan_dopa' => '',
                     'punarabedan_date' => '',
                     'punarabedan_challani_number' => '',
                     'punarabedan_user_name' => '',
@@ -139,6 +144,7 @@ class MuddaReportController extends Controller
                                 : "<span class='badge bg-danger'>Pending</span>";
                             break;
                         case 'punarabedan':
+                            $base['punarabedan_dopa'] = $item->dopa;
                             $base['punarabedan_date'] = $item->upload_date;
                             $base['punarabedan_challani_number'] = $item->challani_number;
                             $base['punarabedan_user_name'] = $item->user_name;
