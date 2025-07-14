@@ -31,7 +31,7 @@ class AviyogChallaniController extends Controller
          if(request()->ajax())
         {
             try {
-                $query = AviyogChallani::select('id', 'challani_date','challani_number','mudda_number','mudda_name','jaherwala_name','pratiwadi_name','sarkariwakil_name','faat_name','anusandhan_garne_nikaye','user_name','status','file','pesh_karyala');
+                $query = AviyogChallani::select('id', 'challani_date','challani_number','mudda_number','mudda_name','jaherwala_name','pratiwadi_name','sarkariwakil_name','faat_name','anusandhan_garne_nikaye','user_name','status','upload_date','pesh_karyala');
 
                 return Datatables::eloquent($query)
                     ->addIndexColumn()
@@ -76,10 +76,10 @@ class AviyogChallaniController extends Controller
     protected function getActionButtons($data)
     {
         $buttons = '';
-        $buttons = '<div style="display: inline-flex; align-items: center; gap: 8px;">';
-        if (isset($data->file) && $data->file) {
-            $buttons .= '<a href="' . asset('storage/' . $data->file) . '" target="_blank" class="edit p-1"><i class="fa fa-eye fa-lg"></i></a>';
-        }
+        // $buttons = '<div style="display: inline-flex; align-items: center; gap: 8px;">';
+        // if (isset($data->file) && $data->file) {
+        //     $buttons .= '<a href="' . asset('storage/' . $data->file) . '" target="_blank" class="edit p-1"><i class="fa fa-eye fa-lg"></i></a>';
+        // }
         if (!auth()->check()) return $buttons;
 
         if (auth()->user()->can('aviyog-edit')) {
@@ -121,7 +121,6 @@ class AviyogChallaniController extends Controller
             'jaherwala_name' => 'required|array',
             'pratiwadi_name' => 'required|array',
             'mudda_name' => 'required',
-            'upload_file' => 'nullable|file|mimes:pdf|max:51200',
             'pesh_karyala' => 'required',
         ];
         $customMessages = [
@@ -130,26 +129,12 @@ class AviyogChallaniController extends Controller
            'jaherwala_name.required' => 'जाहेरवालाको नाम अनिवार्य छ।',
            'pratiwadi_name.required' => 'प्रतिवादीको नाम अनिवार्य छ।',
            'mudda_name.required' => 'मुद्दा किसिम अनिवार्य छ।',
-           'upload_file' => 'pdf फाइल मात्र अपलोड गर्नुहोस्।',
            'challani_date' => 'चलानी मिति अनिवार्य छ।',
            'pesh_karyala' => 'पेश भएको कार्यालय अनिवार्य छ।',
         ];
 
         $this->validate($request, $rules, $customMessages);
         $aviyogchallani = AviyogChallani::findOrFail($id);
-        $fileurl = $request->input('existing_file');
-        if ($request->hasFile('upload_file')) {
-
-            if ($aviyogchallani->file && Storage::disk('public')->exists($aviyogchallani->file)) {
-            Storage::disk('public')->delete($aviyogchallani->file);
-            }
-
-            $file = $request->file('upload_file');
-            $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-            $extension = $file->getClientOriginalExtension();
-            $filename = $originalName . '_' . time() . '.' . $extension;
-            $fileurl = $file->storeAs('aviyogfile', $filename, 'public');
-        }
 
         $genderCounts = $request->input('gender', []);
         $male   = isset($genderCounts['male']) ? (int) $genderCounts['male'] : 0;
@@ -188,7 +173,7 @@ class AviyogChallaniController extends Controller
             'sarkariwakil_name'       => $request->input('sarkariwakil_name'),
             'faat_name'               => $request->input('faat_name'),
             'kaifiyat'                => $request->input('kaifiyat'),
-            'file'                    => $fileurl,
+            'upload_date'             => $request->input('upload_date'),
             'user_name'               => auth()->user()->name,
             'status'                  => true,
         ]);

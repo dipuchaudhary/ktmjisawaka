@@ -43,7 +43,7 @@
                         <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
                 </div>
-                <div class="col-md-6 pratiwadi-input-group">
+                <div class="col-md-6 pratiwadi-input-group mb-3">
                     @foreach(json_decode($aviyogchallani->pratiwadi_name, true) as $index => $pratiwadi)
                         <div class="d-flex gap-3 border p-2 pratiwadi-group">
                             <div class="flex-fill p-1">
@@ -108,19 +108,19 @@
                         <div class="d-flex gap-3">
                         <div class="flex-fill text-center p-1">
                             <label for="male_count" class="form-label">पुरुष संख्या</label>
-                            <input type="text" class="form-control nep-number" id="male_count" name="gender[male]" placeholder="0" value="{{ $gender['male'] ?? 0 }}">
+                            <input type="text" class="form-control nep-number" id="male_count" name="gender[male]" placeholder="0" value="{{ $gender['male'] ?? null }}">
                         </div>
                         <div class="flex-fill text-center p-1">
                             <label for="female_count" class="form-label">महिला संख्या</label>
-                            <input type="text" class="form-control nep-number" id="female_count" name="gender[female]" placeholder="0" value="{{ $gender['female'] ?? 0 }}">
+                            <input type="text" class="form-control nep-number" id="female_count" name="gender[female]" placeholder="0" value="{{ $gender['female'] ?? null }}">
                         </div>
                         <div class="flex-fill text-center p-1">
                             <label for="child_count" class="form-label">नाबालक संख्या</label>
-                            <input type="text" class="form-control nep-number" id="child_count" name="gender[child]" placeholder="0" value="{{ $gender['child'] ?? 0 }}">
+                            <input type="text" class="form-control nep-number" id="child_count" name="gender[child]" placeholder="0" value="{{ $gender['child'] ?? null }}">
                         </div>
                         <div class="flex-fill text-center p-1">
                             <label for="other_count" class="form-label">अन्य संख्या</label>
-                            <input type="text" class="form-control nep-number" id="other_count" name="gender[other]" placeholder="0" value="{{ $gender['other'] ?? 0 }}">
+                            <input type="text" class="form-control nep-number" id="other_count" name="gender[other]" placeholder="0" value="{{ $gender['other'] ?? null }}">
                         </div>
                         </div>
                     </fieldset>
@@ -165,11 +165,10 @@
                 </div>
                 <div class="col-md-4 mb-3">
                     <label for="अभियोग फाइल" class="form-label">अभियोग अपलोड भएको मितिः</label>
-                    <input class="form-control date-picker @error('upload_date') is-invalid @enderror" type="text" id="upload_date" name="upload_date" > <span>{{ $aviyogchallani->upload_date }}</span>
+                    <input class="form-control date-picker @error('upload_date') is-invalid @enderror" type="text" id="upload_date" name="upload_date" value="{{ $aviyogchallani->upload_date }}">
                     @error('upload_date')
                         <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
-
                 </div>
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>

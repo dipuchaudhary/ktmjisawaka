@@ -28,7 +28,7 @@
                         <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
                 </div>
-                    <div class="col-md-6 pratiwadi-input-group">
+                    <div class="col-md-6 pratiwadi-input-group mb-3">
                         @foreach(json_decode($mudda->pratiwadi_name, true) as $index => $pratiwadi)
                         <div class="d-flex gap-3 border p-2 pratiwadi-group">
                             <div class="flex-fill p-1">

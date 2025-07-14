@@ -41,7 +41,7 @@
                 </div>
             </div>
             <div class="row">
-               <div class="col-md-8 pratiwadi-input-group">
+               <div class="col-md-8 pratiwadi-input-group mb-3">
                     @foreach(json_decode($bankingmudda->pratiwadi_name, true) as $index => $pratiwadi)
                         <div class="d-flex gap-3 border p-2 pratiwadi-group">
                             <div class="flex-fill p-1">

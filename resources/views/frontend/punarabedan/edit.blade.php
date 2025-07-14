@@ -11,14 +11,14 @@
     <form class="container" method="POST" action="{{ route('punarabedan.update', $punarabedan->id) }}" enctype="multipart/form-data">
             @csrf
             <div class="row g-3 align-items-center mb-5">
-                <div class="col-md-2 mb-3">
+                <div class="col-md-3 mb-3">
                     <label for="मुद्दा नं." class="form-label">मुद्दा नं.</label>
                     <input type="text" class="form-control @error('mudda_number') is-invalid @enderror" id="mudda_number" name="mudda_number" value="{{ $punarabedan->mudda_number }}" readonly>
                     @error('mudda_number')
                         <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
                 </div>
-                <div class="col-md-4 mb-3">
+                <div class="col-md-3 mb-3">
                     <label for="जाहेरवालाको नाम" class="form-label">जाहेरवालाको नाम <span style="color:red">*</span></label>
                     <select type="text" class="form-control @error('jaherwala_name') is-invalid @enderror" id="jaherwala_name" name="jaherwala_name[]" multiple="multiple" readonly>
                     @if (!empty($punarabedan->jaherwala_name))
@@ -31,43 +31,72 @@
                         <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
                 </div>
-                <div class="col-md-4 mb-3">
-                    <label for="प्रतिवादीको नाम" class="form-label">प्रतिवादीको नाम <span style="color:red">*</span></label>
-                    <select type="text" class="form-control @error('pratiwadi_name') is-invalid @enderror" id="pratiwadi_name" name="pratiwadi_name[]" multiple="multiple" readonly>
-                    @if (!empty($punarabedan->pratiwadi_name))
-                        @foreach (explode(',', $punarabedan->pratiwadi_name) as $value)
-                            <option value="{{ $value }}" selected>{{ $value }}</option>
+                <div class="col-md-6 pratiwadi-input-group">
+                    @foreach(json_decode($punarabedan->pratiwadi_name, true) as $index => $pratiwadi)
+                        <div class="d-flex gap-3 border p-2 pratiwadi-group">
+                            <div class="flex-fill p-1">
+                                 @if ($loop->first)
+                                <label>प्रतिवादीको नाम <span style="color:red">*</span></label>
+                                @endif
+                                <input type="text" class="form-control" name="pratiwadi_name[]" id="pratiwadi_name" placeholder="प्रतिवादीको नाम"
+                                    value="{{ $pratiwadi['name'] }}">
+
+                                @error("pratiwadi_name.$index")
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="flex-fill p-1">
+                                @if ($loop->first)
+                                <label>मुद्दा स्थिति <span style="color:red">*</span></label>
+                                @endif
+                                <select name="mudda_sthiti[]" class="form-control" id="mudda_sthiti">
+                                    <option value="">--एउटाको विकल्प रोज्नुहोस।--</option>
+                                    @foreach(['फरार','पक्राउ','हाजिरि जमानीमा छोडेको','तामेली','नचल्ने'] as $status)
+                                        <option value="{{ $status }}"
+                                            {{ $pratiwadi['status'] == $status ? 'selected' : '' }}>
+                                            {{ $status }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error("mudda_sthiti.$index")
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="flex-fill p-1 d-flex align-items-end gap-2 align-center">
+                                <button type="button" class="btn btn-success btn-sm addBtn" style="margin-bottom:17px; margin-right:2px;">
+                                    <i class="fa fa-plus"></i>
+                                </button>
+                                <button type="button" class="btn btn-danger btn-sm removeBtn" style="margin-bottom:17px;">
+                                    <i class="fa fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
                         @endforeach
-                        @endif
-                    </select>
-                    @error('pratiwadi_name')
-                        <div class="alert alert-danger">{{ $message }}</div>
-                    @enderror
                 </div>
-                <div class="col-md-2 mb-3">
+            </div>
+            <div class="row">
+                <div class="col-md-3 mb-3">
                     <label for="मुद्दाको नाम" class="form-label">मुद्दाको नाम <span style="color:red">*</span></label>
                     <input type="text" class="form-control @error('mudda_name') is-invalid @enderror" id="mudda_name" name="mudda_name" value="{{ $punarabedan->mudda_name }}" readonly>
                     @error('mudda_name')
                         <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-md-4 mb-3">
+                <div class="col-md-3 mb-3">
                     <label for="चलानी मिति" class="form-label">फैसला मिति <span style="color:red">*</span></label>
                     <input type="text" class="form-control date-picker @error('faisala_date') is-invalid @enderror" id="faisala_date" name="faisala_date" value="{{ $punarabedan->faisala_date }}" >
                     @error('faisala_date')
                         <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
                 </div>
-                <div class="col-md-4 mb-3">
+                <div class="col-md-3 mb-3">
                     <label for="चलानी मिति" class="form-label">फैसला प्रमाणीकरण मिति <span style="color:red">*</span></label>
                     <input type="text" class="form-control date-picker @error('faisala_pramanikaran_date') is-invalid @enderror" id="faisala_pramanikaran_date" name="faisala_pramanikaran_date" value="{{ $punarabedan->faisala_pramanikaran_date }}" >
                     @error('faisala_pramanikaran_date')
                         <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
                 </div>
-                <div class="col-md-4 mb-3">
+                <div class="col-md-3 mb-3">
                     <label for="चलानी मिति" class="form-label">सूचना प्राप्त मिति <span style="color:red">*</span></label>
                     <input type="text" class="form-control date-picker @error('suchana_date') is-invalid @enderror" id="suchana_date" name="suchana_date" value="{{ $punarabedan->suchana_date }}" >
                     @error('suchana_date')
@@ -221,7 +250,7 @@
 <script>
 $(document).ready(function() {
 
-    $('#pratiwadi_name, #jaherwala_name')
+    $('#pratiwadi_name, #jaherwala_name,#mudda_sthiti')
     .prop('readonly', true)
     .on('focus mousedown keypress paste', function (e) {
         e.preventDefault();

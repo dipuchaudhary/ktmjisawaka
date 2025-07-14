@@ -20,7 +20,7 @@ class AviyogChallani extends Model
         'anusandhan_garne_nikaye',
         'pesh_karyala',
         'faat_name',
-        'file',
+        'upload_date',
         'kaifiyat',
         'user_name',
         'status',

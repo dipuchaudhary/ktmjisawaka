@@ -21,8 +21,9 @@
                 <th>फाँट</th>
                 <th>अनुसन्धान गर्ने निकाय</th>
                 <th>अभियोग/निर्णय(पेश भएको कार्यालय)</th>
-                <th>प्रयोगकर्ता</th>
-                <th>Status</th>
+                <th>अभियोग अपलोड भएको मिति</th>
+                <th>प्रविष्टकर्ता</th>
+                <th>स्थिति</th>
                 <th width="105px">Action</th>
             </tr>
         </thead>
@@ -47,6 +48,7 @@
             { data: 'faat_name', name: 'faat_name', className: 'exportable' },
             { data: 'anusandhan_garne_nikaye', name: 'anusandhan_garne_nikaye', className: 'exportable' },
             { data: 'pesh_karyala', name: 'pesh_karyala', className: 'exportable' },
+            { data: 'upload_date', name: 'upload_date', className: 'exportable' },
             { data: 'user_name', name: 'user_name', className: 'exportable' },
             { data: 'status', name: 'status', className: 'exportable' },
             { data: 'action', name: 'action',  orderable: false, searchable: false, className: 'text-center' },
@@ -57,6 +59,8 @@
             processing: true,
             serverSide: true,
             scrollX: true,
+            fixedHeader: true,
+            scrollCollapse: true,
             ajax: {
                 url: "{{ route('aviyog_challani.index') }}",
                 error: function (xhr, error, thrown) {

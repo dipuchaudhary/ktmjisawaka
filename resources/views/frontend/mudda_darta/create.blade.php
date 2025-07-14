@@ -23,7 +23,7 @@
                         <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
                 </div>
-                <div class="col-md-6 pratiwadi-input-group">
+                <div class="col-md-6 pratiwadi-input-group mb-3">
                     <div class="d-flex gap-3 border pratiwadi-group">
                         <div class="flex-fill p-1">
                             <label for="प्रतिवादीको नाम">प्रतिवादीको नाम <span style="color:red">*</span></label>

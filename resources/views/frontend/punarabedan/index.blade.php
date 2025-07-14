@@ -16,8 +16,8 @@
                 <th rowspan="2">फैसला मिति</th>
                 <th rowspan="2">फैसला प्रमाणीकरण मिति</th>
                 <th colspan="3" class="text-center">कार्यालयबाट भएको पुनरावेदन सम्बन्धी कारवाही</th>
-                <th rowspan="2">प्रयोगकर्ता</th>
-                <th rowspan="2">Status</th>
+                <th rowspan="2">प्रविष्टकर्ता</th>
+                <th rowspan="2">स्थिति</th>
                 @auth
                     @if(auth()->user()->can('punarabedan-edit') || auth()->user()->can('punarabedan-delete'))
                         <th rowspan="2" width="105px">Action</th>

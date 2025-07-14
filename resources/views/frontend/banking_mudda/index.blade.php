@@ -29,8 +29,8 @@
                         <th>मुद्दा दर्ता मिति</th>
                         <th>सरकारी वकील</th>
                         <th>चलानी नं.</th>
-                        <th>प्रयोगकर्ता</th>
-                        <th>Status</th>
+                        <th>प्रविष्टकर्ता</th>
+                        <th>स्थिति</th>
                         @auth
                             @if(auth()->user()->can('bankingdarta-edit') || auth()->user()->can('bankingdarta-delete'))
                                 <th width="105px">Action</th>

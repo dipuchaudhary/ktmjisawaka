@@ -134,9 +134,17 @@ class PunarabedanController extends Controller
                         ? implode(',', $request->input('jaherwala_name'))
                         : $request->input('jaherwala_name');
 
-        $pratiwadi_name = is_array($request->input('pratiwadi_name'))
-                        ? implode(',', $request->input('pratiwadi_name'))
-                        : $request->input('pratiwadi_name');
+        $pratiwadiList = [];
+        $names = is_array($request->input('pratiwadi_name')) ? $request->input('pratiwadi_name') : [];
+        $sthiti = is_array($request->input('mudda_sthiti')) ? $request->input('mudda_sthiti') : [];
+
+        foreach ($names as $index => $name) {
+            $pratiwadiList[] = [
+                'name' => $name,
+                'status' => $sthiti[$index] ?? null,
+            ];
+        }
+        $pratiwadi_name = json_encode($pratiwadiList, JSON_UNESCAPED_UNICODE);
         if ($request->input('punarabedan') == 'सफल') {
             $punarabedan_date = null;
             $punarabedan_challani_number = null;

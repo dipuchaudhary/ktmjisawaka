@@ -23,8 +23,8 @@
                 <th>विषय</th>
                 <th>दस्तखत गर्ने अधिकारी</th>
                 <th>चलानी शाखा</th>
-                <th>प्रयोगकर्ता</th>
-                <th>Status</th>
+                <th>प्रविष्टकर्ता</th>
+                <th>स्थिति</th>
                 @auth
                     @if(auth()->user()->can('patrachallani-edit') || auth()->user()->can('patrachallani-delete'))
                         <th width="105px">Action</th>

@@ -24,10 +24,10 @@
                 <th>जाहेरवालाको नाम</th>
                 <th style="width: 100px;">प्रतिवादीको नाम</th>
                 <th>प्रतिवादी संख्या</th>
-                <th>मुद्दा दर्ता मिति</th>
+                <th>राय दर्ता मिति</th>
                 <th>सरकारी वकील</th>
                 <th>फाँट</th>
-                <th>प्रयोगकर्ता</th>
+                <th>प्रविष्टकर्ता</th>
                 @auth
                     @if(auth()->user()->can('mulldarta-edit') || auth()->user()->can('mulldarta-delete'))
                     <th width="105px">Action</th>
