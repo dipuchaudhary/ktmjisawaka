@@ -43,6 +43,9 @@ class PermissionTableSeeder extends Seeder
            'user-create',
            'user-edit',
            'user-delete',
+           'mudda-status-management',
+           'show-pending',
+           'show-done',
 
         ];
 
@@ -50,7 +53,7 @@ class PermissionTableSeeder extends Seeder
 
         foreach ($permissions as $permission) {
 
-             Permission::create(['name' => $permission]);
+            Permission::firstOrCreate(['name' => $permission]);
 
         }
     }

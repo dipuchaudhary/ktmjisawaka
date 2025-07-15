@@ -146,32 +146,3 @@
     </form>
 </div>
 @endsection
-@push('script')
-{{-- <script>
-    // clone inputgroupt
-$(document).on('click', '.addBtn', function () {
-    let group = $(this).closest('.pratiwadi-group');
-    let cloned = group.clone();
-
-    // Remove labels
-    cloned.find('label').remove();
-
-    // Clear input/select values
-    cloned.find('input').val('');
-    cloned.find('select').val('');
-
-    // Append cloned group
-    group.closest('.col-md-6').append(cloned);
-});
-
-$(document).on('click', '.removeBtn', function () {
-    let allGroups = $(this).closest('.col-md-6').find('.pratiwadi-group');
-
-    if (allGroups.length > 1) {
-        $(this).closest('.pratiwadi-group').remove();
-    } else {
-        alert('कम्तिमा एउटा समूह आवश्यक छ।');
-    }
-});
-</script> --}}
-@endpush

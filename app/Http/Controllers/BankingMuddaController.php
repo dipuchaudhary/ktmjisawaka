@@ -28,6 +28,21 @@ class BankingMuddaController extends Controller
          if(request()->ajax())
         {
             $query = BankingMudda::select('id', 'anusandhan_garne_nikaye', 'mudda_number', 'mudda_name', 'jaherwala_name','pratiwadi_name','pratiwadi_number','mudda_date','sarkariwakil_name','challani_number','user_name','status');
+            $user = auth()->user();
+            $query->where(function ($q) use ($user) {
+                $canShowPending = $user->hasPermissionTo('show-pending');
+                $canShowDone = $user->hasPermissionTo('show-done');
+
+                if ($canShowPending && $canShowDone) {
+                    $q->whereIn('status', [0, 1]);
+                } elseif ($canShowPending) {
+                    $q->where('status', 0);
+                } elseif ($canShowDone) {
+                    $q->where('status', 1);
+                } else {
+                    $q->whereRaw('0=1');
+                }
+            });
             return Datatables::eloquent($query)
                    ->addIndexColumn()
                    ->addColumn('pratiwadi_name', function($row) {

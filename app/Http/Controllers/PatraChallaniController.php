@@ -22,6 +22,21 @@ class PatraChallaniController extends Controller
          if(request()->ajax())
         {
             $query = PatraChallani::select('id', 'karyalaya_name','challani_date','challani_number','mudda_number','challani_subject','verified_by','challani_sakha','faat','user_name','status');
+            $user = auth()->user();
+            $query->where(function ($q) use ($user) {
+                $canShowPending = $user->hasPermissionTo('show-pending');
+                $canShowDone = $user->hasPermissionTo('show-done');
+
+                if ($canShowPending && $canShowDone) {
+                    $q->whereIn('status', [0, 1]);
+                } elseif ($canShowPending) {
+                    $q->where('status', 0);
+                } elseif ($canShowDone) {
+                    $q->where('status', 1);
+                } else {
+                    $q->whereRaw('0=1');
+                }
+            });
             return Datatables::eloquent($query)
                    ->addIndexColumn()
                     ->addColumn('status', function ($data) {

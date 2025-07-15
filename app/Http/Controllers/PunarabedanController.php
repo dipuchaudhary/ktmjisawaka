@@ -52,7 +52,21 @@ class PunarabedanController extends Controller
         if(request()->ajax())
         {
             $query = Punarabedan::select('id', 'mudda_number', 'jaherwala_name','pratiwadi_name','mudda_name','faisala_date','faisala_pramanikaran_date','punarabedan','punarabedan_date','punarabedan_challani_number','user_name','status');
+            $user = auth()->user();
+            $query->where(function ($q) use ($user) {
+                $canShowPending = $user->hasPermissionTo('show-pending');
+                $canShowDone = $user->hasPermissionTo('show-done');
 
+                if ($canShowPending && $canShowDone) {
+                    $q->whereIn('status', [0, 1]);
+                } elseif ($canShowPending) {
+                    $q->where('status', 0);
+                } elseif ($canShowDone) {
+                    $q->where('status', 1);
+                } else {
+                    $q->whereRaw('0=1');
+                }
+            });
             return Datatables::eloquent($query)
                 ->addIndexColumn()
                 ->addColumn('pratiwadi_name', function($row) {

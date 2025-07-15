@@ -66,4 +66,8 @@ Route::prefix('admin')->middleware(['auth'])->group(function() {
     Route::resource('users', UserController::class);
     Route::resource('roles', RoleController::class);
     Route::resource('mudda-status', MuddaStatusController::class);
+    Route::get('/mudda-status', [MuddaStatusController::class, 'index'])->name('mudda-status.index');
+    Route::post('/mudda-status/search', [MuddaStatusController::class, 'search'])->name('mudda-status.search');
+    Route::post('/mudda-status/update-status', [MuddaStatusController::class, 'updateStatus'])->name('mudda-status.updateStatus');
+
 });
