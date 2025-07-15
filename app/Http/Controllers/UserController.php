@@ -21,7 +21,7 @@ class UserController extends Controller
              abort(403, 'You do not have permissions');
         }
 
-        $users = User::latest()->paginate(5);
+        $users = User::latest()->paginate(10);
         return view('backend.user.index',compact('users'));
     }
 
