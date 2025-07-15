@@ -14,6 +14,7 @@ use App\Http\Controllers\PunarabedanController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoleController;
 use App\Models\AviyogChallani;
+use App\Http\Controllers\MuddaStatusController;
 
 Route::get('/', [FrontendController::class, 'index'])->name('frontend.home');
 
@@ -64,4 +65,5 @@ Route::prefix('admin')->middleware(['auth'])->group(function() {
     Route::post('/challani/store', [ChallaniController::class,'storeOrUpdate'])->name('challani.store');
     Route::resource('users', UserController::class);
     Route::resource('roles', RoleController::class);
+    Route::resource('mudda-status', MuddaStatusController::class);
 });

@@ -309,6 +309,10 @@ return [
             'type' => 'fullscreen-widget',
             'topnav_right' => true,
         ],
+        [
+            'type' => 'darkmode-widget',
+            'topnav_right' => true,
+        ],
 
         // Sidebar items:
         [
@@ -331,6 +335,12 @@ return [
             'text' => 'User Management',
             'url' => 'admin/users',
             'icon' => 'fas fa-fw fa-user-plus',
+            'can' => 'user-list',
+        ],
+        [
+            'text' => 'Update Mudda Status',
+            'url' => 'admin/mudda-status',
+            'icon' => 'fas fa-fw fa-cloud',
             'can' => 'user-list',
         ],
         [
