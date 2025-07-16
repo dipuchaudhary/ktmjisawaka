@@ -25,7 +25,7 @@
             <div class="form-row d-flex">
                 <div class="form-group col-md-4">
                     <select name="table_name" class="form-control">
-                        <option value="">मुडा श्रेणी छनौट गर्नुहोस् </option>
+                        <option value="">मुद्दा छनौट गर्नुहोस् </option>
                         <option value="mudda_dartas">मुद्दा राय दर्ता</option>
                         <option value="banking_muddas">बैकिङ्ग राय दर्ता</option>
                         <option value="patra_challanis">पत्र चलानी</option>
@@ -34,7 +34,7 @@
                     </select>
                 </div>
                 <div class="form-group col-md-6">
-                    <input name="search_keyword" id="search_keyword"class="form-control" type="text" placeholder="मुद्दा नाम, प्रतिवादी नाम, जाहेरवाला, मुद्दा नं. मात्र" />
+                    <input name="search_keyword" id="search_keyword"class="form-control" type="text" placeholder="मुद्दा नाम, प्रतिवादी नाम, जाहेरवाला, राय दर्ता नं. मात्र" />
                 </div>
                 <div class="form-group col-md-2">
                     <button type="submit" class="btn btn-block btn-primary">Search</button>
@@ -72,7 +72,7 @@ $(document).ready(function() {
                         html += `<table class="table table-bordered">
                                     <thead>
                                         <tr>
-                                            <th>मुद्दा नं.</th>
+                                            <th>राय दर्ता नं.</th>
                                             <th>मुद्दाको नाम</th>
                                             <th>जाहेरवालको नाम</th>
                                             <th>प्रतिवादीको नाम</th>

@@ -34,7 +34,7 @@
                     @enderror
                 </div>
             </div>
-                        <div class="row">
+            <div class="row">
                 <div class="col-md-6 mb-3">
                     <label for="विषय" class="form-label">विषय <span style="color:red">*</span></label>
                     <input type="text" class="form-control @error('challani_subject') is-invalid @enderror" id="challani_subject" name="challani_subject" value="{{ $patrachallani->challani_subject }}" >
@@ -80,34 +80,22 @@
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label for="जाहेरवाला" class="form-label">जाहेरवाला </label>
-                   <select type="text" class="form-control custom-select2 @error('jaherwala') is-invalid @enderror" id="jaherwala" name="jaherwala[]" multiple="multiple" >
-                        @if (!empty($patrachallani->jaherwala))
-                        @foreach (explode(',', $patrachallani->jaherwala) as $value)
-                            <option value="{{ $value }}" selected>{{ $value }}</option>
-                        @endforeach
-                        @endif
-                    </select>
-                        @error('jaherwala')
+                    <input type="text" class="form-control @error('jaherwala_name') is-invalid @enderror" id="jaherwala_name" name="jaherwala_name" value={{ $patrachallani->jaherwala_name }} >
+                        @error('jaherwala_name')
                         <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
                 </div>
                 <div class="col-md-6 mb-3">
                     <label for="प्रतिवादी" class="form-label">प्रतिवादी </label>
-                    <select class="form-control custom-select2 @error('pratiwadi') is-invalid @enderror" id="pratiwadi" name="pratiwadi[]" multiple="multiple">
-                         @if (!empty($patrachallani->pratiwadi))
-                        @foreach (explode(',', $patrachallani->pratiwadi) as $value)
-                            <option value="{{ $value }}" selected>{{ $value }}</option>
-                        @endforeach
-                        @endif
-                    </select>
-                        @error('pratiwadi')
+                    <input type="text" class="form-control @error('pratiwadi_name') is-invalid @enderror" id="pratiwadi_name" name="pratiwadi_name" value={{ $patrachallani->pratiwadi_name }} >
+                        @error('pratiwadi_name')
                         <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-6 mb-3">
-                    <label for="मुद्दा नं." class="form-label">मुद्दा नं.</label>
+                    <label for="मुद्दा नं." class="form-label">राय दर्ता नं.</label>
                     <input type="text" class="form-control nep-number @error('mudda_number') is-invalid @enderror" id="mudda_number" name="mudda_number" value="{{ $patrachallani->mudda_number}}" >
                     @error('mudda_number')
                         <div class="alert alert-danger">{{ $message }}</div>

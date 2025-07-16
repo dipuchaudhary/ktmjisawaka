@@ -17,8 +17,7 @@
                 </div>
                 <div class="col-md-3 mb-3">
                     <label for="जाहेरवालाको नाम" class="form-label">जाहेरवालाको नाम <span style="color:red">*</span></label>
-                    <select type="text" class="form-control custom-select2 @error('jaherwala_name') is-invalid @enderror" id="jaherwala_name" name="jaherwala_name[]" multiple="multiple" >
-                    </select>
+                    <input type="text" class="form-control @error('jaherwala_name') is-invalid @enderror" id="jaherwala_name" name="jaherwala_name" value={{ old('jaherwala_name') }}>
                     @error('jaherwala_name')
                         <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
@@ -27,8 +26,8 @@
                     <div class="d-flex gap-3 border pratiwadi-group">
                         <div class="flex-fill p-1">
                             <label for="प्रतिवादीको नाम">प्रतिवादीको नाम <span style="color:red">*</span></label>
-                            <input type="text" class="form-control" name="pratiwadi_name[]" placeholder="प्रतिवादीको नाम" value="{{ old('pratiwadi_name.0') }}">
-                            @error('pratiwadi_name.0')
+                            <input type="text" class="form-control" name="pratiwadi_name[]" placeholder="प्रतिवादीको नाम" value="{{ old('pratiwadi_name') }}">
+                            @error('pratiwadi_name')
                                 <div class="alert alert-danger">{{ $message }}</div>
                             @enderror
                         </div>
@@ -102,9 +101,12 @@
                     <option value="anusuchi_1">अनुसूची १</option>
                     <option value="anusuchi_2">अनुसूची २</option>
                 </select>
+                @error('mudda_bibran')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror
                 </div>
                 <div class="col-md-3 mb-3">
-                    <label for="मुद्दा नं." class="form-label">मुद्दा नं.</label>
+                    <label for="मुद्दा नं." class="form-label">राय दर्ता नं.</label>
                     <input type="text" class="form-control nep-number @error('mudda_number') is-invalid @enderror" id="mudda_number" name="mudda_number" value="{{ old('mudda_number') }}" >
                     @error('mudda_number')
                         <div class="alert alert-danger">{{ $message }}</div>

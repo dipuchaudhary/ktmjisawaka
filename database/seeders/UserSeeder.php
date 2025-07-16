@@ -35,10 +35,10 @@ class UserSeeder extends Seeder
         ];
 
         foreach ($users as $user) {
-            User::create($user);
+            User::firstOrCreate($user);
         }
 
-        $role = Role::create(['name' => 'SuperAdmin']);
+        $role = Role::firstOrCreate(['name' => 'SuperAdmin']);
         $permissions = Permission::pluck('id','id')->all();
         $role->syncPermissions($permissions);
         $adminuser->assignRole($role);

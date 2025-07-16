@@ -29,20 +29,22 @@ class BankingMuddaController extends Controller
         {
             $query = BankingMudda::select('id', 'anusandhan_garne_nikaye', 'mudda_number', 'mudda_name', 'jaherwala_name','pratiwadi_name','pratiwadi_number','mudda_date','sarkariwakil_name','challani_number','user_name','status');
             $user = auth()->user();
-            $query->where(function ($q) use ($user) {
-                $canShowPending = $user->hasPermissionTo('show-pending');
-                $canShowDone = $user->hasPermissionTo('show-done');
+             if ( $user ) {
+                $query->where(function ($q) use ($user) {
+                    $canShowPending = $user->hasPermissionTo('show-pending');
+                    $canShowDone = $user->hasPermissionTo('show-done');
 
-                if ($canShowPending && $canShowDone) {
-                    $q->whereIn('status', [0, 1]);
-                } elseif ($canShowPending) {
-                    $q->where('status', 0);
-                } elseif ($canShowDone) {
-                    $q->where('status', 1);
-                } else {
-                    $q->whereRaw('0=1');
-                }
-            });
+                    if ($canShowPending && $canShowDone) {
+                        $q->whereIn('status', [0, 1]);
+                    } elseif ($canShowPending) {
+                        $q->where('status', 0);
+                    } elseif ($canShowDone) {
+                        $q->where('status', 1);
+                    } else {
+                        $q->whereRaw('0=1');
+                    }
+                });
+            }
             return Datatables::eloquent($query)
                    ->addIndexColumn()
                    ->addColumn('pratiwadi_name', function($row) {
@@ -129,8 +131,8 @@ class BankingMuddaController extends Controller
 
         $rules = [
             'anusandhan_garne_nikaye' => 'required',
-            'jaherwala_name' => 'required|array',
-            'pratiwadi_name' => 'required|array',
+            'jaherwala_name' => 'required',
+            'pratiwadi_name' => 'required',
             'pratiwadi_name.*' => 'required|string|max:255',
             'mudda_sthiti' => 'required|array',
             'mudda_sthiti.*' => 'required|string|in:फरार,पक्राउ,हाजिरि जमानीमा छोडेको,तामेली,नचल्ने',
@@ -149,13 +151,12 @@ class BankingMuddaController extends Controller
 
         $this->validate($request, $rules, $Messages);
 
-        $jaherwala_name = is_array($request->input('jaherwala_name'))
-                        ? implode(',', $request->input('jaherwala_name'))
-                        : $request->input('jaherwala_name');
+        $jaherwala_name = $request->input('jaherwala_name');
+
+        $names = (array) $request->input('pratiwadi_name');
+        $sthiti = (array) $request->input('mudda_sthiti');
 
         $pratiwadiList = [];
-        $names = is_array($request->input('pratiwadi_name')) ? $request->input('pratiwadi_name') : [];
-        $sthiti = is_array($request->input('mudda_sthiti')) ? $request->input('mudda_sthiti') : [];
 
         foreach ($names as $index => $name) {
             $pratiwadiList[] = [
@@ -163,6 +164,7 @@ class BankingMuddaController extends Controller
                 'status' => $sthiti[$index] ?? null,
             ];
         }
+
         $pratiwadi_name = json_encode($pratiwadiList, JSON_UNESCAPED_UNICODE);
         // Store the data in the database
         $Insertdata = [
@@ -172,7 +174,6 @@ class BankingMuddaController extends Controller
             'jaherwala_name' => $jaherwala_name,
             'pratiwadi_name' => $pratiwadi_name,
             'pratiwadi_number' => $request->input('pratiwadi_number'),
-            'mudda_bibran' => $request->input('mudda_bibran'),
             'pesi_karyala' => $request->input('pesi_karyala'),
             'mudda_date' => $request->input('mudda_date'),
             'mudda_myad' => $request->input('mudda_myad'),
@@ -189,7 +190,6 @@ class BankingMuddaController extends Controller
 
         BankingMudda::create($Insertdata);
 
-        $this->createAviyog($request,$jaherwala_name,$pratiwadi_name);
         $this->createPunarabedan($request,$jaherwala_name,$pratiwadi_name);
         return redirect()->route('banking_mudda.index')
         ->with('success', 'बैकिङ्ग मुद्दा दर्ता सफल भयो।');
@@ -223,16 +223,6 @@ class BankingMuddaController extends Controller
         return view('frontend.banking_mudda.edit', compact('bankingmudda','ChallaniNumber'));
     }
 
-     protected function createAviyog($request,$jaherwala_name,$pratiwadi_name) {
-        AviyogChallani::create([
-            'jaherwala_name'           => $jaherwala_name,
-            'pratiwadi_name'           => $pratiwadi_name,
-            'mudda_name'               => $request->input('mudda_name'),
-            'mudda_number'             => $request->input('mudda_number'),
-            'sarkariwakil_name'        => $request->input('sarkariwakil_name'),
-            'anusandhan_garne_nikaye'  => $request->input('anusandhan_garne_nikaye'),
-        ]);
-    }
 
     protected function createPunarabedan($request,$jaherwala_name,$pratiwadi_name) {
         Punarabedan::create([
@@ -251,8 +241,8 @@ class BankingMuddaController extends Controller
     {
         $rules = [
             'anusandhan_garne_nikaye' => 'required',
-            'jaherwala_name' => 'required|array',
-            'pratiwadi_name' => 'required|array',
+            'jaherwala_name' => 'required',
+            'pratiwadi_name' => 'required',
             'pratiwadi_name.*' => 'required|string|max:255',
             'mudda_sthiti' => 'required|array',
             'mudda_sthiti.*' => 'required|string|in:फरार,पक्राउ,हाजिरि जमानीमा छोडेको,तामेली,नचल्ने',
@@ -271,13 +261,12 @@ class BankingMuddaController extends Controller
         $bankingmudda = BankingMudda::findOrFail($id);
         $this->validate($request, $rules, $Messages);
 
-        $jaherwala_name = is_array($request->input('jaherwala_name'))
-                        ? implode(',', $request->input('jaherwala_name'))
-                        : $request->input('jaherwala_name');
+        $jaherwala_name = $request->input('jaherwala_name');
+
+        $names = (array) $request->input('pratiwadi_name');
+        $sthiti = (array) $request->input('mudda_sthiti');
 
         $pratiwadiList = [];
-        $names = is_array($request->input('pratiwadi_name')) ? $request->input('pratiwadi_name') : [];
-        $sthiti = is_array($request->input('mudda_sthiti')) ? $request->input('mudda_sthiti') : [];
 
         foreach ($names as $index => $name) {
             $pratiwadiList[] = [
@@ -285,6 +274,7 @@ class BankingMuddaController extends Controller
                 'status' => $sthiti[$index] ?? null,
             ];
         }
+
         $pratiwadi_name = json_encode($pratiwadiList, JSON_UNESCAPED_UNICODE);
 
         $challaniNumber = $request->input('challani_number');
@@ -296,7 +286,6 @@ class BankingMuddaController extends Controller
             'jaherwala_name' => $jaherwala_name,
             'pratiwadi_name' => $pratiwadi_name,
             'pratiwadi_number' => $request->input('pratiwadi_number'),
-            'mudda_bibran' => $request->input('mudda_bibran'),
             'pesi_karyala' => $request->input('pesi_karyala'),
             'mudda_date' => $request->input('mudda_date'),
             'mudda_myad' => $request->input('mudda_myad'),
@@ -311,28 +300,12 @@ class BankingMuddaController extends Controller
         $updatedata['challani_number'] = $shouldAssignChallani ? $challaniNumber : $bankingmudda->challani_number;
         $bankingmudda->update($updatedata);
 
-        $this->updateAviyogchallani($bankingmudda,$request,$jaherwala_name,$pratiwadi_name);
         $this->updatePunarabedan($bankingmudda,$request,$jaherwala_name,$pratiwadi_name);
 
         return redirect()->route('banking_mudda.index')
         ->with('success', 'बैकिङ्ग मुद्दा सफलतापूर्वक अपडेट भयो।');
     }
 
-    protected function updateAviyogchallani($bankingmudda,$request,$jaherwala_name,$pratiwadi_name){
-        $aviyogchallani = AviyogChallani::where('id', $bankingmudda->id)->first();
-
-        if ($aviyogchallani) {
-            $aviyogchallani->update([
-                'jaherwala_name'           => $jaherwala_name,
-                'pratiwadi_name'           => $pratiwadi_name,
-                'mudda_name'               => $request->input('mudda_name'),
-                'mudda_number'             => $request->input('mudda_number'),
-                'sarkariwakil_name'        => $request->input('sarkariwakil_name'),
-                'faat_name'                => $request->input('faat_name'),
-                'anusandhan_garne_nikaye'  => $request->input('anusandhan_garne_nikaye'),
-            ]);
-        }
-    }
 
     protected function updatePunarabedan($bankingmudda,$request,$jaherwala_name,$pratiwadi_name){
         $punarabedan = Punarabedan::where('id', $bankingmudda->id)->first();

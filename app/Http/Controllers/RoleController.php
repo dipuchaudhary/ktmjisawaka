@@ -23,7 +23,7 @@ class RoleController extends Controller
              abort(403, 'You do not have permissions');
         }
 
-        $roles = Role::latest()->paginate(5);
+        $roles = Role::latest()->paginate(10);
         return view('backend.role.index',compact('roles'));
     }
 

@@ -33,20 +33,22 @@ class AviyogChallaniController extends Controller
             try {
                 $query = AviyogChallani::select('id', 'challani_date','challani_number','mudda_number','mudda_name','jaherwala_name','pratiwadi_name','sarkariwakil_name','faat_name','anusandhan_garne_nikaye','user_name','status','upload_date','pesh_karyala');
                 $user = auth()->user();
-                $query->where(function ($q) use ($user) {
-                    $canShowPending = $user->hasPermissionTo('show-pending');
-                    $canShowDone = $user->hasPermissionTo('show-done');
+                if ( $user ) {
+                    $query->where(function ($q) use ($user) {
+                        $canShowPending = $user->hasPermissionTo('show-pending');
+                        $canShowDone = $user->hasPermissionTo('show-done');
 
-                    if ($canShowPending && $canShowDone) {
-                        $q->whereIn('status', [0, 1]);
-                    } elseif ($canShowPending) {
-                        $q->where('status', 0);
-                    } elseif ($canShowDone) {
-                        $q->where('status', 1);
-                    } else {
-                        $q->whereRaw('0=1');
-                    }
-                });
+                        if ($canShowPending && $canShowDone) {
+                            $q->whereIn('status', [0, 1]);
+                        } elseif ($canShowPending) {
+                            $q->where('status', 0);
+                        } elseif ($canShowDone) {
+                            $q->where('status', 1);
+                        } else {
+                            $q->whereRaw('0=1');
+                        }
+                    });
+                }
                 return Datatables::eloquent($query)
                     ->addIndexColumn()
                     ->addColumn('pratiwadi_name', function($row) {

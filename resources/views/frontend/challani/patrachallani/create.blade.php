@@ -70,24 +70,22 @@
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label for="जाहेरवाला" class="form-label">जाहेरवाला </label>
-                    <select type="text" class="form-control custom-select2 @error('jaherwala') is-invalid @enderror" id="jaherwala" name="jaherwala[]" multiple="multiple" >
-                    </select>
-                        @error('jaherwala')
+                    <input type="text" class="form-control @error('jaherwala_name') is-invalid @enderror" id="jaherwala" name="jaherwala_name" value={{ old('jaherwala_name') }} >
+                        @error('jaherwala_name')
                         <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
                 </div>
                 <div class="col-md-6 mb-3">
                     <label for="प्रतिवादी" class="form-label">प्रतिवादी </label>
-                    <select type="text" class="form-control custom-select2 @error('pratiwadi') is-invalid @enderror" id="pratiwadi" name="pratiwadi[]" multiple="multiple" >
-                    </select>
-                        @error('pratiwadi')
+                    <input type="text" class="form-control @error('pratiwadi_name') is-invalid @enderror" id="pratiwadi_name" name="pratiwadi_name" value={{ old('pratiwadi_name') }} >
+                        @error('pratiwadi_name')
                         <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-6 mb-3">
-                    <label for="मुद्दा नं." class="form-label">मुद्दा नं.</label>
+                    <label for="मुद्दा नं." class="form-label">राय दर्ता नं.</label>
                     <input type="text" class="form-control nep-number @error('mudda_number') is-invalid @enderror" id="mudda_number" name="mudda_number" value="{{ old('mudda_number') }}" >
                     @error('mudda_number')
                         <div class="alert alert-danger">{{ $message }}</div>

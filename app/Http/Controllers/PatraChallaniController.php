@@ -23,20 +23,22 @@ class PatraChallaniController extends Controller
         {
             $query = PatraChallani::select('id', 'karyalaya_name','challani_date','challani_number','mudda_number','challani_subject','verified_by','challani_sakha','faat','user_name','status');
             $user = auth()->user();
-            $query->where(function ($q) use ($user) {
-                $canShowPending = $user->hasPermissionTo('show-pending');
-                $canShowDone = $user->hasPermissionTo('show-done');
+            if ( $user ) {
+                $query->where(function ($q) use ($user) {
+                    $canShowPending = $user->hasPermissionTo('show-pending');
+                    $canShowDone = $user->hasPermissionTo('show-done');
 
-                if ($canShowPending && $canShowDone) {
-                    $q->whereIn('status', [0, 1]);
-                } elseif ($canShowPending) {
-                    $q->where('status', 0);
-                } elseif ($canShowDone) {
-                    $q->where('status', 1);
-                } else {
-                    $q->whereRaw('0=1');
-                }
-            });
+                    if ($canShowPending && $canShowDone) {
+                        $q->whereIn('status', [0, 1]);
+                    } elseif ($canShowPending) {
+                        $q->where('status', 0);
+                    } elseif ($canShowDone) {
+                        $q->where('status', 1);
+                    } else {
+                        $q->whereRaw('0=1');
+                    }
+                });
+            }
             return Datatables::eloquent($query)
                    ->addIndexColumn()
                     ->addColumn('status', function ($data) {
@@ -136,13 +138,9 @@ class PatraChallaniController extends Controller
                     ? implode(',', $request->input('bodartha'))
                     : $request->input('bodartha');
 
-        $jaherwala_name = is_array($request->input('jaherwala_name'))
-                        ? implode(',', $request->input('jaherwala_name'))
-                        : $request->input('jaherwala_name');
+        $jaherwala_name = $request->input('jaherwala_name');
 
-        $pratiwadi_name = is_array($request->input('pratiwadi_name'))
-                        ? implode(',', $request->input('pratiwadi_name'))
-                        : $request->input('pratiwadi_name');
+        $pratiwadi_name = $request->input('pratiwadi_name');
         // Store the data in the database
         PatraChallani::create([
             'karyalaya_name' => $request->input('karyalaya_name'),
@@ -150,8 +148,8 @@ class PatraChallaniController extends Controller
             'challani_number' => $request->input('challani_number'),
             'mudda_number' => $request->input('mudda_number'),
             'challani_subject' => $request->input('challani_subject'),
-            'jaherwala' => $jaherwala_name,
-            'pratiwadi' => $pratiwadi_name,
+            'jaherwala_name' => $jaherwala_name,
+            'pratiwadi_name' => $pratiwadi_name,
             'bodartha' => $bodartha,
             'verified_by' => $request->input('verified_by'),
             'kaifiyat' => $request->input('kaifiyat'),
@@ -219,21 +217,17 @@ class PatraChallaniController extends Controller
             $bodartha= $request->input('bodartha');
         }
 
-        $jaherwala_name = is_array($request->input('jaherwala_name'))
-                        ? implode(',', $request->input('jaherwala_name'))
-                        : $request->input('jaherwala_name');
+        $jaherwala_name = $request->input('jaherwala_name');
 
-        $pratiwadi_name = is_array($request->input('pratiwadi_name'))
-                        ? implode(',', $request->input('pratiwadi_name'))
-                        : $request->input('pratiwadi_name');
+        $pratiwadi_name = $request->input('pratiwadi_name');
         // Store the data in the database
         $patraChallani->update([
             'karyalaya_name' => $request->input('karyalaya_name'),
             'challani_date' => $request->input('challani_date'),
             'mudda_number' => $request->input('mudda_number'),
             'challani_subject' => $request->input('challani_subject'),
-            'jaherwala' => $jaherwala_name,
-            'pratiwadi' => $pratiwadi_name,
+            'jaherwala_name' => $jaherwala_name,
+            'pratiwadi_name' => $pratiwadi_name,
             'bodartha' => $bodartha,
             'verified_by' => $request->input('verified_by'),
             'kaifiyat' => $request->input('kaifiyat'),

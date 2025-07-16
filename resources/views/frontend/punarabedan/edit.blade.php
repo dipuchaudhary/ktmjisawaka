@@ -12,7 +12,7 @@
             @csrf
             <div class="row g-3 align-items-center mb-5">
                 <div class="col-md-3 mb-3">
-                    <label for="मुद्दा नं." class="form-label">मुद्दा नं.</label>
+                    <label for="मुद्दा नं." class="form-label">राय दर्ता नं.</label>
                     <input type="text" class="form-control @error('mudda_number') is-invalid @enderror" id="mudda_number" name="mudda_number" value="{{ $punarabedan->mudda_number }}" readonly>
                     @error('mudda_number')
                         <div class="alert alert-danger">{{ $message }}</div>
@@ -63,10 +63,10 @@
                                 @enderror
                             </div>
                             <div class="flex-fill p-1 d-flex align-items-end gap-2 align-center">
-                                <button type="button" class="btn btn-success btn-sm addBtn" style="margin-bottom:17px; margin-right:2px;">
+                                <button type="button" class="btn btn-success btn-sm addBtn edit-addbtn" style="margin-bottom:17px; margin-right:2px;">
                                     <i class="fa fa-plus"></i>
                                 </button>
-                                <button type="button" class="btn btn-danger btn-sm removeBtn" style="margin-bottom:17px;">
+                                <button type="button" class="btn btn-danger btn-sm removeBtn edit-removebtn" style="margin-bottom:17px;">
                                     <i class="fa fa-minus"></i>
                                 </button>
                             </div>
@@ -256,7 +256,10 @@ $(document).ready(function() {
         e.preventDefault();
         $(this).blur();
     });
-
+    $('.edit-addbtn,.edit-removebtn').on('click',function(e) {
+        e.preventDefault();
+        $(this).prop('disabled',true);
+    });
     $('.challani-bodartha').select2({
         tags: true,
         placeholder: "विकल्प खोज्नुहोस् वा नयाँ टाइप गर्नुहोस्"

@@ -27,14 +27,7 @@
                 </div>
                 <div class="col-md-4 mb-3">
                     <label for="जाहेरवालाको नाम" class="form-label">जाहेरवालाको नाम <span style="color:red">*</span></label>
-                    <select type="text" class="form-control custom-select2 @error('jaherwala_name') is-invalid @enderror" id="jaherwala_name" name="jaherwala_name[]" multiple="multiple" >
-                        @if (!empty($bankingmudda->jaherwala_name))
-                       @foreach (explode(',', $bankingmudda->jaherwala_name) as $value)
-                            <option value="{{ $value }}" selected>{{ $value }}</option>
-                        @endforeach
-
-                        @endif
-                    </select>
+                    <input type="text" class="form-control @error('jaherwala_name') is-invalid @enderror" id="jaherwala_name" name="jaherwala_name" value="{{ $bankingmudda->jaherwala_name }}">
                         @error('jaherwala_name')
                         <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
@@ -116,7 +109,7 @@
                     @enderror
                 </div>
                 <div class="col-md-3 mb-3">
-                    <label for="मुद्दा नं." class="form-label">मुद्दा नं.</label>
+                    <label for="मुद्दा नं." class="form-label">राय दर्ता नं.</label>
                     <input type="text" class="form-control nep-number @error('mudda_number') is-invalid @enderror" id="mudda_number" name="mudda_number" value="{{ $bankingmudda->mudda_number }}" >
                     @error('mudda_number')
                         <div class="alert alert-danger">{{ $message }}</div>

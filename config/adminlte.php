@@ -338,7 +338,7 @@ return [
             'can' => 'user-list',
         ],
         [
-            'text' => 'Update Mudda Status',
+            'text' => 'Mudda Status Management',
             'url' => 'admin/mudda-status',
             'icon' => 'fas fa-fw fa-cloud',
             'can' => 'mudda-status-management',

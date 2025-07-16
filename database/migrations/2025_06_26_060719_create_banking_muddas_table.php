@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('jaherwala_name')->nullable();
             $table->text('pratiwadi_name')->nullable();
             $table->string('pratiwadi_number')->nullable();
-            $table->string('mudda_bibran')->nullable();
             $table->string('pesi_karyala')->nullable();
             $table->string('mudda_date')->nullable();
             $table->string('mudda_myad')->nullable();

@@ -19,7 +19,7 @@
             <tr>
                 <th>ID</th>
                 <th>अनुसन्धान गर्ने निकाय</th>
-                <th>मुद्दा नं.</th>
+                <th>राय दर्ता नं.</th>
                 <th>मुद्दाको किसिम</th>
                 <th>जाहेरवालाको नाम</th>
                 <th style="width: 100px;">प्रतिवादीको नाम</th>
@@ -73,6 +73,10 @@
             "order": [[0, "desc"]],
             processing: true,
             serverSide: true,
+            scrollX: true,
+            scrollY: true,
+            responsive: true,
+            fixedHeader: true,
             ajax: {
                 url: "{{ route('mudda_darta.index') }}",
                 error: function (xhr, error, thrown) {

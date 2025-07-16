@@ -21,8 +21,8 @@ class MuddaDartaController extends Controller
     protected $rules = [
             'anusandhan_garne_nikaye' => 'required',
             'mudda_name' => 'required',
-            'jaherwala_name' => 'required|array',
-            'pratiwadi_name' => 'required|array',
+            'jaherwala_name' => 'required',
+            'pratiwadi_name' => 'required',
             'pratiwadi_name.*' => 'required|string|max:255',
             'mudda_sthiti' => 'required|array',
             'mudda_sthiti.*' => 'required|string|in:फरार,पक्राउ,हाजिरि जमानीमा छोडेको,तामेली,नचल्ने',
@@ -33,7 +33,7 @@ class MuddaDartaController extends Controller
            'anusandhan_garne_nikaye.required' => 'अनुसन्धान गर्ने निकाय अनिवार्य छ।',
            'mudda_name.required' => 'मुद्दाको किसिम अनिवार्य छ।',
            'jaherwala_name.required' => 'जाहेरवालाको नाम अनिवार्य छ।',
-           'pratiwadi_name.0.required' => 'प्रतिवादीको नाम अनिवार्य छ।',
+           'pratiwadi_name.required' => 'प्रतिवादीको नाम अनिवार्य छ।',
            'pratiwadi_name.*.required' => 'प्रतिवादीको नाम अनिवार्य छ।',
            'mudda_sthiti.0.required' => 'मुद्दा स्थिति अनिवार्य छ।',
            'mudda_stithi.*.required' => 'मुद्दा स्थिति अनिवार्य छ।',
@@ -117,12 +117,12 @@ class MuddaDartaController extends Controller
     {
 
         $this->validate($request, $this->rules, $this->customMessages);
-        $jaherwala_name = is_array($request->input('jaherwala_name'))
-                        ? implode(',', $request->input('jaherwala_name'))
-                        : $request->input('jaherwala_name');
+
+        $jaherwala_name = $request->input('jaherwala_name');
+        $names = (array) $request->input('pratiwadi_name');
+        $sthiti = (array) $request->input('mudda_sthiti');
+
         $pratiwadiList = [];
-        $names = is_array($request->input('pratiwadi_name')) ? $request->input('pratiwadi_name') : [];
-        $sthiti = is_array($request->input('mudda_sthiti')) ? $request->input('mudda_sthiti') : [];
 
         foreach ($names as $index => $name) {
             $pratiwadiList[] = [
@@ -130,6 +130,7 @@ class MuddaDartaController extends Controller
                 'status' => $sthiti[$index] ?? null,
             ];
         }
+
         $pratiwadi_name = json_encode($pratiwadiList, JSON_UNESCAPED_UNICODE);
 
         // Store the data in the database
@@ -171,13 +172,11 @@ class MuddaDartaController extends Controller
         $mudda = MuddaDarta::findOrFail($id);
         $this->validate($request, $this->rules, $this->customMessages);
 
-        $jaherwala_name = is_array($request->input('jaherwala_name'))
-                        ? implode(',', $request->input('jaherwala_name'))
-                        : $request->input('jaherwala_name');
+        $jaherwala_name = $request->input('jaherwala_name');
+        $names = (array) $request->input('pratiwadi_name');
+        $sthiti = (array) $request->input('mudda_sthiti');
 
         $pratiwadiList = [];
-        $names = is_array($request->input('pratiwadi_name')) ? $request->input('pratiwadi_name') : [];
-        $sthiti = is_array($request->input('mudda_sthiti')) ? $request->input('mudda_sthiti') : [];
 
         foreach ($names as $index => $name) {
             $pratiwadiList[] = [
@@ -185,6 +184,7 @@ class MuddaDartaController extends Controller
                 'status' => $sthiti[$index] ?? null,
             ];
         }
+
         $pratiwadi_name = json_encode($pratiwadiList, JSON_UNESCAPED_UNICODE);
         $mudda->update([
             'anusandhan_garne_nikaye' => $request->input('anusandhan_garne_nikaye'),
@@ -203,8 +203,7 @@ class MuddaDartaController extends Controller
             'user_name' => auth()->user()->name,
             'kaifiyat' => $request->input('kaifiyat'),
         ]);
-        // $this->updateAviyogchallani($mudda,$request,$pratiwadi_name,$jaherwala_name);
-        // $this->updatePunarabedan($mudda,$request,$pratiwadi_name,$jaherwala_name);
+
         return redirect()->route('mudda_darta.index')
         ->with('success', 'राय सफलतापूर्वक अपडेट भयो।');
     }

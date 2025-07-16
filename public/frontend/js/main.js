@@ -1,16 +1,16 @@
 (function ($) {
     "use strict";
-    
+
     // Sticky Navbar
-    $(window).scroll(function () {
-        if ($(this).scrollTop() > 150) {
-            $('.nav-bar').addClass('nav-sticky');
-        } else {
-            $('.nav-bar').removeClass('nav-sticky');
-        }
-    });
-    
-    
+    // $(window).scroll(function () {
+    //     if ($(this).scrollTop() > 150) {
+    //         $('.nav-bar').addClass('nav-sticky');
+    //     } else {
+    //         $('.nav-bar').removeClass('nav-sticky');
+    //     }
+    // });
+
+
     // Dropdown on mouse hover
     $(document).ready(function () {
         function toggleNavbarMethod() {
@@ -27,8 +27,8 @@
         toggleNavbarMethod();
         $(window).resize(toggleNavbarMethod);
     });
-    
-    
+
+
     // Back to top button
     $(window).scroll(function () {
         if ($(this).scrollTop() > 100) {
@@ -41,8 +41,8 @@
         $('html, body').animate({scrollTop: 0}, 1500, 'easeInOutExpo');
         return false;
     });
-    
-    
+
+
     // Top News Slider
     $('.tn-slider').slick({
         autoplay: true,
@@ -51,8 +51,8 @@
         slidesToShow: 1,
         slidesToScroll: 1
     });
-    
-    
+
+
     // Category News Slider
     $('.cn-slider').slick({
         autoplay: false,
@@ -87,8 +87,8 @@
             }
         ]
     });
-    
-    
+
+
     // Related News Slider
     $('.sn-slider').slick({
         autoplay: false,
@@ -124,4 +124,3 @@
         ]
     });
 })(jQuery);
-

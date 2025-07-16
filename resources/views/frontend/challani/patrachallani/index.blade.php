@@ -19,7 +19,7 @@
                 <th>पत्र चलानी भएको कार्यालय</th>
                 <th>चलानी मिति</th>
                 <th>चलानी नं.</th>
-                <th>मुद्दा नं.</th>
+                <th>राय दर्ता नं.</th>
                 <th>विषय</th>
                 <th>दस्तखत गर्ने अधिकारी</th>
                 <th>चलानी शाखा</th>
@@ -73,6 +73,9 @@ $(document).ready(function () {
         processing: true,
         serverSide: true,
         scrollX: true,
+        scrollY: true,
+        responsive: true,
+        fixedHeader: true,
         ajax: {
             url: "{{ route('patra_challani.index') }}",
             error: function (xhr, error, thrown) {

@@ -9,7 +9,7 @@
         <thead class="thead-light">
             <tr>
                 <th rowspan="2">ID</th>
-                <th rowspan="2">मुद्दा नं.</th>
+                <th rowspan="2">राय दर्ता नं.</th>
                 <th rowspan="2">जाहेरवालाको नाम</th>
                 <th rowspan="2">प्रतिवादीको नाम</th>
                 <th rowspan="2">मुद्दाको किसिम</th>
@@ -20,7 +20,7 @@
                 <th rowspan="2">स्थिति</th>
                 @auth
                     @if(auth()->user()->can('punarabedan-edit') || auth()->user()->can('punarabedan-delete'))
-                        <th rowspan="2" width="105px">Action</th>
+                        <th class="noExport" rowspan="2" width="105px">Action</th>
                     @endif
                 @endauth
             </tr>
@@ -72,6 +72,9 @@ $(document).ready(function () {
         processing: true,
         serverSide: true,
         scrollX: true,
+        scrollY: true,
+        responsive: true,
+        fixedHeader: true,
          ajax: {
             url: "{{ route('punarabedan.index') }}",
             error: function (xhr, error, thrown) {
@@ -82,6 +85,7 @@ $(document).ready(function () {
             }
         },
         columns: columns,
+        deferRender: false,
         dom: '<"d-flex justify-content-between align-items-right mb-3"lBf>rtip',
         buttons: [
             { extend: 'excel', className: 'btn btn-success', exportOptions: {
@@ -90,7 +94,7 @@ $(document).ready(function () {
                             order: 'applied',
                             page: 'all'
                         },
-                        columns: '.exportable'
+                        columns: ':not(.noExport)'
                     }
             },
             {
@@ -108,7 +112,7 @@ $(document).ready(function () {
                             order: 'applied',
                             page: 'all'
                         },
-                        columns: '.exportable'
+                        columns: ':not(.noExport)'
                     }
             },
             { extend: 'print', className: 'btn btn-info', exportOptions: {
@@ -117,7 +121,7 @@ $(document).ready(function () {
                             order: 'applied',
                             page: 'all'
                         },
-                        columns: '.exportable'
+                        columns: ':not(.noExport)'
                     }
 
             },

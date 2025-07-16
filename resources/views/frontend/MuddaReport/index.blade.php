@@ -10,7 +10,7 @@
     <table id="muddaTable" class="table table-bordered table-striped table-sm data-table">
         <thead class="thead-light">
             <tr>
-                <th rowspan="2" scope="col">मुद्दा नं.</th>
+                <th rowspan="2" scope="col">राय दर्ता नं.</th>
                 <th rowspan="2" scope="col">जाहेरवालाको नाम</th>
                 <th rowspan="2" scope="col">प्रतिवादीको नाम</th>
                 <th rowspan="2" scope="col">मुद्दाको नाम</th>
@@ -50,6 +50,7 @@ $(function () {
         processing: true,
         serverSide: true,
         scrollX: true,
+        scrollY: true,
         responsive: true,
         fixedHeader: true,
         ajax: {
