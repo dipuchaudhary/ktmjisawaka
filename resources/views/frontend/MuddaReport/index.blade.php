@@ -66,7 +66,18 @@ $(function () {
         columns: [
             { data: 'mudda_number', name: 'mudda_number', className: 'exportable', defaultContent: '-' },
             { data: 'jaherwala_name', name: 'jaherwala_name',className: 'exportable', defaultContent: '-' },
-            { data: 'pratiwadi_name', name: 'pratiwadi_name',className: 'exportable', defaultContent: '-' },
+            {
+                data: 'pratiwadi_name',
+                name: 'pratiwadi_name',
+                className: 'exportable',
+                render: function(data, type, row) {
+                    if (type === 'display') {
+                        return data;
+                    }
+                    return row.pratiwadi_plain;
+                },
+                defaultContent: '-'
+            },
             { data: 'mudda_name', name: 'mudda_name',className: 'exportable', defaultContent: '-' },
 
             { data: 'banking_sarkariwakil_name', name: 'banking_sarkariwakil_name',className: 'exportable', defaultContent: '-' },

@@ -100,8 +100,10 @@ class MuddaReportController extends Controller
                             $name = e($entry['name'] ?? '-');
                             $status = e($entry['status'] ?? '-');
                             $html .= "<small class='badge rounded-pill bg-dark text-white'>{$name} ({$status})</small><br>";
+                            $plainTexts[] = "{$name} ({$status})";
                         }
                         $pratiwadiHTML = $html;
+                        $pratiwadiPlain = implode(', ', $plainTexts);
                     }
                 }
 
@@ -109,6 +111,7 @@ class MuddaReportController extends Controller
                     'mudda_number' => $items[0]->mudda_number,
                     'jaherwala_name' => $items[0]->jaherwala_name ?? '',
                     'pratiwadi_name' => $pratiwadiHTML,
+                    'pratiwadi_plain' => $pratiwadiPlain,
                     'mudda_name' => $items[0]->mudda_name ?? '',
                     'banking_sarkariwakil_name' => '',
                     'banking_challani_number' => '',

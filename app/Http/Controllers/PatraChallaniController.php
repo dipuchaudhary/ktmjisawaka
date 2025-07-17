@@ -51,7 +51,15 @@ class PatraChallaniController extends Controller
                    ->addColumn('action',function($data){
                          return $this->getActionButtons($data);
                    })
-
+                   ->filterColumn('pratiwadi_name', function($query, $keyword) {
+                        $query->where(function($q) use ($keyword) {
+                            $q->whereRaw(
+                                "JSON_SEARCH(pratiwadi_name, 'one', ?, NULL, '$[*].name') IS NOT NULL OR
+                                    JSON_SEARCH(pratiwadi_name, 'one', ?, NULL, '$[*].status') IS NOT NULL",
+                                ["%{$keyword}%", "%{$keyword}%"]
+                            );
+                        });
+                    })
                     ->rawColumns(['status','action'])
                    ->make(true);
         }
