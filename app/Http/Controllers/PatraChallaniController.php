@@ -28,14 +28,12 @@ class PatraChallaniController extends Controller
                     $canShowPending = $user->hasPermissionTo('show-pending');
                     $canShowDone = $user->hasPermissionTo('show-done');
 
-                    if ($canShowPending && $canShowDone) {
-                        $q->whereIn('status', [0, 1]);
-                    } elseif ($canShowPending) {
+                    if ($canShowPending && !$canShowDone) {
                         $q->where('status', 0);
-                    } elseif ($canShowDone) {
+                    } elseif (!$canShowPending && $canShowDone) {
                         $q->where('status', 1);
                     } else {
-                        $q->whereRaw('0=1');
+                        $q->whereIn('status', [0, 1]);
                     }
                 });
             }
@@ -71,8 +69,8 @@ class PatraChallaniController extends Controller
      */
     protected function getActionButtons($data)
     {
-        if (!auth()->check()) return '';
         $buttons = '';
+        if (!auth()->check()) return $buttons;
         $buttons = '<div style="display: inline-flex; align-items: center; gap: 8px;">';
         if (auth()->user()->can('patrachallani-edit')) {
             $buttons .= '<a href="'.route('patra_challani.edit',$data->id).'" class="edit p-2"><i class="fas fa-edit fa-lg"></i></a>';

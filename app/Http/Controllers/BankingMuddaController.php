@@ -34,14 +34,12 @@ class BankingMuddaController extends Controller
                     $canShowPending = $user->hasPermissionTo('show-pending');
                     $canShowDone = $user->hasPermissionTo('show-done');
 
-                    if ($canShowPending && $canShowDone) {
-                        $q->whereIn('status', [0, 1]);
-                    } elseif ($canShowPending) {
+                    if ($canShowPending && !$canShowDone) {
                         $q->where('status', 0);
-                    } elseif ($canShowDone) {
+                    } elseif (!$canShowPending && $canShowDone) {
                         $q->where('status', 1);
                     } else {
-                        $q->whereRaw('0=1');
+                        $q->whereIn('status', [0, 1]);
                     }
                 });
             }
@@ -92,8 +90,8 @@ class BankingMuddaController extends Controller
      */
     protected function getActionButtons($data)
     {
-        if (!auth()->check()) return '';
         $buttons = '';
+        if (!auth()->check()) return $buttons;
         $buttons = '<div style="display: inline-flex; align-items: center; gap: 8px;">';
 
         if (auth()->user()->can('bankingdarta-edit')) {

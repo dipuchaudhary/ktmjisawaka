@@ -58,14 +58,12 @@ class PunarabedanController extends Controller
                     $canShowPending = $user->hasPermissionTo('show-pending');
                     $canShowDone = $user->hasPermissionTo('show-done');
 
-                    if ($canShowPending && $canShowDone) {
-                        $q->whereIn('status', [0, 1]);
-                    } elseif ($canShowPending) {
+                    if ($canShowPending && !$canShowDone) {
                         $q->where('status', 0);
-                    } elseif ($canShowDone) {
+                    } elseif (!$canShowPending && $canShowDone) {
                         $q->where('status', 1);
                     } else {
-                        $q->whereRaw('0=1');
+                        $q->whereIn('status', [0, 1]);
                     }
                 });
             }
@@ -117,8 +115,8 @@ class PunarabedanController extends Controller
      */
     protected function getActionButtons($data)
     {
-        if (!auth()->check()) return '';
         $buttons = '';
+        if (!auth()->check()) return $buttons;
         $buttons = '<div style="display: inline-flex; align-items: center; gap: 8px;">';
         if (auth()->user()->can('punarabedan-edit')) {
             $buttons .= '<a href="'.route('punarabedan.edit',$data->id).'" class="edit p-2"><i class="fas fa-edit fa-lg"></i></a>';
