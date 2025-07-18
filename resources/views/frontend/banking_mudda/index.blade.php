@@ -27,6 +27,7 @@
                         <th style="width: 100px;">प्रतिवादीको नाम</th>
                         <th>प्रतिवादी संख्या</th>
                         <th>मुद्दा दर्ता मिति</th>
+                        <th>म्याद मिति</th>
                         <th>सरकारी वकील</th>
                         <th>चलानी नं.</th>
                         <th>प्रविष्टकर्ता</th>
@@ -59,6 +60,7 @@ $(document).ready(function () {
         { data: 'pratiwadi_name', name: 'pratiwadi_name', className: 'exportable' },
         { data: 'pratiwadi_number', name: 'pratiwadi_number', className: 'exportable' },
         { data: 'mudda_date', name: 'mudda_date', className: 'exportable' },
+        { data: 'mudda_myad', name: 'mudda_myad', className: 'exportable' },
         { data: 'sarkariwakil_name', name: 'sarkariwakil_name', className: 'exportable' },
         { data: 'challani_number', name: 'challani_number', className: 'exportable' },
         { data: 'user_name', name: 'user_name', className: 'exportable' },

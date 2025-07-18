@@ -27,7 +27,7 @@ class BankingMuddaController extends Controller
     {
          if(request()->ajax())
         {
-            $query = BankingMudda::select('id', 'anusandhan_garne_nikaye', 'mudda_number', 'mudda_name', 'jaherwala_name','pratiwadi_name','pratiwadi_number','mudda_date','sarkariwakil_name','challani_number','user_name','status');
+            $query = BankingMudda::select('id', 'anusandhan_garne_nikaye', 'mudda_number', 'mudda_name', 'jaherwala_name','pratiwadi_name','pratiwadi_number','mudda_date','mudda_myad','sarkariwakil_name','challani_number','user_name','status');
             $user = auth()->user();
              if ( $user ) {
                 $query->where(function ($q) use ($user) {
