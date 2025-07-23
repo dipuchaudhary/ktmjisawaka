@@ -49,6 +49,7 @@
                             <option value="मुद्दा">मुद्दा</option>
                             <option value="पुनरावेदन">पुनरावेदन</option>
                             <option value="बैकिङ्ग">बैकिङ्ग</option>
+                            <option value="कारागार">कारागार</option>
                         </select>
                     @error('challani_sakha')
                         <div class="alert alert-danger">{{ $message }}</div>

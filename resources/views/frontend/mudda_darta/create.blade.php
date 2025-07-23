@@ -35,7 +35,7 @@
                             <label for="मुद्दा स्थिति">मुद्दा स्थिति <span style="color:red">*</span></label>
                             <select name="mudda_sthiti[]" class="form-control">
                                 <option value="">--एउटाको विकल्प रोज्नुहोस।--</option>
-                                @foreach(['फरार','पक्राउ','हाजिरि जमानीमा छोडेको','तामेली','नचल्ने'] as $status)
+                                @foreach(['फरार','पक्राउ','हाजिरि जमानीमा छोडेको','तामेली','नचल्ने','कारागार'] as $status)
                                     <option value="{{ $status }}" {{ old('mudda_sthiti.0') == $status ? 'selected' : '' }}>
                                         {{ $status }}
                                     </option>

@@ -63,7 +63,7 @@
                                 @endif
                                 <select name="mudda_sthiti[]" class="form-control" id="mudda_sthiti">
                                     <option value="">--एउटाको विकल्प रोज्नुहोस।--</option>
-                                    @foreach(['फरार','पक्राउ','हाजिरि जमानीमा छोडेको','तामेली','नचल्ने'] as $status)
+                                    @foreach(['फरार','पक्राउ','हाजिरि जमानीमा छोडेको','तामेली','नचल्ने','कारागार'] as $status)
                                         <option value="{{ $status }}"
                                             {{ $pratiwadi['status'] == $status ? 'selected' : '' }}>
                                             {{ $status }}

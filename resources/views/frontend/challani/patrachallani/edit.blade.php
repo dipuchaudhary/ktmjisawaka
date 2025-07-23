@@ -59,6 +59,7 @@
                             <option value="मुद्दा" {{ $mudda_faat == 'मुद्दा' ? 'selected' : '' }}>मुद्दा</option>
                             <option value="पुनरावेदन" {{ $patrachallani->challani_sakha == 'पुनरावेदन' ? 'selected' : '' }}>पुनरावेदन</option>
                             <option value="बैकिङ्ग" {{ $patrachallani->challani_sakha == 'बैकिङ्ग' ? 'selected' : '' }}>बैकिङ्ग</option>
+                            <option value="कारागार" {{ $patrachallani->challani_sakha == 'करागार' ? 'selected' : '' }}>करागार</option>
                         </select>
                     @error('challani_sakha')
                         <div class="alert alert-danger">{{ $message }}</div>
