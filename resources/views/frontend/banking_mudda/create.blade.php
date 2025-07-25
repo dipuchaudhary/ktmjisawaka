@@ -38,8 +38,8 @@
                     <div class="d-flex gap-3 border pratiwadi-group">
                         <div class="flex-fill p-1">
                             <label for="प्रतिवादीको नाम">प्रतिवादीको नाम <span style="color:red">*</span></label>
-                            <input type="text" class="form-control" name="pratiwadi_name[]" placeholder="प्रतिवादीको नाम" value="{{ old('pratiwadi_name') }}">
-                            @error('pratiwadi_name')
+                            <input type="text" class="form-control" name="pratiwadi_name[]" placeholder="प्रतिवादीको नाम" value="{{ old('pratiwadi_name.0','') }}">
+                            @error('pratiwadi_name.0')
                                 <div class="alert alert-danger">{{ $message }}</div>
                             @enderror
                         </div>
@@ -48,7 +48,7 @@
                             <select name="mudda_sthiti[]" class="form-control">
                                 <option value="">--एउटाको विकल्प रोज्नुहोस।--</option>
                                 @foreach(['फरार','पक्राउ','हाजिरि जमानीमा छोडेको','तामेली','नचल्ने','कारागार'] as $status)
-                                    <option value="{{ $status }}" {{ old('mudda_sthiti.0') == $status ? 'selected' : '' }}>
+                                    <option value="{{ $status }}" {{ old('mudda_sthiti.0','') == $status ? 'selected' : '' }}>
                                         {{ $status }}
                                     </option>
                                 @endforeach
