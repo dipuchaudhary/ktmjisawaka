@@ -33,10 +33,10 @@ class MuddaDartaController extends Controller
            'anusandhan_garne_nikaye.required' => 'अनुसन्धान गर्ने निकाय अनिवार्य छ।',
            'mudda_name.required' => 'मुद्दाको किसिम अनिवार्य छ।',
            'jaherwala_name.required' => 'जाहेरवालाको नाम अनिवार्य छ।',
-           'pratiwadi_name.required' => 'प्रतिवादीको नाम अनिवार्य छ।',
+           'pratiwadi_name.0.required' => 'प्रतिवादीको नाम अनिवार्य छ।',
            'pratiwadi_name.*.required' => 'प्रतिवादीको नाम अनिवार्य छ।',
            'mudda_sthiti.0.required' => 'मुद्दा स्थिति अनिवार्य छ।',
-           'mudda_stithi.*.required' => 'मुद्दा स्थिति अनिवार्य छ।',
+           'mudda_sthiti.*.required' => 'मुद्दा स्थिति अनिवार्य छ।',
            'mudda_date.required' => 'मुद्दा दर्ता मिति अनिवार्य छ।',
            'mudda_bibran.required' => 'मुद्दा विवरण अनिवार्य छ।',
         ];
