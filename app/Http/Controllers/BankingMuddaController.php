@@ -176,7 +176,7 @@ class BankingMuddaController extends Controller
         $Insertdata = [
             'anusandhan_garne_nikaye' => $request->input('anusandhan_garne_nikaye'),
             'mudda_number' => $request->input('mudda_number'),
-            'mudda_name' => $request->input('mudda_name'),
+            'mudda_name' => 'बैकिङ्ग-'. $request->input('mudda_name'),
             'jaherwala_name' => $jaherwala_name,
             'pratiwadi_name' => $pratiwadi_name,
             'pratiwadi_number' => $request->input('pratiwadi_number'),
@@ -232,7 +232,7 @@ class BankingMuddaController extends Controller
 
     protected function createPunarabedan($request,$jaherwala_name,$pratiwadi_name) {
         Punarabedan::create([
-            'mudda_name'               => $request->input('mudda_name'),
+            'mudda_name'               => 'बैकिङ्ग-'. $request->input('mudda_name'),
             'jaherwala_name'           => $jaherwala_name,
             'pratiwadi_name'           => $pratiwadi_name,
             'mudda_number'             => $request->input('mudda_number'),
@@ -287,7 +287,7 @@ class BankingMuddaController extends Controller
         $shouldAssignChallani = $request->status && !BankingMudda::where('challani_number', $challaniNumber)->where('id', '!=', $bankingmudda->id)->exists();
         $updatedata = [
             'anusandhan_garne_nikaye' => $request->input('anusandhan_garne_nikaye'),
-            'mudda_number' => $request->input('mudda_number'),
+            'mudda_number' => 'बैकिङ्ग-'. $request->input('mudda_number'),
             'mudda_name' => $request->input('mudda_name'),
             'jaherwala_name' => $jaherwala_name,
             'pratiwadi_name' => $pratiwadi_name,
@@ -318,7 +318,7 @@ class BankingMuddaController extends Controller
 
         if ($punarabedan) {
             $punarabedan->update([
-            'mudda_name'               => $request->input('mudda_name'),
+            'mudda_name'               => 'बैकिङ्ग-'. $request->input('mudda_name'),
             'jaherwala_name'           => $jaherwala_name,
             'pratiwadi_name'           => $pratiwadi_name,
             'mudda_number'             => $request->input('mudda_number'),
