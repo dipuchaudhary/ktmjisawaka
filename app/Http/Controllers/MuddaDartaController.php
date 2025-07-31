@@ -212,7 +212,8 @@ class MuddaDartaController extends Controller
             'user_name' => auth()->user()->name,
             'kaifiyat' => $request->input('kaifiyat'),
         ]);
-
+        $this->updateAviyogchallani($mudda,$request,$pratiwadi_name,$jaherwala_name);
+        $this->updatePunarabedan($mudda,$request,$pratiwadi_name,$jaherwala_name);
         return redirect()->route('mudda_darta.index')
         ->with('success', 'राय सफलतापूर्वक अपडेट भयो।');
     }
@@ -244,14 +245,13 @@ class MuddaDartaController extends Controller
     }
 
     protected function updateAviyogchallani($mudda,$request,$pratiwadi_name,$jaherwala_name){
-        $aviyogchallani = AviyogChallani::where('id', $mudda->id)->first();
+        $aviyogchallani = AviyogChallani::where('mudda_number', $mudda->mudda_number)->first();
 
         if ($aviyogchallani) {
             $aviyogchallani->update([
                 'jaherwala_name'           => $jaherwala_name,
                 'pratiwadi_name'           => $pratiwadi_name,
                 'mudda_name'               => $request->input('mudda_name'),
-                'mudda_number'             => $request->input('mudda_number'),
                 'sarkariwakil_name'        => $request->input('sarkariwakil_name'),
                 'faat_name'                => $request->input('faat_name'),
                 'anusandhan_garne_nikaye'  => $request->input('anusandhan_garne_nikaye'),
@@ -260,14 +260,13 @@ class MuddaDartaController extends Controller
     }
 
     protected function updatePunarabedan($mudda,$request,$pratiwadi_name,$jaherwala_name){
-        $punarabedan = Punarabedan::where('id', $mudda->id)->first();
+        $punarabedan = Punarabedan::where('mudda_number', $mudda->mudda_number)->first();
 
         if ($punarabedan) {
             $punarabedan->update([
             'mudda_name'               => $request->input('mudda_name'),
             'jaherwala_name'           => $jaherwala_name,
             'pratiwadi_name'           => $pratiwadi_name,
-            'mudda_number'             => $request->input('mudda_number'),
             'sarkariwakil_name'        => $request->input('sarkariwakil_name'),
             ]);
         }

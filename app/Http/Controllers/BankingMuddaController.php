@@ -175,8 +175,8 @@ class BankingMuddaController extends Controller
         // Store the data in the database
         $Insertdata = [
             'anusandhan_garne_nikaye' => $request->input('anusandhan_garne_nikaye'),
-            'mudda_number' => $request->input('mudda_number'),
-            'mudda_name' => 'बैकिङ्ग-'. $request->input('mudda_name'),
+            'mudda_number' => 'बैकिङ्ग-'. $request->input('mudda_number'),
+            'mudda_name' => $request->input('mudda_name'),
             'jaherwala_name' => $jaherwala_name,
             'pratiwadi_name' => $pratiwadi_name,
             'pratiwadi_number' => $request->input('pratiwadi_number'),
@@ -232,10 +232,10 @@ class BankingMuddaController extends Controller
 
     protected function createPunarabedan($request,$jaherwala_name,$pratiwadi_name) {
         Punarabedan::create([
-            'mudda_name'               => 'बैकिङ्ग-'. $request->input('mudda_name'),
+            'mudda_name'               => $request->input('mudda_name'),
             'jaherwala_name'           => $jaherwala_name,
             'pratiwadi_name'           => $pratiwadi_name,
-            'mudda_number'             => $request->input('mudda_number'),
+            'mudda_number'             => 'बैकिङ्ग-'. $request->input('mudda_number'),
             'suchana_date'             => null,
         ]);
     }
@@ -285,9 +285,10 @@ class BankingMuddaController extends Controller
 
         $challaniNumber = $request->input('challani_number');
         $shouldAssignChallani = $request->status && !BankingMudda::where('challani_number', $challaniNumber)->where('id', '!=', $bankingmudda->id)->exists();
+        $mudda_number = preg_replace('/^(बैकिङ्ग-)+/u', '', $request->input('mudda_number'));
         $updatedata = [
             'anusandhan_garne_nikaye' => $request->input('anusandhan_garne_nikaye'),
-            'mudda_number' => 'बैकिङ्ग-'. $request->input('mudda_number'),
+            'mudda_number' => 'बैकिङ्ग-' . $mudda_number,
             'mudda_name' => $request->input('mudda_name'),
             'jaherwala_name' => $jaherwala_name,
             'pratiwadi_name' => $pratiwadi_name,
@@ -314,14 +315,12 @@ class BankingMuddaController extends Controller
 
 
     protected function updatePunarabedan($bankingmudda,$request,$jaherwala_name,$pratiwadi_name){
-        $punarabedan = Punarabedan::where('id', $bankingmudda->id)->first();
-
+        $punarabedan = Punarabedan::where('mudda_number', $bankingmudda->mudda_number)->first();
         if ($punarabedan) {
             $punarabedan->update([
-            'mudda_name'               => 'बैकिङ्ग-'. $request->input('mudda_name'),
+            'mudda_name'               => $request->input('mudda_name'),
             'jaherwala_name'           => $jaherwala_name,
             'pratiwadi_name'           => $pratiwadi_name,
-            'mudda_number'             => $request->input('mudda_number'),
             'sarkariwakil_name'        => $request->input('sarkariwakil_name'),
             ]);
         }
