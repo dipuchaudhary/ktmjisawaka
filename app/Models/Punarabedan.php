@@ -34,6 +34,7 @@ class Punarabedan extends Model
         'kaifiyat',
         'user_name',
         'status',
+        'adalat_mudda_number',
         'created_at',
     ];
 }

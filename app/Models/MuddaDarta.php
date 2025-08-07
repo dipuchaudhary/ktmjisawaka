@@ -14,7 +14,7 @@ class MuddaDarta extends Model
         'pratiwadi_name',
         'pratiwadi_number',
         'mudda_date',
-        'mudda_suru_myad',
+        'mudda_suru_myasd',
         'mudda_myad_thap',
         'jamma_din',
         'sarkariwakil_name',
@@ -22,6 +22,7 @@ class MuddaDarta extends Model
         'mudda_bibran',
         'kaifiyat',
         'user_name',
+        'adalat_mudda_number',
         'created_at',
     ];
 }

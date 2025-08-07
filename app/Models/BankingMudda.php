@@ -23,6 +23,7 @@ class BankingMudda extends Model
         'status',
         'kaifiyat',
         'user_name',
+        'adalat_mudda_number',
         'created_at',
     ];
 }

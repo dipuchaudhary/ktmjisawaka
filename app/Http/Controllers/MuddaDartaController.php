@@ -147,6 +147,7 @@ class MuddaDartaController extends Controller
             'anusandhan_garne_nikaye' => $request->input('anusandhan_garne_nikaye'),
             'mudda_number' => $request->input('mudda_number'),
             'mudda_name' => $request->input('mudda_name'),
+            'adalat_mudda_number' => $request->input('adalat_mudda_number'),
             'jaherwala_name' => $jaherwala_name,
             'pratiwadi_name' => $pratiwadi_name,
             'pratiwadi_number' => $request->input('pratiwadi_number'),
@@ -199,6 +200,7 @@ class MuddaDartaController extends Controller
             'anusandhan_garne_nikaye' => $request->input('anusandhan_garne_nikaye'),
             'mudda_number' => $request->input('mudda_number'),
             'mudda_name' => $request->input('mudda_name'),
+            'adalat_mudda_number' => $request->input('adalat_mudda_number'),
             'jaherwala_name' => $jaherwala_name,
             'pratiwadi_name' => $pratiwadi_name,
             'pratiwadi_number' => $request->input('pratiwadi_number'),
@@ -227,6 +229,7 @@ class MuddaDartaController extends Controller
             'mudda_name'               => $request->input('mudda_name'),
             'gender'                   => null,
             'mudda_number'             => $request->input('mudda_number'),
+            'adalat_mudda_number'      => $request->input('adalat_mudda_number'),
             'sarkariwakil_name'        => $request->input('sarkariwakil_name'),
             'faat_name'                => $request->input('faat_name'),
             'anusandhan_garne_nikaye'  => $request->input('anusandhan_garne_nikaye'),
@@ -240,6 +243,7 @@ class MuddaDartaController extends Controller
             'jaherwala_name'           => $jaherwala_name,
             'pratiwadi_name'           => $pratiwadi_name,
             'mudda_number'             => $request->input('mudda_number'),
+            'adalat_mudda_number'      => $request->input('adalat_mudda_number'),
             'suchana_date'             => null,
         ]);
     }
@@ -252,6 +256,8 @@ class MuddaDartaController extends Controller
                 'jaherwala_name'           => $jaherwala_name,
                 'pratiwadi_name'           => $pratiwadi_name,
                 'mudda_name'               => $request->input('mudda_name'),
+                'mudda_number'             => $request->input('mudda_number'),
+                'adalat_mudda_number'      => $request->input('adalat_mudda_number'),
                 'sarkariwakil_name'        => $request->input('sarkariwakil_name'),
                 'faat_name'                => $request->input('faat_name'),
                 'anusandhan_garne_nikaye'  => $request->input('anusandhan_garne_nikaye'),
@@ -267,6 +273,8 @@ class MuddaDartaController extends Controller
             'mudda_name'               => $request->input('mudda_name'),
             'jaherwala_name'           => $jaherwala_name,
             'pratiwadi_name'           => $pratiwadi_name,
+            'mudda_number'             => $request->input('mudda_number'),
+            'adalat_mudda_number'      => $request->input('adalat_mudda_number'),
             'sarkariwakil_name'        => $request->input('sarkariwakil_name'),
             ]);
         }
