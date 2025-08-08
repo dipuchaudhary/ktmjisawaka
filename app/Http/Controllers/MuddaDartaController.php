@@ -49,7 +49,8 @@ class MuddaDartaController extends Controller
     {
         if(request()->ajax())
         {
-            $query = MuddaDarta::select('id', 'anusandhan_garne_nikaye', 'mudda_number', 'mudda_name', 'jaherwala_name','pratiwadi_name','pratiwadi_number','mudda_date','sarkariwakil_name','faat_name','user_name');
+            $query = MuddaDarta::select('id', 'anusandhan_garne_nikaye', 'mudda_number', 'mudda_name', 'jaherwala_name','pratiwadi_name','pratiwadi_number','mudda_date','sarkariwakil_name','faat_name','user_name','adalat_mudda_number')
+                ->orderBy('id', 'desc');
 
             return Datatables::eloquent($query)
                 ->addIndexColumn()

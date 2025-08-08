@@ -25,6 +25,7 @@
                 <th style="width: 100px;">प्रतिवादीको नाम</th>
                 <th>प्रतिवादी संख्या</th>
                 <th>राय दर्ता मिति</th>
+                <th>अदालत मुद्दा नं.</th>
                 <th>सरकारी वकील</th>
                 <th>फाँट</th>
                 <th>प्रविष्टकर्ता</th>
@@ -54,6 +55,7 @@
             { data: 'pratiwadi_name', name: 'pratiwadi_name', className: 'exportable' },
             { data: 'pratiwadi_number', name: 'pratiwadi_number', className: 'exportable' },
             { data: 'mudda_date', name: 'mudda_date', className: 'exportable' },
+            { data: 'adalat_mudda_number', name: 'adalat_mudda_number', className: 'exportable' },
             { data: 'sarkariwakil_name', name: 'sarkariwakil_name', className: 'exportable' },
             { data: 'faat_name', name: 'faat_name', className: 'exportable' },
             { data: 'user_name', name: 'user_name', className: 'exportable' }
@@ -70,6 +72,10 @@
         }
 
         var table = $('#muddaTable').DataTable({
+            lengthMenu: [
+                [ 10, 25, 50, 100, -1 ],
+                [ '10', '25', '50', '100', 'All' ]
+            ],
             "order": [[0, "desc"]],
             processing: true,
             serverSide: true,
@@ -125,6 +131,7 @@
                 }
             ],
             language: {
+                search: "खोजी गर्नुहोस्:",
                 zeroRecords: "कुनै डाटा फेला परेन",
                 info: "_TOTAL_ मध्ये _START_ देखि _END_ प्रविष्टिहरू",
                 infoEmpty: "० प्रविष्टिहरू",
