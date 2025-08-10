@@ -1,21 +1,35 @@
 @extends('layouts.master')
 @section('content')
 <div class="container mt-5">
-    <h3 class="mb-5">बैकिङ्ग मुद्दा दर्ता फारम</h3>
+    <h3 class="mb-5">बैंकिङ मुद्दा फारम सम्पादन गर्नुहोस्</h3>
     <a href="{{ route('banking_mudda.index') }}" class="btn btn-success mb-5">
        <i class="fas fa-arrow-left"></i> पछाडि जानुहोस्
     </a>
     <form class="container" method="POST" action="{{ route('banking_mudda.update', $bankingmudda->id) }}" enctype="multipart/form-data">
             @csrf
             <div class="row">
-                <div class="col-md-4 mb-3">
+                 <div class="col-md-3 mb-3">
+                    <label for="मुद्दा नं." class="form-label">राय दर्ता नं.</label>
+                    <input type="text" class="form-control nep-number @error('mudda_number') is-invalid @enderror" id="mudda_number" name="mudda_number" value="{{ $bankingmudda->mudda_number }}" >
+                    @error('mudda_number')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="मुद्दा दर्ता मिति" class="form-label">राय दर्ता मिति <span style="color:red">*</span></label>
+                    <input type="text" class="form-control date-picker @error('mudda_date') is-invalid @enderror" id="mudda_date" name="mudda_date" value="{{ $bankingmudda->mudda_date }}">
+                    @error('mudda_date')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="col-md-3 mb-3">
                     <label for="अनुसन्धान गर्ने निकाय" class="form-label">अनुसन्धान गर्ने निकाय <span style="color:red">*</span></label>
                     <input type="text" class="form-control @error('anusandhan_garne_nikaye') is-invalid @enderror" id="anusandhan_garne_nikaye" name="anusandhan_garne_nikaye" value="{{ $bankingmudda->anusandhan_garne_nikaye }}" >
                     @error('anusandhan_garne_nikaye')
                         <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
                 </div>
-                <div class="col-md-4 mb-3">
+                <div class="col-md-3 mb-3">
                     <label for="मुद्दाको किसिम" class="form-label">मुद्दाको किसिम <span style="color:red">*</span></label>
                     <select class="form-select form-control @error('mudda_name') is-invalid @enderror" name="mudda_name" id="mudda_name">
                         <option value="बैकिङ्ग" {{ $bankingmudda->mudda_name == 'बैकिङ्ग' ? 'selected' : '' }}>बैकिङ्ग</option>
@@ -25,16 +39,16 @@
                         <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
                 </div>
-                <div class="col-md-4 mb-3">
+            </div>
+            <div class="row">
+                <div class="col-md-3 mb-3">
                     <label for="जाहेरवालाको नाम" class="form-label">जाहेरवालाको नाम <span style="color:red">*</span></label>
                     <input type="text" class="form-control @error('jaherwala_name') is-invalid @enderror" id="jaherwala_name" name="jaherwala_name" value="{{ $bankingmudda->jaherwala_name }}">
                         @error('jaherwala_name')
                         <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
                 </div>
-            </div>
-            <div class="row">
-               <div class="col-md-8 pratiwadi-input-group mb-3">
+               <div class="col-md-7 pratiwadi-input-group mb-3">
                     @foreach(json_decode($bankingmudda->pratiwadi_name, true) as $index => $pratiwadi)
                         <div class="d-flex gap-3 border p-2 pratiwadi-group">
                             <div class="flex-fill p-1">
@@ -50,7 +64,7 @@
                             </div>
                             <div class="flex-fill p-1">
                                 @if ($loop->first)
-                                <label>मुद्दा स्थिति <span style="color:red">*</span></label>
+                                <label>स्थिति <span style="color:red">*</span></label>
                                 @endif
                                 <select name="mudda_sthiti[]" class="form-control">
                                     <option value="">--एउटाको विकल्प रोज्नुहोस।--</option>
@@ -76,7 +90,7 @@
                         </div>
                         @endforeach
                 </div>
-                <div class="col-md-4 mb-3">
+                <div class="col-md-2 mb-3">
                     <label for="प्रतिवादीको संख्या" class="form-label">प्रतिवादीको संख्या</label>
                     <input type="text" class="form-control nep-number @error('pratiwadi_number') is-invalid @enderror" id="pratiwadi_number" name="pratiwadi_number" value="{{ $bankingmudda->pratiwadi_number }}" >
                     @error('pratiwadi_number')
@@ -85,15 +99,15 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-3 mb-3">
+                <div class="col-md-4 mb-3">
                     <label for="मुद्दा दर्ता मिति" class="form-label">मुद्दा विवरण </label>
                      <select class="form-select form-control @error('mudda_bibran') is-invalid @enderror" name="mudda_bibran" id="mudda_bibran">
                     <option selected value="" {{ empty($bankingmudda->mudda_bibran) ? 'selected' : '' }}>--एउटाको विकल्प रोज्नुहोस।--</option>
                     <option value="anusuchi_1" {{ $bankingmudda->mudda_bibran == 'anusuchi_1' ? 'selected' : '' }}>अनुसूची १</option>
-                    <option value="anusuchi_1" {{ $bankingmudda->mudda_bibran == 'anusuchi_2' ? 'selected' : '' }}>अनुसूची २</option>
+                    <option value="anusuchi_2" {{ $bankingmudda->mudda_bibran == 'anusuchi_2' ? 'selected' : '' }}>अनुसूची २</option>
                 </select>
                 </div>
-                <div class="col-md-3 mb-3">
+                <div class="col-md-4 mb-3">
                     <label for="मुद्दा पेश भएको कार्यालय" class="form-label">मुद्दा पेश भएको कार्यालय <span style="color:red">*</span></label>
                     <select class="form-select form-control @error('pesi_karyala') is-invalid @enderror" name="pesi_karyala" id="pesi_karyala">
                         <option selected value="" {{ empty($bankingmudda->pesi_karyala) ? 'selected' : '' }}>--एउटाको विकल्प रोज्नुहोस।--</option>
@@ -101,17 +115,10 @@
                         <option value="patan" {{ $bankingmudda->pesi_karyala == 'patan' ? 'selected' : '' }}>उच्च सरकारी वकील कार्यालय, पाटन</option>
                     </select>
                 </div>
-                <div class="col-md-3 mb-3">
-                    <label for="मुद्दा दर्ता मिति" class="form-label">राय दर्ता मिति <span style="color:red">*</span></label>
-                    <input type="text" class="form-control date-picker @error('mudda_date') is-invalid @enderror" id="mudda_date" name="mudda_date" value="{{ $bankingmudda->mudda_date }}">
-                    @error('mudda_date')
-                        <div class="alert alert-danger">{{ $message }}</div>
-                    @enderror
-                </div>
-                <div class="col-md-3 mb-3">
-                    <label for="मुद्दा नं." class="form-label">राय दर्ता नं.</label>
-                    <input type="text" class="form-control nep-number @error('mudda_number') is-invalid @enderror" id="mudda_number" name="mudda_number" value="{{ $bankingmudda->mudda_number }}" >
-                    @error('mudda_number')
+                <div class="col-md-4 mb-3">
+                    <label for="मुद्दा नं." class="form-label">अदालत मुद्दा नं.</label>
+                    <input type="text" class="form-control nep-number @error('adalat_mudda_number') is-invalid @enderror" id="adalat_mudda_number" name="adalat_mudda_number" value="{{ $bankingmudda->adalat_mudda_number }}" >
+                    @error('adalat_mudda_number')
                         <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
                 </div>
@@ -138,7 +145,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-4 mb-3">
+                <div class="col-md-6 mb-3">
                     <label for="कैफियत" class="form-label">कैफियत</label>
                     <textarea class="form-control" id="kaifiyat" name="kaifiyat" rows="3">{{ $bankingmudda->kaifiyat }}</textarea>
                 </div>

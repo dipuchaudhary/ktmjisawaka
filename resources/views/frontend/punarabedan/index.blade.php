@@ -2,6 +2,13 @@
 @section('content')
 <div class="container mt-5 table-responsive" style="max-width: 85%;">
     <h1>पुनरावेदन सूची</h1>
+     @auth
+        @can('punarabedan-create')
+        <a href="{{ route('punarabedan.create') }}" class="btn btn-primary float-right mb-5">
+          <i class="fas fa-plus"></i> नयाँ पुनरावेदन सिर्जना गर्नुहोस्
+        </a>
+        @endcan
+    @endauth
     <div class="alert alert-danger d-none" id="dataTableError">
         तालिका डाटा लोड गर्न असफल भयो। कृपया पृष्ठ रिफ्रेस गर्नुहोस् वा पछि प्रयास गर्नुहोस्।
     </div>
@@ -13,6 +20,7 @@
                 <th rowspan="2">जाहेरवालाको नाम</th>
                 <th rowspan="2">प्रतिवादीको नाम</th>
                 <th rowspan="2">मुद्दाको किसिम</th>
+                <th rowspan="2">अदालत मुद्दा नं.</th>
                 <th rowspan="2">फैसला मिति</th>
                 <th rowspan="2">फैसला प्रमाणीकरण मिति</th>
                 <th colspan="3" class="text-center">कार्यालयबाट भएको पुनरावेदन सम्बन्धी कारवाही</th>
@@ -48,6 +56,7 @@ $(document).ready(function () {
         { data: 'jaherwala_name', name: 'jaherwala_name', className: 'exportable' },
         { data: 'pratiwadi_name', name: 'pratiwadi_name', className: 'exportable' },
         { data: 'mudda_name', name: 'mudda_name', className: 'exportable' },
+        { data: 'adalat_mudda_number', name: 'adalat_mudda_number', className: 'exportable' },
         { data: 'faisala_date', name: 'faisala_date', className: 'exportable' },
         { data: 'faisala_pramanikaran_date', name: 'faisala_pramanikaran_date', className: 'exportable' },
         { data: 'punarabedan', name: 'punarabedan', className: 'exportable' },
@@ -68,6 +77,10 @@ $(document).ready(function () {
     }
 
     $('#muddaTable').DataTable({
+        lengthMenu: [
+            [ 10, 25, 50, 100, -1 ],
+            [ '10', '25', '50', '100', 'All' ]
+        ],
         "order": [[0, "desc"]],
         processing: true,
         serverSide: true,

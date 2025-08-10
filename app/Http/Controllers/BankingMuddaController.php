@@ -27,7 +27,7 @@ class BankingMuddaController extends Controller
     {
          if(request()->ajax())
         {
-            $query = BankingMudda::select('id', 'anusandhan_garne_nikaye', 'mudda_number', 'mudda_name', 'jaherwala_name','pratiwadi_name','pratiwadi_number','mudda_date','mudda_myad','sarkariwakil_name','challani_number','user_name','status');
+            $query = BankingMudda::select('id', 'anusandhan_garne_nikaye', 'mudda_number', 'mudda_name', 'jaherwala_name','pratiwadi_name','pratiwadi_number','mudda_date','mudda_myad','sarkariwakil_name','challani_number','user_name','status','adalat_mudda_number')->orderBy('id', 'desc');
             $user = auth()->user();
              if ( $user ) {
                 $query->where(function ($q) use ($user) {
@@ -141,7 +141,7 @@ class BankingMuddaController extends Controller
             'pratiwadi_name' => 'required',
             'pratiwadi_name.*' => 'required|string|max:255',
             'mudda_sthiti' => 'required|array',
-            'mudda_sthiti.*' => 'required|string|in:फरार,पक्राउ,हाजिरि जमानीमा छोडेको,तामेली,नचल्ने',
+            'mudda_sthiti.*' => 'required|string|in:फरार,पक्राउ,हाजिरि जमानीमा छोडेको,तामेली,नचल्ने,कारागार',
             'mudda_date' => 'required',
             'status' => 'required|boolean',
         ];
@@ -177,9 +177,11 @@ class BankingMuddaController extends Controller
             'anusandhan_garne_nikaye' => $request->input('anusandhan_garne_nikaye'),
             'mudda_number' => 'बैकिङ्ग-'. $request->input('mudda_number'),
             'mudda_name' => $request->input('mudda_name'),
+            'adalat_mudda_number' => $request->input('adalat_mudda_number'),
             'jaherwala_name' => $jaherwala_name,
             'pratiwadi_name' => $pratiwadi_name,
             'pratiwadi_number' => $request->input('pratiwadi_number'),
+            'mudda_bibran' => $request->input('mudda_bibran'),
             'pesi_karyala' => $request->input('pesi_karyala'),
             'mudda_date' => $request->input('mudda_date'),
             'mudda_myad' => $request->input('mudda_myad'),
@@ -236,6 +238,7 @@ class BankingMuddaController extends Controller
             'jaherwala_name'           => $jaherwala_name,
             'pratiwadi_name'           => $pratiwadi_name,
             'mudda_number'             => 'बैकिङ्ग-'. $request->input('mudda_number'),
+            'adalat_mudda_number'      => $request->input('adalat_mudda_number'),
             'suchana_date'             => null,
         ]);
     }
@@ -290,9 +293,11 @@ class BankingMuddaController extends Controller
             'anusandhan_garne_nikaye' => $request->input('anusandhan_garne_nikaye'),
             'mudda_number' => 'बैकिङ्ग-' . $mudda_number,
             'mudda_name' => $request->input('mudda_name'),
+            'adalat_mudda_number' => $request->input('adalat_mudda_number'),
             'jaherwala_name' => $jaherwala_name,
             'pratiwadi_name' => $pratiwadi_name,
             'pratiwadi_number' => $request->input('pratiwadi_number'),
+            'mudda_bibran' => $request->input('mudda_bibran'),
             'pesi_karyala' => $request->input('pesi_karyala'),
             'mudda_date' => $request->input('mudda_date'),
             'mudda_myad' => $request->input('mudda_myad'),

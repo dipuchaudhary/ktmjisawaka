@@ -52,6 +52,8 @@ Route::post('/aviyog-challani/update/{id}',[AviyogChallaniController::class, 'up
 Route::delete('/aviyog-challani/delete/{id}',[AviyogChallaniController::class, 'destroy'])->name('aviyog_challani.destroy');
 
 //Punarabedan routes
+Route::get('/punarabedan/create',[PunarabedanController::class,'create'])->name('punarabedan.create');
+Route::post('/punarabedan/store', [PunarabedanController::class, 'store'])->name('punarabedan.store');
 Route::get('/punarabedan/{id}/edit',[PunarabedanController::class,'edit'])->name('punarabedan.edit');
 Route::post('/punarabedan/update/{id}',[PunarabedanController::class, 'update'])->name('punarabedan.update');
 Route::delete('/punarabedan/delete/{id}',[PunarabedanController::class, 'destroy'])->name('punarabedan.destroy');

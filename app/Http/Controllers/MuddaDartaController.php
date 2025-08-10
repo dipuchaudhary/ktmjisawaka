@@ -25,7 +25,7 @@ class MuddaDartaController extends Controller
             'pratiwadi_name' => 'required',
             'pratiwadi_name.*' => 'required|string|max:255',
             'mudda_sthiti' => 'required|array',
-            'mudda_sthiti.*' => 'required|string|in:फरार,पक्राउ,हाजिरि जमानीमा छोडेको,तामेली,नचल्ने',
+            'mudda_sthiti.*' => 'required|string|in:फरार,पक्राउ,हाजिरि जमानीमा छोडेको,तामेली,नचल्ने,कारागार',
             'mudda_date' => 'required',
             'mudda_bibran' => 'required',
         ];

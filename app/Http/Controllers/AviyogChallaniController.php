@@ -31,7 +31,7 @@ class AviyogChallaniController extends Controller
          if(request()->ajax())
         {
             try {
-                $query = AviyogChallani::select('id', 'challani_date','challani_number','mudda_number','mudda_name','jaherwala_name','pratiwadi_name','sarkariwakil_name','faat_name','anusandhan_garne_nikaye','user_name','status','upload_date','pesh_karyala');
+                $query = AviyogChallani::select('id', 'challani_date','challani_number','mudda_number','mudda_name','jaherwala_name','pratiwadi_name','sarkariwakil_name','faat_name','anusandhan_garne_nikaye','user_name','status','upload_date','pesh_karyala','adalat_mudda_number')->orderBy('id', 'desc');
                 $user = auth()->user();
                 if ( $user ) {
                     $query->where(function ($q) use ($user) {
@@ -188,6 +188,7 @@ class AviyogChallaniController extends Controller
             'pratiwadi_name'          => $pratiwadi_name,
             'mudda_name'              => $request->input('mudda_name'),
             'mudda_number'            => $request->input('mudda_number'),
+            'adalat_mudda_number'     => $request->input('adalat_mudda_number'),
             'gender'                  => json_encode($genderCounts),
             'gender_counts'           => toNepaliNumber($total),
             'anusandhan_garne_nikaye' => $request->input('anusandhan_garne_nikaye'),

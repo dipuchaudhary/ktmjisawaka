@@ -26,6 +26,7 @@
                         <th>जाहेरवालाको नाम</th>
                         <th style="width: 100px;">प्रतिवादीको नाम</th>
                         <th>प्रतिवादी संख्या</th>
+                        <th>अदालत मुद्दा नं.</th>
                         <th>मुद्दा दर्ता मिति</th>
                         <th>म्याद मिति</th>
                         <th>सरकारी वकील</th>
@@ -59,6 +60,7 @@ $(document).ready(function () {
         { data: 'jaherwala_name', name: 'jaherwala_name', className: 'exportable' },
         { data: 'pratiwadi_name', name: 'pratiwadi_name', className: 'exportable' },
         { data: 'pratiwadi_number', name: 'pratiwadi_number', className: 'exportable' },
+        { data: 'adalat_mudda_number', name: 'adalat_mudda_number', className: 'exportable' },
         { data: 'mudda_date', name: 'mudda_date', className: 'exportable' },
         { data: 'mudda_myad', name: 'mudda_myad', className: 'exportable' },
         { data: 'sarkariwakil_name', name: 'sarkariwakil_name', className: 'exportable' },
@@ -80,6 +82,10 @@ $(document).ready(function () {
 
     // Initialize DataTable with error handling
     $('#muddaTable').DataTable({
+        lengthMenu: [
+            [ 10, 25, 50, 100, -1 ],
+            [ '10', '25', '50', '100', 'All' ]
+        ],
         order: [[0, 'desc']],
         processing: true,
         serverSide: true,

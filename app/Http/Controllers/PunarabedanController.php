@@ -22,26 +22,36 @@ class PunarabedanController extends Controller
 
     protected $rules = [
             'mudda_name' => 'required',
-            'jaherwala_name' => 'required|array',
-            'pratiwadi_name' => 'required|array',
+            'mudda_number' => 'required',
+            'jaherwala_name' => 'required',
+            'pratiwadi_name' => 'required',
+            'pratiwadi_name.*' => 'required|string|max:255',
+            'mudda_sthiti' => 'required|array',
+            'mudda_sthiti.*' => 'required|string|in:फरार,पक्राउ,हाजिरि जमानीमा छोडेको,तामेली,नचल्ने,कारागार',
             'faisala_date' => 'required',
             'faisala_pramanikaran_date' => 'required',
             'suchana_date' => 'required',
             'faisala_garne_nikaye' => 'required',
-            'punarabedan' => 'required',
+            'punarabedan' => 'required_if:is_punarabedan_visible,true',
+            'punarabedan_date' => 'required_if:is_punarabedan_date_visible,true',
+            'punarabedan_challani_number' => 'required_if:is_punarabedan_challani_number_visible,true',
         ];
 
     protected $customMessages = [
            'mudda_name.required' => 'मुद्दाको नाम अनिवार्य छ।',
+           'mudda_number.required' => 'राय दर्ता नं. अनिवार्य छ।',
            'jaherwala_name.required' => 'जाहेरवालाको नाम अनिवार्य छ।',
-           'pratiwadi_name.required' => 'प्रतिवादीको नाम अनिवार्य छ।',
+           'pratiwadi_name.0.required' => 'प्रतिवादीको नाम अनिवार्य छ।',
+           'pratiwadi_name.*.required' => 'प्रतिवादीको नाम अनिवार्य छ।',
+           'mudda_sthiti.0.required' => 'मुद्दा स्थिति अनिवार्य छ।',
+           'mudda_sthiti.*.required' => 'मुद्दा स्थिति अनिवार्य छ।',
            'faisala_date.required' => 'फैसाला मिति अनिवार्य छ।',
            'faisala_pramanikaran_date.required' => 'फैसाला प्रमाणीकरण मिति अनिवार्य छ।',
            'suchana_date.required' => 'सूचना प्राप्त मिति अनिवार्य छ।',
            'faisala_garne_nikaye.required' => 'फैसाला गर्ने निकाय अनिवार्य छ।',
            'punarabedan.required' => 'पुवे/दो.पा अनिवार्य छ।',
-           'punarabedan_date.required' => 'चलानी नं. अनिवार्य छ।',
-           'punarabedan_challani_number.required' => 'चलानी मिति अनिवार्य छ।',
+           'punarabedan_date.required' => 'चलानी मिति अनिवार्य छ।',
+           'punarabedan_challani_number.required' => 'चलानी नं. अनिवार्य छ।',
         ];
 
     /**
@@ -51,7 +61,7 @@ class PunarabedanController extends Controller
 
         if(request()->ajax())
         {
-            $query = Punarabedan::select('id', 'mudda_number', 'jaherwala_name','pratiwadi_name','mudda_name','faisala_date','faisala_pramanikaran_date','punarabedan','punarabedan_date','punarabedan_challani_number','user_name','status');
+            $query = Punarabedan::select('id', 'mudda_number', 'jaherwala_name','pratiwadi_name','mudda_name','faisala_date','faisala_pramanikaran_date','punarabedan','punarabedan_date','punarabedan_challani_number','user_name','status','adalat_mudda_number')->orderBy('id', 'desc');
             $user = auth()->user();
             if ( $user ) {
                 $query->where(function ($q) use ($user) {
@@ -133,6 +143,93 @@ class PunarabedanController extends Controller
         }
         $buttons .= '</div>';
         return $buttons;
+    }
+
+	 /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        if (!Gate::allows('punarabedan-create')) {
+             abort(403, 'You do not have permissions');
+        }
+
+        $latest = Challani::orderByDesc('id')->first();
+
+        $nextId = $latest ? $latest->id + 1 : 1;
+        $nextChallaniNumber = $this->format . '-' . $nextId;
+        return view('frontend.punarabedan.create', compact('nextChallaniNumber'));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        $this->validate($request, $this->rules, $this->customMessages);
+
+        $jaherwala_name = $request->input('jaherwala_name');
+
+        $pratiwadiList = [];
+        $names = is_array($request->input('pratiwadi_name')) ? $request->input('pratiwadi_name') : [];
+        $sthiti = is_array($request->input('mudda_sthiti')) ? $request->input('mudda_sthiti') : [];
+
+        foreach ($names as $index => $name) {
+            $pratiwadiList[] = [
+                'name' => $name,
+                'status' => $sthiti[$index] ?? null,
+            ];
+        }
+        $pratiwadi_name = json_encode($pratiwadiList, JSON_UNESCAPED_UNICODE);
+        if ($request->input('punarabedan') == 'सफल') {
+            $punarabedan_date = null;
+            $punarabedan_challani_number = null;
+        } else {
+            $punarabedan_date = $request->input('punarabedan_date');
+            $punarabedan_challani_number = $request->input('punarabedan_challani_number');
+        }
+
+        $InsertData = [
+            'mudda_number' => $request->input('mudda_number'),
+            'adalat_mudda_number' => $request->input('adalat_mudda_number'),
+            'jaherwala_name' => $jaherwala_name,
+            'pratiwadi_name' => $pratiwadi_name,
+            'mudda_name' => $request->input('mudda_name'),
+            'faisala_date' => $request->input('faisala_date'),
+            'faisala_pramanikaran_date' => $request->input('faisala_pramanikaran_date'),
+            'suchana_date' => $request->input('suchana_date'),
+            'faisala_garne_nikaye' => $request->input('faisala_garne_nikaye'),
+            'pra_kaid' => $request->input('pra_kaid'),
+            'pra_jariwana' => $request->input('pra_jariwana'),
+            'pra_xatipurti' => $request->input('pra_xatipurti'),
+            'pra_bigo' => $request->input('pra_bigo'),
+            'pra_multabi' => $request->input('pra_multabi'),
+            'faisala_kaid' => $request->input('faisala_kaid'),
+            'faisala_jariwana' => $request->input('faisala_jariwana'),
+            'faisala_xatipurti' => $request->input('faisala_xatipurti'),
+            'faisala_bigo' => $request->input('faisala_bigo'),
+            'punarabedan' => $request->input('punarabedan'),
+            'punarabedan_date' => $punarabedan_date,
+            'punarabedan_challani_number' => $punarabedan_challani_number,
+            'nirnaye' => $request->input('nirnaye'),
+            'nirnaye_date' => $request->input('nirnaye_date'),
+            'sarkariwakil_name' => $request->input('sarkariwakil_name'),
+            'kaifiyat' => $request->input('kaifiyat'),
+            'status' => true,
+            'user_name' => auth()->user()->name,
+        ];
+
+        if ($InsertData['status']== true && $request->input('punarabedan') !== 'सफल' ) {
+            $challaniNumber = $request->input('punarabedan_challani_number');
+            $exists = Challani::where('challani_number', $challaniNumber)->exists();
+            if (!$exists) {
+                Challani::create(['challani_number' => $challaniNumber]);
+                $InsertData['punarabedan_challani_number'] = $challaniNumber;
+            }
+        }
+        Punarabedan::create($InsertData);
+        return redirect()->route('punarabedan.index')
+        ->with('success', 'पुनरावेदन दर्ता सफल भयो।');
     }
 
     public function edit($id){

@@ -159,16 +159,23 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label for="कैफियत" class="form-label">कैफियत</label>
-                    <textarea class="form-control" id="kaifiyat" name="kaifiyat" rows="2">{{ $aviyogchallani->kaifiyat}}</textarea>
+                <div class="col-md-3 mb-3">
+                    <label for="मुद्दा नं." class="form-label">अदालत मुद्दा नं.</label>
+                    <input type="text" class="form-control nep-number @error('adalat_mudda_number') is-invalid @enderror" id="adalat_mudda_number" name="adalat_mudda_number" value="{{ $aviyogchallani->adalat_mudda_number }}" >
+                    @error('adalat_mudda_number')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror
                 </div>
-                <div class="col-md-4 mb-3">
+                <div class="col-md-3 mb-3">
                     <label for="अभियोग फाइल" class="form-label">अभियोग अपलोड भएको मितिः</label>
                     <input class="form-control date-picker @error('upload_date') is-invalid @enderror" type="text" id="upload_date" name="upload_date" value="{{ $aviyogchallani->upload_date }}">
                     @error('upload_date')
                         <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="कैफियत" class="form-label">कैफियत</label>
+                    <textarea class="form-control" id="kaifiyat" name="kaifiyat" rows="3">{{ $aviyogchallani->kaifiyat}}</textarea>
                 </div>
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>

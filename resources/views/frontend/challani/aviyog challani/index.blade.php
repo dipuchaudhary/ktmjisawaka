@@ -17,6 +17,7 @@
                 <th>मुद्दाको किसिम</th>
                 <th>जाहेरवालाको नाम</th>
                 <th>प्रतिवादीको नाम</th>
+                <th>अदालत मुद्दा नं.</th>
                 <th>सरकारी वकील</th>
                 <th>फाँट</th>
                 <th>अनुसन्धान गर्ने निकाय</th>
@@ -44,6 +45,7 @@
             { data: 'mudda_name', name: 'mudda_name', className: 'exportable' },
             { data: 'jaherwala_name', name: 'jaherwala_name', className: 'exportable' },
             { data: 'pratiwadi_name', name: 'pratiwadi_name', className: 'exportable' },
+            { data: 'adalat_mudda_number', name: 'adalat_mudda_number', className: 'exportable' },
             { data: 'sarkariwakil_name', name: 'sarkariwakil_name', className: 'exportable' },
             { data: 'faat_name', name: 'faat_name', className: 'exportable' },
             { data: 'anusandhan_garne_nikaye', name: 'anusandhan_garne_nikaye', className: 'exportable' },
@@ -55,6 +57,10 @@
         ];
 
         $('#muddaTable').DataTable({
+            lengthMenu: [
+                [ 10, 25, 50, 100, -1 ],
+                [ '10', '25', '50', '100', 'All' ]
+            ],
             "order": [[0, "desc"]],
             processing: true,
             serverSide: true,
