@@ -19,7 +19,7 @@
         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
         <link href="{{ asset('frontend/lib/slick/slick.css') }}" rel="stylesheet">
         <link href="{{ asset('frontend/lib/slick/slick-theme.css') }}" rel="stylesheet">
-        <link rel="stylesheet" href="{{ asset('frontend/css/nepaliDatePicker.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('frontend/css/nepali.datepicker.v2.2.min.css') }}">
         <link rel="stylesheet" href="{{ asset('frontend/css/toastr.min.css') }}">
         <!-- Template Stylesheet -->
         <link href="{{ asset('frontend/css/style.css') }}" rel="stylesheet">
@@ -59,7 +59,7 @@
 
         <!-- Template Javascript -->
         <script src="{{ asset('frontend/js/main.js') }}"></script>
-        <script src="{{ asset('frontend/js/nepaliDatePicker.min.js') }}"></script>
+        <script src="{{ asset('frontend/js/nepali.datepicker.v2.2.min.js') }}"></script>
         <script src="{{ asset('frontend/js/custom-js.js') }}"></script>
         <script src="{{ asset('frontend/js/toastr.min.js') }}"></script>
         <script>

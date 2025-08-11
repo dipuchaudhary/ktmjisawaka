@@ -1,10 +1,30 @@
-$mudda_pathayko_date = $("form .row .date-picker");
-$mudda_pathayko_date.nepaliDatePicker({
-  dateFormat: "%y-%m-%d",
-   closeOnDateSelect: true
-});
 
 $(document).ready(function() {
+    const nepToEng = s => s.replace(/[०-९]/g, d => '0123456789'.indexOf(d));
+    const engToNep = s => String(s).replace(/[0-9]/g, d => '०१२३४५६७८९'[d]);
+    $mudda_pathayko_date = $("form .row .date-picker");
+    $mudda_pathayko_date.nepaliDatePicker({
+        npdMonth: true,
+        npdYear: true,
+        npdYearCount: 100,
+    });
+    $("form .row .date-picker").each(function() {
+    const $thisInput = $(this);
+    $thisInput.nepaliDatePicker({
+        npdMonth: true,
+        npdYear: true,
+        npdYearCount: 100,
+        onChange: function() {
+            const val = $thisInput.val();
+            if (typeof val === 'string' && val.trim() !== '') {
+                const engDate = nepToEng(val);
+                $thisInput.data('en-value', engDate).val(engToNep(engDate));
+            }
+        }
+    });
+});
+
+
 function updatePratiwadiCount() {
         const engToNep = s => String(s).replace(/[0-9]/g, d => '०१२३४५६७८९'[d]);
         const count = $('.pratiwadi-input-group .pratiwadi-group').length;

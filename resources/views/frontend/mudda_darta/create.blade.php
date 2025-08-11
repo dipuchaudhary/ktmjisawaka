@@ -97,7 +97,7 @@
                 </div>
                 <div class="col-md-3 mb-3">
                     <label for="म्याद" class="form-label">जम्मा दिन</label>
-                    <input type="text" class="form-control" id="jamma_din" name="jamma_din" value="{{ old('jamma_din') }}" readonly>
+                    <input type="text" class="form-control" id="jamma_din" name="jamma_din" readonly>
                 </div>
             </div>
             <div class="row">
@@ -145,77 +145,117 @@
 @endsection
 @push('scripts')
 <script>
-const nepToEng = s => s.replace(/[०-९]/g, d => '०१२३४५६७८९'.indexOf(d));
-const engToNep = s => String(s).replace(/[0-9]/g, d => '०१२३४५६७८९'[d]);
+$(document).ready(function () {
 
-function isValidBsDate(bsStr) {
-  if (!bsStr) return false;
-  const parts = nepToEng(bsStr).split('-');
-  if (parts.length !== 3) return false;
-  const [y, m, d] = parts.map(Number);
-  return y >= 1970 && y <= 2100 && m >= 1 && m <= 12 && d >= 1 && d <= 32;
-}
+  const nepToEng = s => s.replace(/[०-९]/g, d => '0123456789'.indexOf(d));
+  const engToNep = s => String(s).replace(/[0-9]/g, d => '०१२३४५६७८९'[d]);
 
-function bsToAdDate(bsStr) {
-  if (!isValidBsDate(bsStr)) throw new Error(`Invalid BS date: ${bsStr}`);
-  const [y, m, d] = nepToEng(bsStr).split('-').map(Number);
-  return calendarFunctions.getAdDateByBsDate(y, m, d);
-}
-
-function bsDaysDiff(bsStart, bsEnd) {
-  const ad1 = bsToAdDate(bsStart);
-  const ad2 = bsToAdDate(bsEnd);
-  return Math.round((ad2 - ad1) / 86400000);
-}
-
-let startBS = '', endBS = '';
-
-function updateGap() {
-  if (!isValidBsDate(startBS) || !isValidBsDate(endBS)) return;
-
-  // Parse the dates
-  const [y1, m1, d1] = nepToEng(startBS).split('-').map(Number);
-  const [y2, m2, d2] = nepToEng(endBS).split('-').map(Number);
-
-  // Calculate total months difference
-  let totalMonths = (y2 - y1) * 12 + (m2 - m1);
-
-  // Calculate days difference
-  let days = d2 - d1;
-
-  // Adjust for negative days
-  if (days < 0) {
-    // Get the number of days in the previous month
-    const prevMonthDays = calendarFunctions.getBsMonthDays(y2, m2 - 1 || 12);
-    days += prevMonthDays;
-    totalMonths--;
+  function isValidBsDate(bsStr) {
+    if (typeof bsStr !== 'string' || !bsStr) return false;
+    const parts = nepToEng(bsStr).split('-');
+    if (parts.length !== 3) return false;
+    const [y, m, d] = parts.map(Number);
+    return y >= 1970 && y <= 2100 && m >= 1 && m <= 12 && d >= 1 && d <= 32;
   }
 
-  // Calculate years and remaining months
-  const years = Math.floor(totalMonths / 12);
-  const months = totalMonths % 12;
+  function bsDaysDiff(bsStart, bsEnd) {
+    const ad1Str = BS2AD(bsStart); // returns YYYY-MM-DD
+    const ad2Str = BS2AD(bsEnd);
 
-  // Format the output in Nepali
-  let result = '';
-  if (years > 0) result += engToNep(years) + ' वर्ष ';
-  if (months > 0) result += engToNep(months) + ' महिना ';
-  if (days > 0 || (years === 0 && months === 0)) result += engToNep(days) + ' दिन';
+    if (!ad1Str || !ad2Str) return null;
 
-  // Also show total days in parentheses
-  const totalDays = bsDaysDiff(startBS, endBS);
-  result += ' (' + engToNep(totalDays) + ' दिन)';
+    const ad1 = new Date(ad1Str);
+    const ad2 = new Date(ad2Str);
 
-  $('#jamma_din').val(result.trim());
-}
+    return Math.round((ad2 - ad1) / 86400000);
+  }
 
-$('#mudda_suru_myad').on('dateSelect', e => {
-  startBS = e.target.value;
-  updateGap();
-});
+  function updateGap() {
+    let startBS = $('#mudda_suru_myad').data("en-value") || $('#mudda_suru_myad').val();
+    let endBS   = $('#mudda_myad_thap').data("en-value") || $('#mudda_myad_thap').val();
 
-$('#mudda_myad_thap').on('dateSelect', e => {
-  endBS = e.target.value;
-  updateGap();
+    // Convert picker output (possibly Nepali digits) to English digits
+    startBS = nepToEng(startBS);
+    endBS   = nepToEng(endBS);
+
+    // Store English for calculations
+    $('#mudda_suru_myad').data("en-value", startBS).val(engToNep(startBS));
+    $('#mudda_myad_thap').data("en-value", endBS).val(engToNep(endBS));
+
+    if (!startBS || !endBS) {
+      $('#jamma_din').val('');
+      return;
+    }
+
+    if (!isValidBsDate(startBS) || !isValidBsDate(endBS)) {
+      $('#jamma_din').val('');
+      return;
+    }
+
+    const [y1, m1, d1] = startBS.split('-').map(Number);
+    const [y2, m2, d2] = endBS.split('-').map(Number);
+
+    let totalMonths = (y2 - y1) * 12 + (m2 - m1);
+    let days = d2 - d1;
+
+    if (days < 0) {
+      let prevMonth = m2 - 1;
+      let prevYear = y2;
+      if (prevMonth < 1) {
+        prevMonth = 12;
+        prevYear--;
+      }
+      const prevMonthDays = getBsMonthDays(prevYear, prevMonth);
+      days += prevMonthDays;
+      totalMonths--;
+    }
+
+    const years = Math.floor(totalMonths / 12);
+    const months = totalMonths % 12;
+
+    let result = '';
+    if (years > 0) result += engToNep(years) + ' वर्ष ';
+    if (months > 0) result += engToNep(months) + ' महिना ';
+    if (days > 0 || (years === 0 && months === 0)) result += engToNep(days) + ' दिन';
+
+    const totalDays = bsDaysDiff(startBS, endBS);
+    if (totalDays !== null) {
+      result += ' (' + engToNep(totalDays) + ' दिन)';
+    }
+
+    $('#jamma_din').val(result.trim());
+  }
+
+  $('#mudda_suru_myad').nepaliDatePicker({
+    npdMonth: true,
+    npdYear: true,
+    npdYearCount: 100,
+    onChange: function() {
+    // get the current value from the input directly
+    const val = $('#mudda_suru_myad').val();
+    if (typeof val === 'string' && val.trim() !== '') {
+      const engDate = nepToEng(val);
+      $('#mudda_suru_myad').data('en-value', engDate).val(engToNep(engDate));
+      updateGap();
+    }
+  }
+  });
+
+  $('#mudda_myad_thap').nepaliDatePicker({
+    npdMonth: true,
+    npdYear: true,
+    npdYearCount: 100,
+    onChange: function() {
+    // get the current value from the input directly
+    const val = $('#mudda_myad_thap').val();
+    if (typeof val === 'string' && val.trim() !== '') {
+    	const engDate = nepToEng(val);
+		$('#mudda_myad_thap').data('en-value', engDate).val(engToNep(engDate));
+		updateGap();
+    }
+  }
+  });
+
 });
 </script>
 @endpush
