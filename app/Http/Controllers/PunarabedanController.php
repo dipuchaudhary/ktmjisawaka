@@ -22,7 +22,6 @@ class PunarabedanController extends Controller
 
     protected $rules = [
             'mudda_name' => 'required',
-            'mudda_number' => 'required',
             'jaherwala_name' => 'required',
             'pratiwadi_name' => 'required',
             'pratiwadi_name.*' => 'required|string|max:255',
