@@ -188,6 +188,7 @@ class PunarabedanController extends Controller
             $punarabedan_challani_number = $request->input('punarabedan_challani_number') ?? '';
         }
 
+        $status = empty($request->input('punarabedan')) ? false : true;
         $InsertData = [
             'mudda_number' => 'पुनरावेदन-'. $request->input('mudda_number'),
             'adalat_mudda_number' => $request->input('adalat_mudda_number'),
@@ -214,7 +215,7 @@ class PunarabedanController extends Controller
             'nirnaye_date' => $request->input('nirnaye_date'),
             'sarkariwakil_name' => $request->input('sarkariwakil_name'),
             'kaifiyat' => $request->input('kaifiyat'),
-            'status' => true,
+            'status' => $status,
             'user_name' => auth()->user()->name,
         ];
 
@@ -272,9 +273,14 @@ class PunarabedanController extends Controller
             $punarabedan_challani_number = $request->input('punarabedan_challani_number') ?? '';
         }
 
-        $mudda_number = preg_replace('/^(पुनरावेदन-)+/u', '', $request->input('mudda_number'));
+        if (preg_match('/^पुनरावेदन-/u', $request->input('mudda_number'))) {
+            $mudda_number = preg_replace('/^(पुनरावेदन-)+/u', 'पुनरावेदन-', $request->input('mudda_number'));
+        } else {
+            $mudda_number = $request->input('mudda_number');
+        }
+        $status = empty($request->input('punarabedan')) ? false : true;
         $punarabedan->update([
-            'mudda_number' => 'पुनरावेदन-'. $request->input('mudda_number'),
+            'mudda_number' => $mudda_number,
             'jaherwala_name' => $jaherwala_name,
             'pratiwadi_name' => $pratiwadi_name,
             'mudda_name' => $request->input('mudda_name'),
@@ -298,7 +304,7 @@ class PunarabedanController extends Controller
             'nirnaye_date' => $request->input('nirnaye_date'),
             'sarkariwakil_name' => $request->input('sarkariwakil_name'),
             'kaifiyat' => $request->input('kaifiyat'),
-            'status' => true,
+            'status' => $status,
             'user_name' => auth()->user()->name,
         ]);
 

@@ -51,7 +51,7 @@
                                 @endif
                                 <select name="mudda_sthiti[]" class="form-control" id="mudda_sthiti">
                                     <option value="">--एउटाको विकल्प रोज्नुहोस।--</option>
-                                    @foreach(['फरार','पक्राउ','हाजिरि जमानीमा छोडेको','तामेली','नचल्ने'] as $status)
+                                    @foreach(['फरार','पक्राउ','हाजिरि जमानीमा छोडेको','तामेली','नचल्ने','कारागार'] as $status)
                                         <option value="{{ $status }}"
                                             {{ $pratiwadi['status'] == $status ? 'selected' : '' }}>
                                             {{ $status }}
@@ -172,13 +172,17 @@
                         <div class="d-flex gap-3">
                         <div class="flex-fill text-center p-1">
                             <label for="पुवे/दो.पा" class="form-label">पुवे/दो.पा </label>
-                            <select class="form-select form-control" name="punarabedan" id="punarabedan">
+                            <select class="form-select form-control" name="punarabedan" id="punarabedan"
+                                 {{ $punarabedan->punarabedan == 'सफल' ? 'disabled' : '' }}>
                                 <option value="" {{ empty($punarabedan->punarabedan) ? 'selected' : '' }}>--एउटाको विकल्प रोज्नुहोस।--</option>
                                 <option value="गर्ने" {{ $punarabedan->punarabedan == 'गर्ने' ? 'selected' : '' }}>पुनरावेदन गर्ने</option>
                                 <option value="नगर्ने" {{ $punarabedan->punarabedan == 'नगर्ने' ? 'selected' : '' }}>पुनरावेदन नगर्ने</option>
                                 <option value="दो.पा" {{ $punarabedan->punarabedan == 'दो.पा' ? 'selected' : '' }}>दो.पा</option>
                                 <option value="सफल" {{ $punarabedan->punarabedan == 'सफल' ? 'selected' : '' }}>सफल</option>
                             </select>
+                            @if($punarabedan->punarabedan == 'सफल')
+                                <input type="hidden" name="punarabedan" value="सफल">
+                            @endif
                             @error('punarabedan')
                                 <div class="alert alert-danger">{{ $message }}</div>
                             @enderror
