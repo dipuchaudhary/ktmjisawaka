@@ -218,7 +218,7 @@ class PunarabedanController extends Controller
             'user_name' => auth()->user()->name,
         ];
 
-        if ($InsertData['status']== true && $request->input('punarabedan') !== 'सफल' ) {
+        if ($InsertData['status']== true && (!empty($request->input('punarabedan')) || $request->input('punarabedan') !== 'सफल'  ) ) {
             $challaniNumber = $request->input('punarabedan_challani_number');
             $exists = Challani::where('challani_number', $challaniNumber)->exists();
             if (!$exists) {

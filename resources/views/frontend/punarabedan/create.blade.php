@@ -176,7 +176,7 @@
                             <input type="hidden" name="is_punarabedan_challani_number_visible" value="false" id="punarabedanChallaniVisibleFlag">
                         </div>
                         <div class="flex-fill text-center p-1 " id="challani-date-div">
-                            <label for="चलानी मिति" class="form-label">चलानी मिति <span style="color:red">*</span></label>
+                            <label for="चलानी मिति" class="form-label">चलानी मिति </label>
                             <input type="text" class="form-control date-picker @error('punarabedan_date') is-invalid @enderror" id="punarabedan_date" name="punarabedan_date" value="{{ old('punarabedan_date') }}" >
                             <input type="hidden" name="is_punarabedan_date_visible" value="false" id="punarabedanDateVisibleFlag">
                             @error('punarabedan_date')

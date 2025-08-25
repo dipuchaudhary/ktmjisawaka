@@ -230,7 +230,7 @@
                 </div>
                 <div class="col-md-4 mb-3">
                     <label for="मुद्दा नं." class="form-label">अदालत मुद्दा नं.</label>
-                    <input type="text" class="form-control @error('adalat_mudda_number') is-invalid @enderror" id="adalat_mudda_number" name="adalat_mudda_number" value="{{ $punarabedan->adalat_mudda_number }}" readonly>
+                    <input type="text" class="form-control @error('adalat_mudda_number') is-invalid @enderror" id="adalat_mudda_number" name="adalat_mudda_number" value="{{ $punarabedan->adalat_mudda_number }}">
                     @error('adalat_mudda_number')
                         <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
