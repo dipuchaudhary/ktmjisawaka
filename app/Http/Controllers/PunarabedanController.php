@@ -31,8 +31,8 @@ class PunarabedanController extends Controller
             'faisala_pramanikaran_date' => 'required',
             'suchana_date' => 'required',
             'faisala_garne_nikaye' => 'required',
-            'punarabedan' => 'required_if:is_punarabedan_visible,true',
-            'punarabedan_date' => 'required_if:is_punarabedan_date_visible,true',
+            'punarabedan' => 'nullable',
+            'punarabedan_date' => 'nullable',
             'punarabedan_challani_number' => 'required_if:is_punarabedan_challani_number_visible,true',
         ];
 
@@ -180,12 +180,12 @@ class PunarabedanController extends Controller
             ];
         }
         $pratiwadi_name = json_encode($pratiwadiList, JSON_UNESCAPED_UNICODE);
-        if ($request->input('punarabedan') == 'सफल') {
-            $punarabedan_date = null;
-            $punarabedan_challani_number = null;
+        if (empty($request->input('punarabedan')) || $request->input('punarabedan') === 'सफल') {
+            $punarabedan_date = '';
+            $punarabedan_challani_number = '';
         } else {
-            $punarabedan_date = $request->input('punarabedan_date');
-            $punarabedan_challani_number = $request->input('punarabedan_challani_number');
+            $punarabedan_date = $request->input('punarabedan_date') ?? '';
+            $punarabedan_challani_number = $request->input('punarabedan_challani_number') ?? '';
         }
 
         $InsertData = [
@@ -264,13 +264,14 @@ class PunarabedanController extends Controller
             ];
         }
         $pratiwadi_name = json_encode($pratiwadiList, JSON_UNESCAPED_UNICODE);
-        if ($request->input('punarabedan') == 'सफल') {
-            $punarabedan_date = null;
-            $punarabedan_challani_number = null;
+        if (empty($request->input('punarabedan')) || $request->input('punarabedan') === 'सफल') {
+            $punarabedan_date = '';
+            $punarabedan_challani_number = '';
         } else {
-            $punarabedan_date = $request->input('punarabedan_date');
-            $punarabedan_challani_number = $request->input('punarabedan_challani_number');
+            $punarabedan_date = $request->input('punarabedan_date') ?? '';
+            $punarabedan_challani_number = $request->input('punarabedan_challani_number') ?? '';
         }
+
 
         $punarabedan->update([
             'mudda_number' => $request->input('mudda_number'),

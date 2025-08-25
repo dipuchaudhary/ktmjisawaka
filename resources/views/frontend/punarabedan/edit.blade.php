@@ -171,7 +171,7 @@
                         <legend class="float-none w-auto px-2" style="font-size: 1.1rem;">कार्यालयबाट भएको पुनरावेदन सम्बन्धी कारवाही</legend>
                         <div class="d-flex gap-3">
                         <div class="flex-fill text-center p-1">
-                            <label for="पुवे/दो.पा" class="form-label">पुवे/दो.पा <span style="color:red">*</span></label>
+                            <label for="पुवे/दो.पा" class="form-label">पुवे/दो.पा </label>
                             <select class="form-select form-control" name="punarabedan" id="punarabedan">
                                 <option value="" {{ empty($punarabedan->punarabedan) ? 'selected' : '' }}>--एउटाको विकल्प रोज्नुहोस।--</option>
                                 <option value="गर्ने" {{ $punarabedan->punarabedan == 'गर्ने' ? 'selected' : '' }}>पुनरावेदन गर्ने</option>
@@ -192,7 +192,7 @@
 
                         </div>
                         <div class="flex-fill text-center p-1 " id="challani-date-div">
-                            <label for="चलानी मिति" class="form-label">चलानी मिति <span style="color:red">*</span></label>
+                            <label for="चलानी मिति" class="form-label">चलानी मिति </label>
                             <input type="text" class="form-control date-picker @error('punarabedan_date') is-invalid @enderror" id="punarabedan_date" name="punarabedan_date" value="{{ $punarabedan->punarabedan_date }}" >
                             @error('punarabedan_date')
                                 <div class="alert alert-danger">{{ $message }}</div>

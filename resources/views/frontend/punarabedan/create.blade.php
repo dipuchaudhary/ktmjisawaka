@@ -156,7 +156,7 @@
                         <legend class="float-none w-auto px-2" style="font-size: 1.1rem;">कार्यालयबाट भएको पुनरावेदन सम्बन्धी कारवाही</legend>
                         <div class="d-flex gap-3">
                         <div class="flex-fill text-center p-1">
-                            <label for="पुवे/दो.पा" class="form-label">पुवे/दो.पा <span style="color:red">*</span></label>
+                            <label for="पुवे/दो.पा" class="form-label">पुवे/दो.पा </label>
                             <select class="form-select form-control" name="punarabedan" id="punarabedan">
                                 <option value="">--एउटाको विकल्प रोज्नुहोस।--</option>
                                 <option value="गर्ने">पुनरावेदन गर्ने</option>
