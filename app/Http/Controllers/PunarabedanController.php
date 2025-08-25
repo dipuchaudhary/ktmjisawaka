@@ -189,7 +189,7 @@ class PunarabedanController extends Controller
         }
 
         $InsertData = [
-            'mudda_number' => $request->input('mudda_number'),
+            'mudda_number' => 'पुनरावेदन-'. $request->input('mudda_number'),
             'adalat_mudda_number' => $request->input('adalat_mudda_number'),
             'jaherwala_name' => $jaherwala_name,
             'pratiwadi_name' => $pratiwadi_name,
@@ -272,9 +272,9 @@ class PunarabedanController extends Controller
             $punarabedan_challani_number = $request->input('punarabedan_challani_number') ?? '';
         }
 
-
+        $mudda_number = preg_replace('/^(पुनरावेदन-)+/u', '', $request->input('mudda_number'));
         $punarabedan->update([
-            'mudda_number' => $request->input('mudda_number'),
+            'mudda_number' => 'पुनरावेदन-'. $request->input('mudda_number'),
             'jaherwala_name' => $jaherwala_name,
             'pratiwadi_name' => $pratiwadi_name,
             'mudda_name' => $request->input('mudda_name'),
