@@ -265,7 +265,7 @@ class PunarabedanController extends Controller
             ];
         }
         $pratiwadi_name = json_encode($pratiwadiList, JSON_UNESCAPED_UNICODE);
-        if (empty($request->input('punarabedan')) || $request->input('punarabedan') === 'सफल') {
+        if (empty($request->input('punarabedan')) || $request->input('punarabedan') === 'सफल' || $punarabedan->status == false) {
             $punarabedan_date = '';
             $punarabedan_challani_number = '';
         } else {
