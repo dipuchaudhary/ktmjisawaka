@@ -13,7 +13,7 @@
             <div class="row g-3 align-items-center mb-5">
                 <div class="col-md-3 mb-3">
                     <label for="मुद्दा नं." class="form-label">राय दर्ता नं.</label>
-                    <input type="text" class="form-control @error('mudda_number') is-invalid @enderror" id="mudda_number" name="mudda_number" value="{{ old('mudda_number') }}">
+                    <input type="text" class="form-control nep-number @error('mudda_number') is-invalid @enderror" id="mudda_number" name="mudda_number" value="{{ old('mudda_number') }}">
                     @error('mudda_number')
                         <div class="alert alert-danger">{{ $message }}</div>
                     @enderror

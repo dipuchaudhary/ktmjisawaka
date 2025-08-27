@@ -20,7 +20,9 @@ class PunarabedanController extends Controller
         $this->format = ChallaniFormat::value('format_prefix') ?? '2082/083';
     }
 
-    protected $rules = [
+    protected function getRules($request)
+    {
+        return [
             'mudda_name' => 'required',
             'jaherwala_name' => 'required',
             'pratiwadi_name' => 'required',
@@ -31,10 +33,24 @@ class PunarabedanController extends Controller
             'faisala_pramanikaran_date' => 'required',
             'suchana_date' => 'required',
             'faisala_garne_nikaye' => 'required',
-            'punarabedan' => 'nullable',
-            'punarabedan_date' => 'nullable',
-            'punarabedan_challani_number' => 'required_if:is_punarabedan_challani_number_visible,true',
+            'punarabedan' => 'nullable|string',
+            'punarabedan_date' => [
+                function ($attribute, $value, $fail) use ($request) {
+                    if (!empty($request->punarabedan) && $request->punarabedan !== 'सफल' && empty($value)) {
+                        $fail('चलानी मिति अनिवार्य छ।');
+                    }
+                },
+            ],
+            'punarabedan_challani_number' => [
+                function ($attribute, $value, $fail) use ($request) {
+                    if (!empty($request->punarabedan) && $request->punarabedan !== 'सफल' && empty($value)) {
+                        $fail('चलानी नं. अनिवार्य छ।');
+                    }
+                },
+            ],
+
         ];
+    }
 
     protected $customMessages = [
            'mudda_name.required' => 'मुद्दाको नाम अनिवार्य छ।',
@@ -165,7 +181,7 @@ class PunarabedanController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, $this->rules, $this->customMessages);
+        $this->validate($request, $this->getRules($request), $this->customMessages);
 
         $jaherwala_name = $request->input('jaherwala_name');
 
@@ -180,15 +196,21 @@ class PunarabedanController extends Controller
             ];
         }
         $pratiwadi_name = json_encode($pratiwadiList, JSON_UNESCAPED_UNICODE);
-        if (empty($request->input('punarabedan')) || $request->input('punarabedan') === 'सफल') {
+        $punarabedan_input = $request->input('punarabedan');
+        if (empty($punarabedan_input)) {
             $punarabedan_date = '';
             $punarabedan_challani_number = '';
+            $status = false;
+        } elseif ($punarabedan_input == 'सफल') {
+            $punarabedan_date = '';
+            $punarabedan_challani_number = '';
+            $status = true;
         } else {
             $punarabedan_date = $request->input('punarabedan_date') ?? '';
             $punarabedan_challani_number = $request->input('punarabedan_challani_number') ?? '';
+            $status = true;
         }
 
-        $status = empty($request->input('punarabedan')) ? false : true;
         $InsertData = [
             'mudda_number' => 'पुनरावेदन-'. $request->input('mudda_number'),
             'adalat_mudda_number' => $request->input('adalat_mudda_number'),
@@ -219,12 +241,14 @@ class PunarabedanController extends Controller
             'user_name' => auth()->user()->name,
         ];
 
-        if ($InsertData['status']== true && (!empty($request->input('punarabedan')) || $request->input('punarabedan') !== 'सफल'  ) ) {
+        if ($status === true && !empty($punarabedan_input) && $punarabedan_input !== 'सफल') {
             $challaniNumber = $request->input('punarabedan_challani_number');
-            $exists = Challani::where('challani_number', $challaniNumber)->exists();
-            if (!$exists) {
-                Challani::create(['challani_number' => $challaniNumber]);
-                $InsertData['punarabedan_challani_number'] = $challaniNumber;
+            if (!empty($challaniNumber)) {
+                $exists = Challani::where('challani_number', $challaniNumber)->exists();
+                if (!$exists) {
+                    Challani::create(['challani_number' => $challaniNumber]);
+                    $InsertData['punarabedan_challani_number'] = $challaniNumber;
+                }
             }
         }
         Punarabedan::create($InsertData);
@@ -248,7 +272,7 @@ class PunarabedanController extends Controller
 
     public function update(Request $request, $id){
         $punarabedan = Punarabedan::findOrFail($id);
-        $this->validate($request, $this->rules, $this->customMessages);
+        $this->validate($request, $this->getRules($request), $this->customMessages);
 
         $jaherwala_name = is_array($request->input('jaherwala_name'))
                         ? implode(',', $request->input('jaherwala_name'))
@@ -265,20 +289,26 @@ class PunarabedanController extends Controller
             ];
         }
         $pratiwadi_name = json_encode($pratiwadiList, JSON_UNESCAPED_UNICODE);
-        if (empty($request->input('punarabedan')) || $request->input('punarabedan') === 'सफल' || $punarabedan->status == false) {
+        $punarabedan_input = $request->input('punarabedan');
+        if (empty($punarabedan_input)) {
             $punarabedan_date = '';
             $punarabedan_challani_number = '';
+            $status = false;
+        } elseif ($punarabedan_input == 'सफल') {
+            $punarabedan_date = '';
+            $punarabedan_challani_number = '';
+            $status = true;
         } else {
             $punarabedan_date = $request->input('punarabedan_date') ?? '';
             $punarabedan_challani_number = $request->input('punarabedan_challani_number') ?? '';
+            $status = true;
         }
-
         if (preg_match('/^पुनरावेदन-/u', $request->input('mudda_number'))) {
             $mudda_number = preg_replace('/^(पुनरावेदन-)+/u', 'पुनरावेदन-', $request->input('mudda_number'));
         } else {
             $mudda_number = $request->input('mudda_number');
         }
-        $status = empty($request->input('punarabedan')) ? false : true;
+
         $punarabedan->update([
             'mudda_number' => $mudda_number,
             'jaherwala_name' => $jaherwala_name,
@@ -308,11 +338,13 @@ class PunarabedanController extends Controller
             'user_name' => auth()->user()->name,
         ]);
 
-        if ( isset($punarabedan) && $punarabedan->status == true && $request->input('punarabedan') !== 'सफल' ) {
+        if ($status === true && !empty($punarabedan_input) && $punarabedan_input !== 'सफल') {
             $challaniNumber = $request->input('punarabedan_challani_number');
-            $exists = Challani::where('challani_number', $challaniNumber)->exists();
-            if (!$exists) {
-                Challani::create(['challani_number' => $challaniNumber]);
+            if (!empty($challaniNumber)) {
+                $exists = Challani::where('challani_number', $challaniNumber)->exists();
+                if (!$exists) {
+                    Challani::create(['challani_number' => $challaniNumber]);
+                }
             }
         }
 
