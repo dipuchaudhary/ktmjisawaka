@@ -97,6 +97,9 @@
                     <option value="anusuchi_1">अनुसूची १</option>
                     <option value="anusuchi_2">अनुसूची २</option>
                 </select>
+                @error('mudda_bibran')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror
                 </div>
                 <div class="col-md-4 mb-3">
                     <label for="मुद्दा पेश भएको कार्यालय" class="form-label">मुद्दा पेश भएको कार्यालय </label>

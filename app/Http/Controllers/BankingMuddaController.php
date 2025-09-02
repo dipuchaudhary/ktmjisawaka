@@ -144,6 +144,7 @@ class BankingMuddaController extends Controller
             'mudda_sthiti.*' => 'required|string|in:फरार,पक्राउ,हाजिरि जमानीमा छोडेको,तामेली,नचल्ने,कारागार',
             'mudda_date' => 'required',
             'status' => 'required|boolean',
+            'mudda_bibran' => 'required',
         ];
         $Messages = [
            'anusandhan_garne_nikaye.required' => 'अनुसन्धान गर्ने निकाय अनिवार्य छ।',
@@ -153,6 +154,7 @@ class BankingMuddaController extends Controller
            'mudda_sthiti.0.required' => 'मुद्दा स्थिति अनिवार्य छ।',
            'mudda_sthiti.*.required' => 'मुद्दा स्थिति अनिवार्य छ।',
            'mudda_date.required' => 'मुद्दा दर्ता मिति अनिवार्य छ।',
+           'mudda_bibran.required' => 'मुद्दा विवरण अनिवार्य छ।',
         ];
 
         $this->validate($request, $rules, $Messages);
