@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
             PermissionTableSeeder::class,
             UserSeeder::class,
             RoleSeeder::class,
+            ChallaniFormatSeeder::class,
         ]);
 
     }
