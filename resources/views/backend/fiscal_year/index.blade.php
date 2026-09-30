@@ -1,10 +1,15 @@
-@extends('layouts.master')
+@extends('adminlte::page')
+
+@section('title', 'वित्तीय वर्ष व्यवस्थापन')
+
+@section('content_header')
+    <h1 class="m-0 text-dark">वित्तीय वर्ष व्यवस्थापन</h1>
+@stop
 
 @section('content')
-<div class="container mt-5 mb-5">
+<div class="container-fluid">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h2>वित्तीय वर्ष व्यवस्थापन</h2>
             <p class="text-muted mb-0">वित्तीय वर्ष थप्ने, संशोधन गर्ने, हेर्ने र व्यवस्थापन गर्ने। transactional data भएको archive मेटाउन मिल्दैन।</p>
         </div>
         <button type="button" class="btn btn-success" data-toggle="modal" data-target="#createFiscalYearModal">
@@ -100,45 +105,6 @@
                                 @endif
                             </td>
                         </tr>
-
-                        <div class="modal fade" id="editFiscalYear{{ $year->id }}" tabindex="-1" role="dialog" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <form method="POST" action="{{ route('fiscal-year.update', $year) }}">
-                                        @csrf
-                                        @method('PUT')
-                                        <div class="modal-header">
-                                            <h5 class="modal-title">वित्तीय वर्ष संशोधन — {{ $year->display_name }}</h5>
-                                            <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <div class="form-group">
-                                                <label>वित्तीय वर्ष</label>
-                                                <input type="text" name="name" class="form-control" value="{{ $year->name }}" required>
-                                                <small class="text-muted">उदाहरण: 2083/084</small>
-                                            </div>
-                                            <div class="form-row">
-                                                <div class="form-group col-md-6">
-                                                    <label>सुरु वर्ष</label>
-                                                    <input type="number" name="start_year" class="form-control" value="{{ $year->start_year }}" required>
-                                                </div>
-                                                <div class="form-group col-md-6">
-                                                    <label>समाप्ति वर्ष</label>
-                                                    <input type="number" name="end_year" class="form-control" value="{{ $year->end_year }}" required>
-                                                </div>
-                                            </div>
-                                            @if($year->is_current)
-                                                <div class="alert alert-info mb-0">चालु वित्तीय वर्षको स्थिति यहाँबाट परिवर्तन हुँदैन।</div>
-                                            @endif
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">बन्द</button>
-                                            <button type="submit" class="btn btn-primary">सुरक्षित गर्नुहोस्</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
                     @empty
                         <tr><td colspan="6" class="text-center py-4">कुनै वित्तीय वर्ष भेटिएन।</td></tr>
                     @endforelse
@@ -166,6 +132,47 @@
     </div>
     @endif
 </div>
+
+@foreach($fiscalYears as $year)
+<div class="modal fade" id="editFiscalYear{{ $year->id }}" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form method="POST" action="{{ route('fiscal-year.update', $year) }}">
+                @csrf
+                @method('PUT')
+                <div class="modal-header">
+                    <h5 class="modal-title">वित्तीय वर्ष संशोधन — {{ $year->display_name }}</h5>
+                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>वित्तीय वर्ष</label>
+                        <input type="text" name="name" class="form-control" value="{{ $year->name }}" required>
+                        <small class="text-muted">उदाहरण: 2083/084</small>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label>सुरु वर्ष</label>
+                            <input type="number" name="start_year" class="form-control" value="{{ $year->start_year }}" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>समाप्ति वर्ष</label>
+                            <input type="number" name="end_year" class="form-control" value="{{ $year->end_year }}" required>
+                        </div>
+                    </div>
+                    @if($year->is_current)
+                        <div class="alert alert-info mb-0">चालु वित्तीय वर्षको स्थिति यहाँबाट परिवर्तन हुँदैन।</div>
+                    @endif
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">बन्द</button>
+                    <button type="submit" class="btn btn-primary">सुरक्षित गर्नुहोस्</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@endforeach
 
 <div class="modal fade" id="createFiscalYearModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
