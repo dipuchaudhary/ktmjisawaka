@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Punarabedan extends Model
 {
     protected $fillable = [
+        'fiscal_year_id',
         'mudda_number',
         'jaherwala_name',
         'pratiwadi_name',
