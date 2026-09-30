@@ -76,5 +76,14 @@
             @endforeach
         </tbody>
     </table>
+    @if(request()->boolean('pdf'))
+    <script>
+        window.addEventListener('load', function () {
+            setTimeout(function () {
+                window.print();
+            }, 500);
+        });
+    </script>
+    @endif
 </body>
 </html>
