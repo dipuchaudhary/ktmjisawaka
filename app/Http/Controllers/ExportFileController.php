@@ -7,6 +7,7 @@ use App\Models\MuddaDarta;
 use App\Models\PatraChallani;
 use App\Models\Punarabedan;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class ExportFileController extends Controller
 {
@@ -107,5 +108,104 @@ class ExportFileController extends Controller
             'columns' => $definition['columns'],
             'records' => $records,
         ]);
+    }
+
+    /**
+     * Export the currently selected module as an Excel-compatible workbook.
+     *
+     * The HTML workbook format keeps Nepali/Devanagari text intact without
+     * requiring an additional server-side spreadsheet package.
+     */
+    public function excel(Request $request, string $module): StreamedResponse
+    {
+        abort_unless(isset($this->modules[$module]), 404);
+
+        $definition = $this->modules[$module];
+        $records = $this->recordsFor($definition);
+        $title = $definition['title'];
+        $filename = $this->filename($title, 'xls');
+
+        return response()->streamDownload(function () use ($definition, $records, $title) {
+            echo "\xEF\xBB\xBF";
+            echo '<html><head><meta charset="UTF-8">';
+            echo '<style>body{font-family:Arial,sans-serif}table{border-collapse:collapse}th,td{border:1px solid #999;padding:6px}th{font-weight:bold}</style>';
+            echo '</head><body>';
+            echo '<h3>' . e($title . ' - आ.व. ' . \App\Support\FiscalYearContext::current()->display_name) . '</h3>';
+            echo '<table><thead><tr>';
+
+            foreach ($definition['columns'] as $label) {
+                echo '<th>' . e($label) . '</th>';
+            }
+
+            echo '</tr></thead><tbody>';
+
+            foreach ($records as $record) {
+                echo '<tr>';
+                foreach ($definition['columns'] as $field => $label) {
+                    echo '<td>' . e($this->displayValue($record->{$field}, $field)) . '</td>';
+                }
+                echo '</tr>';
+            }
+
+            echo '</tbody></table></body></html>';
+        }, $filename, [
+            'Content-Type' => 'application/vnd.ms-excel; charset=UTF-8',
+        ]);
+    }
+
+    /**
+     * Print-ready HTML report. Browser print dialog is used so the office
+     * can select printer, paper size, orientation and save as PDF if needed.
+     */
+    public function print(Request $request, string $module)
+    {
+        abort_unless(isset($this->modules[$module]), 404);
+
+        $definition = $this->modules[$module];
+
+        return view('backend.export_file.print', [
+            'title' => $definition['title'],
+            'columns' => $definition['columns'],
+            'records' => $this->recordsFor($definition),
+        ]);
+    }
+
+    private function recordsFor(array $definition)
+    {
+        return $definition['model']::query()
+            ->orderByDesc('id')
+            ->get(array_keys($definition['columns']));
+    }
+
+    private function displayValue($value, string $field): string
+    {
+        if ($field === 'pratiwadi_name' && is_string($value)) {
+            $decoded = json_decode($value, true);
+            if (is_array($decoded)) {
+                return collect($decoded)->map(function ($item) {
+                    $name = $item['name'] ?? '';
+                    $status = $item['status'] ?? '';
+                    return trim($name . ($status ? ' (' . $status . ')' : ''));
+                })->filter()->implode(', ');
+            }
+        }
+
+        if (is_array($value)) {
+            return collect($value)->map(function ($item) {
+                return is_array($item) ? implode(' ', $item) : $item;
+            })->implode(', ');
+        }
+
+        if ($field === 'status') {
+            return ($value === true || $value === 1 || $value === '1') ? 'Done' : 'Pending';
+        }
+
+        return $value === null || $value === '' ? '-' : (string) $value;
+    }
+
+    private function filename(string $title, string $extension): string
+    {
+        return preg_replace('/[^A-Za-z0-9_-]+/', '-', strtolower($title))
+            . '-export.' . $extension;
     }
 }
