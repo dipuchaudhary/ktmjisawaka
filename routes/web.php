@@ -19,9 +19,12 @@ use App\Http\Controllers\MuddaStatusController;
 
 Route::get('/', [FrontendController::class, 'index'])->name('frontend.home');
 
+// Frontend fiscal-year switching. This only changes the session context;
+// creating/starting a new fiscal year remains restricted to the Admin area.
+Route::post('/fiscal-years/{fiscalYear}/switch', [FiscalYearController::class, 'switch'])->name('fiscal-year.switch');
+
 Route::prefix('admin')->middleware(['auth', 'fiscal.year'])->group(function () {
     Route::get('/fiscal-years', [FiscalYearController::class, 'index'])->name('fiscal-year.index');
-    Route::post('/fiscal-years/{fiscalYear}/switch', [FiscalYearController::class, 'switch'])->name('fiscal-year.switch');
     Route::post('/fiscal-years/start-next', [FiscalYearController::class, 'startNext'])->name('fiscal-year.start-next');
 });
 
