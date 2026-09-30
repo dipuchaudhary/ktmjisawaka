@@ -99,7 +99,7 @@ class PatraChallaniController extends Controller
         }
 
         
-        $challani_format = ChallaniFormat::value('format_prefix') ?? '2082/083';
+        $challani_format = ChallaniFormat::where('is_active', true)->value('format_prefix') ?? '2082/083';
 
         $this->format = $challani_format;
 
