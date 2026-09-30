@@ -98,17 +98,12 @@ class PatraChallaniController extends Controller
              abort(403, 'You do not have permissions');
         }
 
-        $latest = PatraChallani::orderByDesc('id')->first();
+        
         $challani_format = ChallaniFormat::value('format_prefix') ?? '2082/083';
 
         $this->format = $challani_format;
 
-        if ($latest && !empty($latest->challani_number)) {
-            $nextId = $latest->id + 1;
-        } else {
-            $nextId = 1;
-        }
-
+        $nextId = nextFiscalSequence(PatraChallani::class);\n
         $ChallaniNumber = $this->format . '-' . $nextId;
 
         return view('frontend.challani.patrachallani.create', compact('ChallaniNumber'));
