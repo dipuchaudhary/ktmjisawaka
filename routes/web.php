@@ -27,7 +27,6 @@ Route::prefix('admin')->middleware(['auth', 'admin.role'])->group(function () {
     Route::get('/fiscal-years', [FiscalYearController::class, 'index'])->name('fiscal-year.index');
     Route::post('/fiscal-years', [FiscalYearController::class, 'store'])->name('fiscal-year.store');
     Route::put('/fiscal-years/{fiscalYear}', [FiscalYearController::class, 'update'])->name('fiscal-year.update');
-    Route::delete('/fiscal-years/{fiscalYear}', [FiscalYearController::class, 'destroy'])->name('fiscal-year.destroy');
     Route::post('/fiscal-years/start-next', [FiscalYearController::class, 'startNext'])->name('fiscal-year.start-next');
 });
 
