@@ -30,30 +30,6 @@
                             <a href="#" class="nav-item nav-link {{ request()->is('contact') ? 'active' : '' }}">सम्पर्क ठेगाना</a>
                         </div>
                         <div class="navbar-nav ml-auto">
-                        @auth
-                            @php($activeFiscalYear = app(\App\Support\FiscalYearContext::class)->current())
-                            <div class="nav-item dropdown mr-2">
-                                <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
-                                    <i class="fas fa-calendar-alt"></i>
-                                    FY {{ $activeFiscalYear->display_name }}
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    @foreach(\App\Models\FiscalYear::orderByDesc('start_year')->get() as $fy)
-                                        <form method="POST" action="{{ route('fiscal-year.switch', $fy) }}">
-                                            @csrf
-                                            <button type="submit" class="dropdown-item {{ $activeFiscalYear->id === $fy->id ? 'active' : '' }}">
-                                                FY {{ $fy->display_name }}
-                                                @if($fy->is_current) <small>(चालु)</small> @endif
-                                            </button>
-                                        </form>
-                                    @endforeach
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="{{ route('fiscal-year.index') }}">
-                                        <i class="fas fa-cog mr-1"></i> वित्तीय वर्ष व्यवस्थापन
-                                    </a>
-                                </div>
-                            </div>
-                        @endauth
                         @guest
                             @if (Route::has('login'))
                                 <div class="nav-item">
