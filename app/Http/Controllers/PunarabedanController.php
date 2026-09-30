@@ -17,7 +17,12 @@ class PunarabedanController extends Controller
 
     public function __construct()
     {
-        $this->format = ChallaniFormat::where('is_active', true)->value('format_prefix') ?? '2082/083';
+        $this->format = '2082/083';
+    }
+
+    protected function fiscalChallaniFormat(): string
+    {
+        return ChallaniFormat::where('is_active', true)->value('format_prefix') ?? $this->format;
     }
 
     protected function getRules($request)
@@ -169,7 +174,8 @@ class PunarabedanController extends Controller
              abort(403, 'You do not have permissions');
         }
 
-                $nextId = nextFiscalSequence(Challani::class);
+                $this->format = $this->fiscalChallaniFormat();
+        $nextId = nextFiscalSequence(Challani::class);
         $nextChallaniNumber = $this->format . '-' . $nextId;
         return view('frontend.punarabedan.create', compact('nextChallaniNumber'));
     }
