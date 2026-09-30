@@ -18,7 +18,7 @@ class BankingMuddaController extends Controller
 
     public function __construct()
     {
-        $this->format = ChallaniFormat::value('format_prefix') ?? '2082/083';
+        $this->format = ChallaniFormat::where('is_active', true)->value('format_prefix') ?? '2082/083';
     }
     /**
      * Display a listing of the resource.
