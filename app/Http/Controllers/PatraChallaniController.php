@@ -103,7 +103,8 @@ class PatraChallaniController extends Controller
 
         $this->format = $challani_format;
 
-        $nextId = nextFiscalSequence(PatraChallani::class);\n
+        $nextId = nextFiscalSequence(PatraChallani::class);
+
         $ChallaniNumber = $this->format . '-' . $nextId;
 
         return view('frontend.challani.patrachallani.create', compact('ChallaniNumber'));
