@@ -29,9 +29,11 @@ Route::prefix('admin')->middleware(['auth', 'admin.role'])->group(function () {
     Route::post('/fiscal-years', [FiscalYearController::class, 'store'])->name('fiscal-year.store');
     Route::put('/fiscal-years/{fiscalYear}', [FiscalYearController::class, 'update'])->name('fiscal-year.update');
     Route::post('/fiscal-years/start-next', [FiscalYearController::class, 'startNext'])->name('fiscal-year.start-next');
+    Route::get('/export-file', [ExportFileController::class, 'index'])
+        ->name('export-file.index');
     Route::get('/export-file/{module}', [ExportFileController::class, 'index'])
         ->whereIn('module', ['mudda-darta', 'banking-darta', 'challani', 'punarabedan'])
-        ->name('export-file.index');
+        ->name('export-file.module');
     Route::get('/export-file/{module}/excel', [ExportFileController::class, 'excel'])
         ->whereIn('module', ['mudda-darta', 'banking-darta', 'challani', 'punarabedan'])
         ->name('export-file.excel');
