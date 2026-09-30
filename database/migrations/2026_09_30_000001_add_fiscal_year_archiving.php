@@ -19,10 +19,6 @@ return new class extends Migration
 
     public function up(): void
     {
-        if (Schema::hasTable('fiscal_years')) {
-            return;
-        }
-
         Schema::create('fiscal_years', function (Blueprint $table) {
             $table->id();
             $table->string('name', 20)->unique();
