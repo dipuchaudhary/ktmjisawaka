@@ -7,6 +7,7 @@ use App\Models\MuddaDarta;
 use App\Models\PatraChallani;
 use App\Models\Punarabedan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use App\Support\FiscalYearContext;
 
@@ -123,6 +124,7 @@ class ExportFileController extends Controller
 
         $definition = $this->modules[$module];
         $records = $this->recordsFor($definition);
+        $fields = $this->fieldsFor($definition);
         $title = $definition['title'];
         $filename = $this->filename($title, 'xls');
 
@@ -134,15 +136,15 @@ class ExportFileController extends Controller
             echo '<h3>' . e($title . ' - आ.व. ' . \App\Support\FiscalYearContext::current()->display_name) . '</h3>';
             echo '<table><thead><tr>';
 
-            foreach ($definition['columns'] as $label) {
-                echo '<th>' . e($label) . '</th>';
+            foreach ($fields as $field) {
+                echo '<th>' . e($field) . '</th>';
             }
 
             echo '</tr></thead><tbody>';
 
             foreach ($records as $record) {
                 echo '<tr>';
-                foreach ($definition['columns'] as $field => $label) {
+                foreach ($fields as $field) {
                     echo '<td>' . e($this->displayValue($record->{$field}, $field)) . '</td>';
                 }
                 echo '</tr>';
@@ -167,7 +169,7 @@ class ExportFileController extends Controller
         return view('backend.export_file.print', [
             'title' => $definition['title'],
             'fiscalYear' => FiscalYearContext::current(),
-            'columns' => $definition['columns'],
+            'fields' => $this->fieldsFor($definition),
             'records' => $this->recordsFor($definition),
         ]);
     }
@@ -177,7 +179,12 @@ class ExportFileController extends Controller
         return $definition['model']::query()
             ->where('fiscal_year_id', FiscalYearContext::id())
             ->orderByDesc('id')
-            ->get(array_keys($definition['columns']));
+            ->get();
+    }
+
+    private function fieldsFor(array $definition): array
+    {
+        return Schema::getColumnListing((new $definition['model'])->getTable());
     }
 
     private function displayValue($value, string $field): string
