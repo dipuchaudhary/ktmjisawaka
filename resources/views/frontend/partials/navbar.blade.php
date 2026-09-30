@@ -31,10 +31,32 @@
                 </div>
 
                 <div class="navbar-nav ml-auto align-items-center">
-                    <span class="nav-item nav-link text-warning font-weight-bold">
-                        <i class="fas fa-calendar-alt mr-1"></i>
-                        आ.व. {{ \App\Support\FiscalYearContext::current()->display_name }}
-                    </span>
+                    @php
+                        $fiscalYears = \App\Models\FiscalYear::orderByDesc('start_year')->get();
+                        $selectedFiscalYear = \App\Support\FiscalYearContext::current();
+                    @endphp
+                    <div class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-warning font-weight-bold" href="#" role="button"
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-calendar-alt mr-1"></i>
+                            आ.व. {{ $selectedFiscalYear->display_name }}
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            @foreach($fiscalYears as $fiscalYear)
+                                <form method="POST" action="{{ route('fiscal-year.switch', $fiscalYear) }}">
+                                    @csrf
+                                    <button type="submit"
+                                            class="dropdown-item {{ $selectedFiscalYear->id === $fiscalYear->id ? 'active' : '' }}">
+                                        <i class="fas fa-check mr-2 {{ $selectedFiscalYear->id === $fiscalYear->id ? '' : 'invisible' }}"></i>
+                                        आ.व. {{ $fiscalYear->display_name }}
+                                        @if($fiscalYear->is_current)
+                                            <span class="badge badge-success ml-1">चालु</span>
+                                        @endif
+                                    </button>
+                                </form>
+                            @endforeach
+                        </div>
+                    </div>
 
                     @guest
                         @if (Route::has('login'))
