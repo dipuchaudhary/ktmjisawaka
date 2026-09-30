@@ -6,7 +6,7 @@
     <div class="d-flex justify-content-between align-items-center">
         <h1 class="mb-0">Export File</h1>
         <span class="badge badge-warning text-dark">
-            आ.व. {{ \App\Support\FiscalYearContext::current()->display_name }}
+            आ.व. {{ $fiscalYear->display_name }}
         </span>
     </div>
 @stop
@@ -207,7 +207,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 buttons: [
                     {
                         extend: 'pdfHtml5',
-                        title: @json($title . ' - आ.व. ' . \App\Support\FiscalYearContext::current()->display_name),
+                        title: @json($title . ' - आ.व. ' . $fiscalYear->display_name),
                         orientation: 'landscape',
                         pageSize: 'A4',
                         exportOptions: {
