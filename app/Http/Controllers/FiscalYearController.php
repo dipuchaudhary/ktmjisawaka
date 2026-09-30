@@ -44,7 +44,10 @@ class FiscalYearController extends Controller
         }
 
         $newYear = DB::transaction(function () use ($request, $startYear, $endYear) {
-            FiscalYear::query()->update(['is_current' => false]);
+            FiscalYear::query()->where('is_current', true)->update([
+                'is_current' => false,
+                'is_closed' => true,
+            ]);
 
             $newYear = FiscalYear::create([
                 'name' => $request->name,
