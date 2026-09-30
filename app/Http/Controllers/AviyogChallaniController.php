@@ -127,9 +127,7 @@ class AviyogChallaniController extends Controller
              abort(403, 'You do not have permissions');
         }
         $aviyogchallani = AviyogChallani::findOrFail($id);
-        $latest = Challani::orderByDesc('id')->first();
-
-        $nextId = $latest ? $latest->id + 1 : 1;
+                $nextId = nextFiscalSequence(Challani::class);
         $nextChallaniNumber = $this->format . '-' . $nextId;
 
         return view('frontend.challani.aviyog challani.edit',compact('aviyogchallani','nextChallaniNumber'));
