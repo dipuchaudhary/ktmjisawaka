@@ -221,9 +221,7 @@ class BankingMuddaController extends Controller
         }
 
         $bankingmudda = BankingMudda::findOrFail($id);
-        $count = BankingMudda::whereNotNull('challani_number')->count();
-
-        $nextId = $count + 1;
+        $nextId = nextFiscalSequence(BankingMudda::class);
 
         $ChallaniNumber = $this->format . '-' . $nextId;
 
