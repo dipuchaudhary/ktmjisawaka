@@ -19,11 +19,11 @@ use App\Http\Controllers\MuddaStatusController;
 
 Route::get('/', [FrontendController::class, 'index'])->name('frontend.home');
 
-// Frontend fiscal-year switching. This only changes the session context;
-// creating/starting a new fiscal year remains restricted to the Admin area.
+// Frontend fiscal-year switching only.
+// Fiscal-year creation, editing, deletion and starting the next year are admin-only.
 Route::post('/fiscal-years/{fiscalYear}/switch', [FiscalYearController::class, 'switch'])->name('fiscal-year.switch');
 
-Route::prefix('admin')->middleware(['auth'])->group(function () {
+Route::prefix('admin')->middleware(['auth', 'admin.role'])->group(function () {
     Route::get('/fiscal-years', [FiscalYearController::class, 'index'])->name('fiscal-year.index');
     Route::post('/fiscal-years', [FiscalYearController::class, 'store'])->name('fiscal-year.store');
     Route::put('/fiscal-years/{fiscalYear}', [FiscalYearController::class, 'update'])->name('fiscal-year.update');
@@ -39,38 +39,42 @@ Route::get('/banking-mudda', [BankingMuddaController::class, 'index'])->name('ba
 Route::get('/patra-challani', [PatraChallaniController::class, 'index'])->name('patra_challani.index');
 Route::get('/aviyog-challani', [AviyogChallaniController::class, 'index'])->name('aviyog_challani.index');
 Route::get('/overall-status', [MuddaReportController::class, 'overallStatus'])->name('mudda.overall_status');
+
 // mudda darta routes
 Route::group(['middleware' => ['auth', 'fiscal.year']], function() {
-Route::get('/mudda-darta/create', [MuddaDartaController::class, 'create'])->name('mudda_darta.create');
-Route::post('/mudda-darta/store', [MuddaDartaController::class, 'store'])->name('mudda_darta.store');
-Route::get('/mudda-darta/{id}/edit', [MuddaDartaController::class, 'edit'])->name('mudda_darta.edit');
-Route::post('/mudda-darta/update/{id}', [MuddaDartaController::class, 'update'])->name('mudda_darta.update');
-Route::delete('/mudda-darta/delete/{id}', [MuddaDartaController::class, 'destroy'])->name('mudda_darta.destroy');
-//banking mudda routes
+    Route::get('/mudda-darta/create', [MuddaDartaController::class, 'create'])->name('mudda_darta.create');
+    Route::post('/mudda-darta/store', [MuddaDartaController::class, 'store'])->name('mudda_darta.store');
+    Route::get('/mudda-darta/{id}/edit', [MuddaDartaController::class, 'edit'])->name('mudda_darta.edit');
+    Route::post('/mudda-darta/update/{id}', [MuddaDartaController::class, 'update'])->name('mudda_darta.update');
+    Route::delete('/mudda-darta/delete/{id}', [MuddaDartaController::class, 'destroy'])->name('mudda_darta.destroy');
 
-Route::get('/banking-mudda/create', [BankingMuddaController::class, 'create'])->name('banking_mudda.create');
-Route::post('/banking-mudda/store', [BankingMuddaController::class, 'store'])->name('banking_mudda.store');
-Route::get('/banking-mudda/{id}/edit', [BankingMuddaController::class, 'edit'])->name('banking_mudda.edit');
-Route::post('/banking-mudda/update/{id}',[BankingMuddaController::class, 'update'])->name('banking_mudda.update');
-Route::delete('/banking-mudda/delete/{id}', [BankingMuddaController::class, 'destroy'])->name('banking_mudda.destroy');
-//patra challani routes
-Route::get('/patra-challani/create', [PatraChallaniController::class, 'create'])->name('patra_challani.create');
-Route::post('/patra-challani/store', [PatraChallaniController::class, 'store'])->name('patra_challani.store');
-Route::get('/patra-challani/{id}/edit', [PatraChallaniController::class, 'edit'])->name('patra_challani.edit');
-Route::post('/patra-challani/update/{id}',[PatraChallaniController::class, 'update'])->name('patra_challani.update');
-Route::delete('/patra-challani/delete/{id}',[PatraChallaniController::class, 'destroy'])->name('patra_challani.destroy');
-//aviyog challani routes
-Route::get('/aviyog-challani/{id}/edit', [AviyogChallaniController::class, 'edit'])->name('aviyog_challani.edit');
-Route::post('/aviyog-challani/update/{id}',[AviyogChallaniController::class, 'update'])->name('aviyog_challani.update');
-Route::delete('/aviyog-challani/delete/{id}',[AviyogChallaniController::class, 'destroy'])->name('aviyog_challani.destroy');
+    // banking mudda routes
+    Route::get('/banking-mudda/create', [BankingMuddaController::class, 'create'])->name('banking_mudda.create');
+    Route::post('/banking-mudda/store', [BankingMuddaController::class, 'store'])->name('banking_mudda.store');
+    Route::get('/banking-mudda/{id}/edit', [BankingMuddaController::class, 'edit'])->name('banking_mudda.edit');
+    Route::post('/banking-mudda/update/{id}',[BankingMuddaController::class, 'update'])->name('banking_mudda.update');
+    Route::delete('/banking-mudda/delete/{id}', [BankingMuddaController::class, 'destroy'])->name('banking_mudda.destroy');
 
-//Punarabedan routes
-Route::get('/punarabedan/create',[PunarabedanController::class,'create'])->name('punarabedan.create');
-Route::post('/punarabedan/store', [PunarabedanController::class, 'store'])->name('punarabedan.store');
-Route::get('/punarabedan/{id}/edit',[PunarabedanController::class,'edit'])->name('punarabedan.edit');
-Route::post('/punarabedan/update/{id}',[PunarabedanController::class, 'update'])->name('punarabedan.update');
-Route::delete('/punarabedan/delete/{id}',[PunarabedanController::class, 'destroy'])->name('punarabedan.destroy');
+    // patra challani routes
+    Route::get('/patra-challani/create', [PatraChallaniController::class, 'create'])->name('patra_challani.create');
+    Route::post('/patra-challani/store', [PatraChallaniController::class, 'store'])->name('patra_challani.store');
+    Route::get('/patra-challani/{id}/edit', [PatraChallaniController::class, 'edit'])->name('patra_challani.edit');
+    Route::post('/patra-challani/update/{id}',[PatraChallaniController::class, 'update'])->name('patra_challani.update');
+    Route::delete('/patra-challani/delete/{id}',[PatraChallaniController::class, 'destroy'])->name('patra_challani.destroy');
+
+    // aviyog challani routes
+    Route::get('/aviyog-challani/{id}/edit', [AviyogChallaniController::class, 'edit'])->name('aviyog_challani.edit');
+    Route::post('/aviyog-challani/update/{id}',[AviyogChallaniController::class, 'update'])->name('aviyog_challani.update');
+    Route::delete('/aviyog-challani/delete/{id}',[AviyogChallaniController::class, 'destroy'])->name('aviyog_challani.destroy');
+
+    // Punarabedan routes
+    Route::get('/punarabedan/create',[PunarabedanController::class,'create'])->name('punarabedan.create');
+    Route::post('/punarabedan/store', [PunarabedanController::class, 'store'])->name('punarabedan.store');
+    Route::get('/punarabedan/{id}/edit',[PunarabedanController::class,'edit'])->name('punarabedan.edit');
+    Route::post('/punarabedan/update/{id}',[PunarabedanController::class, 'update'])->name('punarabedan.update');
+    Route::delete('/punarabedan/delete/{id}',[PunarabedanController::class,'destroy'])->name('punarabedan.destroy');
 });
+
 Route::prefix('admin')->middleware(['auth', 'fiscal.year'])->group(function() {
     Route::get('/home', [HomeController::class, 'index'])->name('admin.dashboard');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -84,5 +88,4 @@ Route::prefix('admin')->middleware(['auth', 'fiscal.year'])->group(function() {
     Route::get('/mudda-status', [MuddaStatusController::class, 'index'])->name('mudda-status.index');
     Route::post('/mudda-status/search', [MuddaStatusController::class, 'search'])->name('mudda-status.search');
     Route::post('/mudda-status/update-status', [MuddaStatusController::class, 'updateStatus'])->name('mudda-status.updateStatus');
-
 });
