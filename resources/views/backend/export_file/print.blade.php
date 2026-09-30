@@ -48,7 +48,7 @@
         <tbody>
             @foreach($records as $record)
                 <tr>
-                    @foreach($columns as $field => $label)
+                    @foreach($fields as $field)
                         @php
                             $value = $record->{$field};
                             if ($field === 'pratiwadi_name' && is_string($value)) {
