@@ -6,7 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class ChallaniFormat extends Model
 {
-    protected $fillable = ['format_prefix', 'is_active'];
+    protected $fillable = [
+        'fiscal_year_id','format_prefix', 'is_active'];
 
     public function challanis()
     {
