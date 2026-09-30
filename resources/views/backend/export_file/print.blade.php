@@ -40,8 +40,8 @@
     <table>
         <thead>
             <tr>
-                @foreach($columns as $label)
-                    <th>{{ $label }}</th>
+                @foreach($fields as $field)
+                    <th>{{ $field }}</th>
                 @endforeach
             </tr>
         </thead>
