@@ -6,7 +6,6 @@ use App\Models\FiscalYear;
 use App\Models\MuddaDarta;
 use App\Support\FiscalYearContext;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class FiscalYearArchiveTest extends TestCase
@@ -15,12 +14,8 @@ class FiscalYearArchiveTest extends TestCase
 
     public function test_records_are_isolated_by_fiscal_year(): void
     {
-        $old = FiscalYear::create([
-            'name' => '2082/083',
-            'start_year' => 2082,
-            'end_year' => 2083,
-            'is_current' => true,
-        ]);
+        $old = FiscalYear::where('name', '2082/083')->firstOrFail();
+        $old->update(['is_current' => true]);
 
         FiscalYearContext::set($old->id);
 
@@ -51,13 +46,8 @@ class FiscalYearArchiveTest extends TestCase
     {
         $user = \App\Models\User::factory()->create();
 
-        $old = FiscalYear::create([
-            'name' => '2082/083',
-            'start_year' => 2082,
-            'end_year' => 2083,
-            'is_current' => false,
-            'is_closed' => true,
-        ]);
+        $old = FiscalYear::where('name', '2082/083')->firstOrFail();
+        $old->update(['is_current' => false, 'is_closed' => true]);
 
         FiscalYearContext::set($old->id);
 
