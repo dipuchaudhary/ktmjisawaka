@@ -19,6 +19,10 @@ return new class extends Migration
 
     public function up(): void
     {
+        if (Schema::hasTable('fiscal_years')) {
+            return;
+        }
+
         Schema::create('fiscal_years', function (Blueprint $table) {
             $table->id();
             $table->string('name', 20)->unique();
@@ -74,13 +78,15 @@ return new class extends Migration
             'updated_at' => now(),
         ]);
 
-        DB::table('challani_formats')->insert([
-            'fiscal_year_id' => $current,
-            'format_prefix' => '2083/084',
-            'is_active' => true,
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
+        if (Schema::hasTable('challani_formats')) {
+            DB::table('challani_formats')->insert([
+                'fiscal_year_id' => $current,
+                'format_prefix' => '2083/084',
+                'is_active' => true,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
     }
 
     public function down(): void
