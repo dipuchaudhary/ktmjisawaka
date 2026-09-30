@@ -269,7 +269,13 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         if (selectedType === 'pdf') {
-            table.button(0).trigger();
+            // Use the print-ready server view for PDF. Browser print supports
+            // Nepali/Devanagari fonts reliably; select "Save as PDF".
+            window.open(
+                '{{ url('/admin/export-file') }}/' +
+                encodeURIComponent(selectedModule) + '/print?pdf=1',
+                '_blank'
+            );
             return;
         }
 
