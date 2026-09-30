@@ -1,12 +1,15 @@
 <?php
 
 namespace App\Models;
+
+use App\Models\Concerns\BelongsToFiscalYear;
 use App\Models\AviyogChallani;
 
 use Illuminate\Database\Eloquent\Model;
 
 class AviyogChallani extends Model
 {
+    use BelongsToFiscalYear;
     protected $fillable = [
         'fiscal_year_id',
         'challani_date',
