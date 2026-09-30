@@ -118,7 +118,7 @@ class ExportFileController extends Controller
      * The HTML workbook format keeps Nepali/Devanagari text intact without
      * requiring an additional server-side spreadsheet package.
      */
-    public function excel(Request $request, string $module): StreamedResponse
+    public function excel(Request $request, string $module)
     {
         abort_unless(isset($this->modules[$module]), 404);
 
@@ -128,31 +128,41 @@ class ExportFileController extends Controller
         $title = $definition['title'];
         $filename = $this->filename($title, 'xls');
 
-        return response()->streamDownload(function () use ($fields, $records, $title) {
-            echo "\xEF\xBB\xBF";
-            echo '<html><head><meta charset="UTF-8">';
-            echo '<style>body{font-family:Arial,sans-serif}table{border-collapse:collapse}th,td{border:1px solid #999;padding:6px}th{font-weight:bold}</style>';
-            echo '</head><body>';
-            echo '<h3>' . e($title . ' - आ.व. ' . \App\Support\FiscalYearContext::current()->display_name) . '</h3>';
-            echo '<table><thead><tr>';
+        $html = '<!DOCTYPE html><html><head><meta charset="UTF-8">';
+        $html .= '<style>';
+        $html .= 'body{font-family:Arial,sans-serif}';
+        $html .= 'table{border-collapse:collapse;width:100%}';
+        $html .= 'th,td{border:1px solid #999;padding:6px}';
+        $html .= 'th{font-weight:bold;background:#eee}';
+        $html .= '</style></head><body>';
+
+        $html .= '<h3>' . e($title . ' - आ.व. ' . FiscalYearContext::current()->display_name) . '</h3>';
+        $html .= '<table><thead><tr>';
+
+        foreach ($fields as $field) {
+            $html .= '<th>' . e($field) . '</th>';
+        }
+
+        $html .= '</tr></thead><tbody>';
+
+        foreach ($records as $record) {
+            $html .= '<tr>';
 
             foreach ($fields as $field) {
-                echo '<th>' . e($field) . '</th>';
+                $value = $this->displayValue($record->{$field}, $field);
+                $html .= '<td>' . e($value) . '</td>';
             }
 
-            echo '</tr></thead><tbody>';
+            $html .= '</tr>';
+        }
 
-            foreach ($records as $record) {
-                echo '<tr>';
-                foreach ($fields as $field) {
-                    echo '<td>' . e($this->displayValue($record->{$field}, $field)) . '</td>';
-                }
-                echo '</tr>';
-            }
+        $html .= '</tbody></table></body></html>';
 
-            echo '</tbody></table></body></html>';
-        }, $filename, [
+        return response($html, 200, [
             'Content-Type' => 'application/vnd.ms-excel; charset=UTF-8',
+            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+            'Cache-Control' => 'no-cache, no-store, must-revalidate',
+            'Pragma' => 'no-cache',
         ]);
     }
 
