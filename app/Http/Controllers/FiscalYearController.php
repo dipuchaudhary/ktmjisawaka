@@ -16,7 +16,7 @@ $fiscalYears = FiscalYear::orderByDesc('start_year')->get();
         $selected = FiscalYearContext::current();
         $nextStartYear = (int) $selected->end_year;
         $nextEndYear = $nextStartYear + 1;
-        $nextFiscalYear = $nextStartYear . '/' . substr((string) $nextEndYear, -2);
+        $nextFiscalYear = $nextStartYear . '/' . substr((string) $nextEndYear, -3);
 
         return view('backend.fiscal_year.index', compact('fiscalYears', 'selected', 'nextFiscalYear'));
     }
@@ -122,12 +122,12 @@ $fiscalYears = FiscalYear::orderByDesc('start_year')->get();
         $unique = 'unique:fiscal_years,name' . ($ignoreId ? ',' . $ignoreId : '');
 
         return $request->validate([
-            'name' => ['required', 'regex:/^\\d{4}\\/\\d{2}$/', $unique],
+            'name' => ['required', 'regex:/^\\d{4}\\/\\d{3}$/', $unique],
             'start_year' => ['required', 'integer', 'min:1900', 'max:2500'],
             'end_year' => ['required', 'integer', 'gt:start_year', 'max:2501'],
             'is_current' => ['nullable', 'boolean'],
         ], [
-            'name.regex' => 'वित्तीय वर्ष 2083/084 जस्तो ४ अंक/२ अंक ढाँचामा हुनुपर्छ।',
+            'name.regex' => 'वित्तीय वर्ष 2083/084 जस्तो ४ अंक/३ अंक ढाँचामा हुनुपर्छ।',
             'end_year.gt' => 'समाप्ति वर्ष सुरु वर्षभन्दा ठूलो हुनुपर्छ।',
         ]);
     }
@@ -147,11 +147,11 @@ FiscalYearContext::set($fiscalYear->id);
 $current = FiscalYear::where('is_current', true)->firstOrFail();
         $nextStartYear = (int) $current->end_year;
         $nextEndYear = $nextStartYear + 1;
-        $expectedName = $nextStartYear . '/' . substr((string) $nextEndYear, -2);
+        $expectedName = $nextStartYear . '/' . substr((string) $nextEndYear, -3);
 
         $request->merge(['name' => trim((string) $request->input('name'))]);
         $request->validate([
-            'name' => ['required', 'regex:/^\d{4}\/\d{2}$/', 'in:' . $expectedName],
+            'name' => ['required', 'regex:/^\d{4}\/\d{3}$/', 'in:' . $expectedName],
         ], [
             'name.in' => 'अर्को वित्तीय वर्ष ' . $expectedName . ' मात्र सुरु गर्न सकिन्छ।',
         ]);
