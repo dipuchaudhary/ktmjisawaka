@@ -10,15 +10,9 @@ use Illuminate\Support\Facades\DB;
 
 class FiscalYearController extends Controller
 {
-    private function authorizeAdmin(): void
+public function index()
     {
-        abort_unless(auth()->check() && auth()->user()->hasRole('admin'), 403);
-    }
-
-    public function index()
-    {
-        $this->authorizeAdmin();
-        $fiscalYears = FiscalYear::orderByDesc('start_year')->get();
+$fiscalYears = FiscalYear::orderByDesc('start_year')->get();
         $selected = FiscalYearContext::current();
         $nextStartYear = (int) $selected->end_year;
         $nextEndYear = $nextStartYear + 1;
@@ -29,8 +23,7 @@ class FiscalYearController extends Controller
 
     public function switch(FiscalYear $fiscalYear)
     {
-        $this->authorizeAdmin();
-        FiscalYearContext::set($fiscalYear->id);
+FiscalYearContext::set($fiscalYear->id);
 
         return back()->with(
             'success',
@@ -40,9 +33,7 @@ class FiscalYearController extends Controller
 
     public function startNext(Request $request)
     {
-        $this->authorizeAdmin();
-
-        $current = FiscalYear::where('is_current', true)->firstOrFail();
+$current = FiscalYear::where('is_current', true)->firstOrFail();
         $nextStartYear = (int) $current->end_year;
         $nextEndYear = $nextStartYear + 1;
         $expectedName = $nextStartYear . '/' . substr((string) $nextEndYear, -2);
