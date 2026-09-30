@@ -16,6 +16,7 @@ use App\Http\Controllers\RoleController;
 use App\Models\AviyogChallani;
 use App\Http\Controllers\FiscalYearController;
 use App\Http\Controllers\MuddaStatusController;
+use App\Http\Controllers\ExportFileController;
 
 Route::get('/', [FrontendController::class, 'index'])->name('frontend.home');
 
@@ -28,6 +29,9 @@ Route::prefix('admin')->middleware(['auth', 'admin.role'])->group(function () {
     Route::post('/fiscal-years', [FiscalYearController::class, 'store'])->name('fiscal-year.store');
     Route::put('/fiscal-years/{fiscalYear}', [FiscalYearController::class, 'update'])->name('fiscal-year.update');
     Route::post('/fiscal-years/start-next', [FiscalYearController::class, 'startNext'])->name('fiscal-year.start-next');
+    Route::get('/export-file/{module}', [ExportFileController::class, 'index'])
+        ->whereIn('module', ['mudda-darta', 'banking-darta', 'challani', 'punarabedan'])
+        ->name('export-file.index');
 });
 
 Auth::routes();
