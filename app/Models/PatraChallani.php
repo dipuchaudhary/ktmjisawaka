@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class PatraChallani extends Model
 {
     protected $fillable = [
+        'fiscal_year_id',
         'karyalaya_name',
         'challani_date',
         'challani_number',
