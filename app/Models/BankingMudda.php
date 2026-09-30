@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class BankingMudda extends Model
 {
     protected $fillable = [
+        'fiscal_year_id',
         'anusandhan_garne_nikaye',
         'mudda_number',
         'mudda_name',
