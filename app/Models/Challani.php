@@ -6,5 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Challani extends Model
 {
-    protected $fillable = ['challani_number'];
+    protected $fillable = [
+        'fiscal_year_id','challani_number'];
 }
