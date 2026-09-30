@@ -326,6 +326,11 @@ return [
             'icon' => 'fas fa-w fa-envelope',
         ],
         [
+            'text' => 'वित्तीय वर्ष व्यवस्थापन',
+            'url' => 'admin/fiscal-years',
+            'icon' => 'fas fa-fw fa-calendar-alt',
+        ],
+        [
             'text' => 'Role Management',
             'url' => 'admin/roles',
             'icon' => 'fas fa-fw fa-address-book',
