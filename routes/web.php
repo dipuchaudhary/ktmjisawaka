@@ -32,6 +32,12 @@ Route::prefix('admin')->middleware(['auth', 'admin.role'])->group(function () {
     Route::get('/export-file/{module}', [ExportFileController::class, 'index'])
         ->whereIn('module', ['mudda-darta', 'banking-darta', 'challani', 'punarabedan'])
         ->name('export-file.index');
+    Route::get('/export-file/{module}/excel', [ExportFileController::class, 'excel'])
+        ->whereIn('module', ['mudda-darta', 'banking-darta', 'challani', 'punarabedan'])
+        ->name('export-file.excel');
+    Route::get('/export-file/{module}/print', [ExportFileController::class, 'print'])
+        ->whereIn('module', ['mudda-darta', 'banking-darta', 'challani', 'punarabedan'])
+        ->name('export-file.print');
 });
 
 Auth::routes();
