@@ -326,6 +326,32 @@ return [
             'icon' => 'fas fa-w fa-envelope',
         ],
         [
+            'text' => 'Export File',
+            'icon' => 'fas fa-fw fa-file-export',
+            'submenu' => [
+                [
+                    'text' => 'मुद्दा दर्ता',
+                    'url' => 'admin/export-file/mudda-darta',
+                    'icon' => 'fas fa-fw fa-file-excel',
+                ],
+                [
+                    'text' => 'बैंकिङ्ग मुद्दा',
+                    'url' => 'admin/export-file/banking-darta',
+                    'icon' => 'fas fa-fw fa-file-invoice',
+                ],
+                [
+                    'text' => 'चलानी',
+                    'url' => 'admin/export-file/challani',
+                    'icon' => 'fas fa-fw fa-envelope-open-text',
+                ],
+                [
+                    'text' => 'पुनरावेदन',
+                    'url' => 'admin/export-file/punarabedan',
+                    'icon' => 'fas fa-fw fa-file-signature',
+                ],
+            ],
+        ],
+        [
             'text' => 'वित्तीय वर्ष व्यवस्थापन',
             'url' => 'admin/fiscal-years',
             'icon' => 'fas fa-fw fa-calendar-alt',
