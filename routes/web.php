@@ -22,7 +22,6 @@ Route::get('/', [FrontendController::class, 'index'])->name('frontend.home');
 Route::middleware('auth')->group(function () {
     Route::get('/fiscal-years', [FiscalYearController::class, 'index'])->name('fiscal-year.index');
     Route::post('/fiscal-years/{fiscalYear}/switch', [FiscalYearController::class, 'switch'])->name('fiscal-year.switch');
-    Route::post('/fiscal-years/{fiscalYear}/set-current', [FiscalYearController::class, 'current'])->name('fiscal-year.current');
     Route::post('/fiscal-years/start-next', [FiscalYearController::class, 'startNext'])->name('fiscal-year.start-next');
 });
 
