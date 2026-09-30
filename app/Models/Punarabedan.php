@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\BelongsToFiscalYear;
+
 use Illuminate\Database\Eloquent\Model;
 
 class Punarabedan extends Model
 {
+    use BelongsToFiscalYear;
     protected $fillable = [
         'fiscal_year_id',
         'mudda_number',
