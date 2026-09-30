@@ -10,7 +10,9 @@ class AdminRoleMiddleware
 {
     public function handle(Request $request, Closure $next): Response
     {
-        if (!$request->user() || !$request->user()->hasRole('admin')) {
+        $user = $request->user();
+
+        if (!$user || !($user->hasRole('admin') || $user->hasRole('SuperAdmin'))) {
             abort(403, 'You do not have permission to access the admin area.');
         }
 
