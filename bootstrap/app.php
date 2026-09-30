@@ -4,6 +4,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use App\Http\Middleware\FiscalYearContextMiddleware;
+use App\Http\Middleware\AdminRoleMiddleware;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -12,7 +13,8 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        $middleware->alias(['fiscal.year' => FiscalYearContextMiddleware::class]);
+        $middleware->alias(['fiscal.year' => FiscalYearContextMiddleware::class,
+            'admin.role' => AdminRoleMiddleware::class]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
