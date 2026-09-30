@@ -33,7 +33,7 @@
                 <div class="navbar-nav ml-auto align-items-center">
                     <span class="nav-item nav-link text-warning font-weight-bold">
                         <i class="fas fa-calendar-alt mr-1"></i>
-                        आ.व. {{ \\App\\Support\\FiscalYearContext::current()->display_name }}
+                        आ.व. {{ \App\Support\FiscalYearContext::current()->display_name }}
                     </span>
 
                     @guest
