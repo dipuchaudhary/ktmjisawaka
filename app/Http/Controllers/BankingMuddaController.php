@@ -18,7 +18,12 @@ class BankingMuddaController extends Controller
 
     public function __construct()
     {
-        $this->format = ChallaniFormat::where('is_active', true)->value('format_prefix') ?? '2082/083';
+        $this->format = '2082/083';
+    }
+
+    protected function fiscalChallaniFormat(): string
+    {
+        return ChallaniFormat::where('is_active', true)->value('format_prefix') ?? $this->format;
     }
     /**
      * Display a listing of the resource.
@@ -120,7 +125,8 @@ class BankingMuddaController extends Controller
              abort(403, 'You do not have permissions');
         }
 
-                $nextId = nextFiscalSequence(BankingMudda::class);
+                $this->format = $this->fiscalChallaniFormat();
+        $nextId = nextFiscalSequence(BankingMudda::class);
 
         $ChallaniNumber = $this->format . '-' . $nextId;
 
