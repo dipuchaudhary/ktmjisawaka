@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Support\FiscalYearContext;
 use Yajra\DataTables\DataTables;
 
 class MuddaReportController extends Controller
@@ -13,6 +14,7 @@ class MuddaReportController extends Controller
         if ($request->ajax()) {
             // Base unified structure
             $muddaDarta = DB::table('mudda_dartas')
+                ->where('fiscal_year_id', FiscalYearContext::id())
                 ->select([
                     'mudda_dartas.id',
                     'mudda_number',
@@ -29,6 +31,7 @@ class MuddaReportController extends Controller
                 ]);
 
             $bankingMudda = DB::table('banking_muddas')
+                ->where('fiscal_year_id', FiscalYearContext::id())
                 ->select([
                     'id',
                     'mudda_number',
@@ -45,6 +48,7 @@ class MuddaReportController extends Controller
                 ]);
 
             $aviyog = DB::table('aviyog_challanis')
+                ->where('fiscal_year_id', FiscalYearContext::id())
                 ->select([
                     'id',
                     'mudda_number',
@@ -61,6 +65,7 @@ class MuddaReportController extends Controller
                 ]);
 
             $punarabedan = DB::table('punarabedans')
+                ->where('fiscal_year_id', FiscalYearContext::id())
                 ->select([
                     'id',
                     'mudda_number',
