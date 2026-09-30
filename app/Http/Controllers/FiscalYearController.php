@@ -28,42 +28,6 @@ class FiscalYearController extends Controller
         );
     }
 
-    public function current(FiscalYear $fiscalYear)
-    {
-        if ($fiscalYear->is_current) {
-            FiscalYearContext::set($fiscalYear->id);
-            return back()->with('info', 'उक्त वित्तीय वर्ष पहिले नै चालु छ।');
-        }
-
-        DB::transaction(function () use ($fiscalYear) {
-            FiscalYear::query()->update(['is_current' => false]);
-
-            $fiscalYear->update([
-                'is_current' => true,
-                'is_closed' => false,
-            ]);
-
-            $format = ChallaniFormat::withoutGlobalScope('fiscal_year')
-                ->where('fiscal_year_id', $fiscalYear->id)
-                ->first();
-
-            if (!$format) {
-                ChallaniFormat::withoutGlobalScope('fiscal_year')->create([
-                    'fiscal_year_id' => $fiscalYear->id,
-                    'format_prefix' => $fiscalYear->name,
-                    'is_active' => true,
-                ]);
-            }
-        });
-
-        FiscalYearContext::set($fiscalYear->id);
-
-        return back()->with(
-            'success',
-            'वित्तीय वर्ष ' . $fiscalYear->display_name . ' चालु गरिएको छ।'
-        );
-    }
-
     public function startNext(Request $request)
     {
         $request->validate([
