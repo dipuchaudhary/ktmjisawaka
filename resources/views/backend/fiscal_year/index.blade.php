@@ -160,8 +160,16 @@
                             <input type="number" name="end_year" class="form-control" value="{{ $year->end_year }}" required>
                         </div>
                     </div>
-                    @if($year->is_current)
-                        <div class="alert alert-info mb-0">चालु वित्तीय वर्षको स्थिति यहाँबाट परिवर्तन हुँदैन।</div>
+                    @if(!$year->is_current)
+                        <div class="custom-control custom-checkbox mt-2">
+                            <input type="checkbox" class="custom-control-input" id="makeCurrent{{ $year->id }}" name="is_current" value="1">
+                            <label class="custom-control-label" for="makeCurrent{{ $year->id }}">यसलाई चालु वित्तीय वर्ष बनाउने</label>
+                        </div>
+                        <small class="text-muted d-block mt-2">
+                            चयन गर्दा हालको चालु वित्तीय वर्ष बन्द हुनेछ र यो वित्तीय वर्ष चालु हुनेछ।
+                        </small>
+                    @else
+                        <div class="alert alert-success mb-0">यो हालको चालु वित्तीय वर्ष हो।</div>
                     @endif
                 </div>
                 <div class="modal-footer">
