@@ -169,9 +169,7 @@ class PunarabedanController extends Controller
              abort(403, 'You do not have permissions');
         }
 
-        $latest = Challani::orderByDesc('id')->first();
-
-        $nextId = $latest ? $latest->id + 1 : 1;
+                $nextId = nextFiscalSequence(Challani::class);
         $nextChallaniNumber = $this->format . '-' . $nextId;
         return view('frontend.punarabedan.create', compact('nextChallaniNumber'));
     }
