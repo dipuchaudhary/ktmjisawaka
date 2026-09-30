@@ -120,9 +120,7 @@ class BankingMuddaController extends Controller
              abort(403, 'You do not have permissions');
         }
 
-        $count = BankingMudda::whereNotNull('challani_number')->count();
-
-        $nextId = $count + 1;
+                $nextId = nextFiscalSequence(BankingMudda::class);
 
         $ChallaniNumber = $this->format . '-' . $nextId;
 
