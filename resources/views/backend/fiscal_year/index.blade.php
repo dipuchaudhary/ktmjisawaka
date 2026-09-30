@@ -102,24 +102,6 @@
             </div>
         </div>
     </div>
-
-    @if($selected->is_current)
-    <div class="card border-primary">
-        <div class="card-header">अर्को वित्तीय वर्ष सुरु गर्ने</div>
-        <div class="card-body">
-            <p class="mb-3">
-                अर्को वित्तीय वर्ष <code>{{ $nextFiscalYear }}</code> स्वतः तयार हुन्छ। पुरानो वर्ष archive हुन्छ र नयाँ वर्ष चालु हुन्छ।
-            </p>
-            <form method="POST" action="{{ route('fiscal-year.start-next') }}" class="form-inline">
-                @csrf
-                <input type="text" name="name" class="form-control mr-2" value="{{ $nextFiscalYear }}" readonly required>
-                <button class="btn btn-success" onclick="return confirm('नयाँ वित्तीय वर्ष सुरु गर्ने?')">
-                    <i class="fas fa-play mr-1"></i> नयाँ वित्तीय वर्ष सुरु गर्नुहोस्
-                </button>
-            </form>
-        </div>
-    </div>
-    @endif
 </div>
 
 @foreach($fiscalYears as $year)
