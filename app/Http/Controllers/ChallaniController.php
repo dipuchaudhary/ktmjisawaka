@@ -9,7 +9,7 @@ use App\Models\Challani;
 class ChallaniController extends Controller
 {
     public function index() {
-        $format = ChallaniFormat::first();
+        $format = ChallaniFormat::where('is_active', true)->first();
         if($format) {
             return view('backend.challani.challaniForm',compact('format'));
         } else {
@@ -25,7 +25,7 @@ class ChallaniController extends Controller
         ]);
 
         try {
-            $existingFormat = ChallaniFormat::first();
+            $existingFormat = ChallaniFormat::where('is_active', true)->first();
             if ($existingFormat) {
             $existingFormat->update([
                 'format_prefix' => $validated['format_prefix'],
