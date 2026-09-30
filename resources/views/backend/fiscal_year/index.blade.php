@@ -92,17 +92,6 @@
                                         title="सम्पादन">
                                     <i class="fas fa-edit"></i>
                                 </button>
-
-                                @if(!$year->is_current)
-                                    <form method="POST" action="{{ route('fiscal-year.destroy', $year) }}" class="d-inline"
-                                          onsubmit="return confirm('यो वित्तीय वर्ष मेटाउने? transactional data भए मेटाउन दिइने छैन।');">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button class="btn btn-sm btn-danger" title="मेटाउनुहोस्">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </form>
-                                @endif
                             </td>
                         </tr>
                     @empty
