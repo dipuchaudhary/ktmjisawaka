@@ -2,7 +2,7 @@
 <html lang="ne">
 <head>
     <meta charset="UTF-8">
-    <title>{{ $title }} - आ.व. {{ \App\Support\FiscalYearContext::current()->display_name }}</title>
+    <title>{{ $title }} - आ.व. {{ $fiscalYear->display_name }}</title>
     <style>
         @font-face {
             font-family: 'NotoDevanagari';
@@ -34,7 +34,7 @@
     </div>
 
     <h2>{{ $title }}</h2>
-    <p>आर्थिक वर्ष: {{ \App\Support\FiscalYearContext::current()->display_name }}</p>
+    <p>आर्थिक वर्ष: {{ $fiscalYear->display_name }}</p>
     <p>जिल्ला सरकारी वकील कार्यालय, काठमाण्डौ</p>
 
     <table>
