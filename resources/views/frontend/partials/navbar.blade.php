@@ -31,12 +31,10 @@
                 </div>
 
                 <div class="navbar-nav ml-auto align-items-center">
-                    @if(app()->bound('App\\Support\\FiscalYearContext'))
-                        <span class="nav-item nav-link text-warning font-weight-bold">
-                            <i class="fas fa-calendar-alt mr-1"></i>
-                            आ.व. {{ app('App\\Support\\FiscalYearContext')->current()->display_name }}
-                        </span>
-                    @endif
+                    <span class="nav-item nav-link text-warning font-weight-bold">
+                        <i class="fas fa-calendar-alt mr-1"></i>
+                        आ.व. {{ \\App\\Support\\FiscalYearContext::current()->display_name }}
+                    </span>
 
                     @guest
                         @if (Route::has('login'))
