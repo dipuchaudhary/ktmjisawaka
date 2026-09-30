@@ -64,7 +64,9 @@ class FiscalYearController extends Controller
         }
 
         $newYear = DB::transaction(function () use ($expectedName, $startYear, $endYear) {
-            ChallaniFormat::query()->where('is_active', true)->update(['is_active' => false]);
+            ChallaniFormat::withoutGlobalScope('fiscal_year')
+                ->where('is_active', true)
+                ->update(['is_active' => false]);
 
             FiscalYear::query()->where('is_current', true)->update([
                 'is_current' => false,
