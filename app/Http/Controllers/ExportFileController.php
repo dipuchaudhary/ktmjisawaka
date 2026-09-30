@@ -8,6 +8,7 @@ use App\Models\PatraChallani;
 use App\Models\Punarabedan;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use App\Support\FiscalYearContext;
 
 class ExportFileController extends Controller
 {
@@ -102,6 +103,7 @@ class ExportFileController extends Controller
 
         return view('backend.export_file.index', [
             'module' => $module,
+            'fiscalYear' => FiscalYearContext::current(),
             'title' => $definition['title'] ?? 'Export File',
             'columns' => $definition['columns'] ?? [],
             'records' => $records,
@@ -164,6 +166,7 @@ class ExportFileController extends Controller
 
         return view('backend.export_file.print', [
             'title' => $definition['title'],
+            'fiscalYear' => FiscalYearContext::current(),
             'columns' => $definition['columns'],
             'records' => $this->recordsFor($definition),
         ]);
@@ -172,6 +175,7 @@ class ExportFileController extends Controller
     private function recordsFor(array $definition)
     {
         return $definition['model']::query()
+            ->where('fiscal_year_id', FiscalYearContext::id())
             ->orderByDesc('id')
             ->get(array_keys($definition['columns']));
     }
