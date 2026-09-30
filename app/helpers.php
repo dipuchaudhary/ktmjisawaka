@@ -22,3 +22,19 @@ if (!function_exists('toNepaliNumber')) {
         return strtr((string) $number, $engToNepali);
     }
 }
+
+
+if (!function_exists('nextFiscalSequence')) {
+    function nextFiscalSequence(string $modelClass, string $column = 'challani_number'): int
+    {
+        $max = 0;
+
+        foreach ($modelClass::query()->whereNotNull($column)->pluck($column) as $value) {
+            if (preg_match('/-(\d+)$/u', (string) $value, $matches)) {
+                $max = max($max, (int) $matches[1]);
+            }
+        }
+
+        return $max + 1;
+    }
+}
