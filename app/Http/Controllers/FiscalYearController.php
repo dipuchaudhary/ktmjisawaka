@@ -20,8 +20,11 @@ class FiscalYearController extends Controller
         $this->authorizeAdmin();
         $fiscalYears = FiscalYear::orderByDesc('start_year')->get();
         $selected = FiscalYearContext::current();
+        $nextStartYear = (int) $selected->end_year;
+        $nextEndYear = $nextStartYear + 1;
+        $nextFiscalYear = $nextStartYear . '/' . substr((string) $nextEndYear, -2);
 
-        return view('backend.fiscal_year.index', compact('fiscalYears', 'selected'));
+        return view('backend.fiscal_year.index', compact('fiscalYears', 'selected', 'nextFiscalYear'));
     }
 
     public function switch(FiscalYear $fiscalYear)
