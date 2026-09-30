@@ -16,7 +16,7 @@ class FiscalYearContextMiddleware
         if (
             !$context->is_current
             && in_array(strtoupper($request->method()), ['POST', 'PUT', 'PATCH', 'DELETE'], true)
-            && !$request->routeIs('fiscal-year.switch', 'fiscal-year.current')
+            && !$request->routeIs('fiscal-year.switch')
         ) {
             abort(403, 'Archived fiscal years are read-only. Switch to the current fiscal year before making changes.');
         }
