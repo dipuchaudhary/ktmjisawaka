@@ -267,6 +267,7 @@ class PunarabedanController extends Controller
         }
 
         $punarabedan = Punarabedan::findOrFail($id);
+        $this->format = $this->fiscalChallaniFormat();
         $nextId = nextFiscalSequence(Challani::class);
         $nextChallaniNumber = $this->format . '-' . $nextId;
         return view('frontend.punarabedan.edit', compact('punarabedan','nextChallaniNumber'));
