@@ -91,22 +91,21 @@ class ExportFileController extends Controller
         ],
     ];
 
-    public function index(Request $request, string $module)
+    public function index(Request $request, ?string $module = null)
     {
-        abort_unless(isset($this->modules[$module]), 404);
+        if ($module !== null) {
+            abort_unless(isset($this->modules[$module]), 404);
+        }
 
-        $definition = $this->modules[$module];
-        $model = $definition['model'];
-
-        $records = $model::query()
-            ->orderByDesc('id')
-            ->get(array_keys($definition['columns']));
+        $definition = $module !== null ? $this->modules[$module] : null;
+        $records = $definition ? $this->recordsFor($definition) : collect();
 
         return view('backend.export_file.index', [
             'module' => $module,
-            'title' => $definition['title'],
-            'columns' => $definition['columns'],
+            'title' => $definition['title'] ?? 'Export File',
+            'columns' => $definition['columns'] ?? [],
             'records' => $records,
+            'modules' => collect($this->modules)->mapWithKeys(fn ($item, $key) => [$key => $item['title']])->all(),
         ]);
     }
 
