@@ -68,12 +68,12 @@
         <div class="card-header">नयाँ वित्तीय वर्ष सुरु गर्ने</div>
         <div class="card-body">
             <p class="mb-3">
-                उदाहरण: <code>2083/084</code> राख्दा नयाँ वित्तीय वर्ष खाली transactional data सहित सुरु हुनेछ।
+                अर्को वित्तीय वर्ष <code>{{ $nextFiscalYear }}</code> स्वतः तयार हुन्छ। नयाँ वित्तीय वर्ष खाली transactional data सहित सुरु हुनेछ।
                 पुरानो वर्षको data archive मा यथावत् रहनेछ।
             </p>
             <form method="POST" action="{{ route('fiscal-year.start-next') }}" class="form-inline">
                 @csrf
-                <input type="text" name="name" class="form-control mr-2" placeholder="2083/084" required>
+                <input type="text" name="name" class="form-control mr-2" value="{{ $nextFiscalYear }}" readonly required>
                 <button class="btn btn-success" onclick="return confirm('नयाँ वित्तीय वर्ष सुरु गर्ने?')">
                     नयाँ वित्तीय वर्ष सुरु गर्नुहोस्
                 </button>
