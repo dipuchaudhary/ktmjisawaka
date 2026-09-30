@@ -128,7 +128,7 @@ class ExportFileController extends Controller
         $title = $definition['title'];
         $filename = $this->filename($title, 'xls');
 
-        return response()->streamDownload(function () use ($definition, $records, $title) {
+        return response()->streamDownload(function () use ($fields, $records, $title) {
             echo "\xEF\xBB\xBF";
             echo '<html><head><meta charset="UTF-8">';
             echo '<style>body{font-family:Arial,sans-serif}table{border-collapse:collapse}th,td{border:1px solid #999;padding:6px}th{font-weight:bold}</style>';
