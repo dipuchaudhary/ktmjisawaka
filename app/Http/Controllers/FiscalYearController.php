@@ -66,18 +66,52 @@ $fiscalYears = FiscalYear::orderByDesc('start_year')->get();
     public function update(Request $request, FiscalYear $fiscalYear)
     {
         $data = $this->validateFiscalYear($request, $fiscalYear->id);
+        $makeCurrent = $request->boolean('is_current');
 
-        DB::transaction(function () use ($data, $fiscalYear) {
+        DB::transaction(function () use ($data, $fiscalYear, $makeCurrent) {
+            if ($makeCurrent && !$fiscalYear->is_current) {
+                FiscalYear::withoutGlobalScopes()->where('is_current', true)->update([
+                    'is_current' => false,
+                    'is_closed' => true,
+                ]);
+
+                ChallaniFormat::withoutGlobalScope('fiscal_year')
+                    ->where('is_active', true)
+                    ->update(['is_active' => false]);
+            }
+
             $fiscalYear->update([
                 'name' => $data['name'],
                 'start_year' => $data['start_year'],
                 'end_year' => $data['end_year'],
+                'is_current' => $makeCurrent ? true : $fiscalYear->is_current,
+                'is_closed' => $makeCurrent ? false : $fiscalYear->is_closed,
             ]);
 
             ChallaniFormat::withoutGlobalScope('fiscal_year')
                 ->where('fiscal_year_id', $fiscalYear->id)
                 ->update(['format_prefix' => $fiscalYear->name]);
+
+            if ($makeCurrent) {
+                $format = ChallaniFormat::withoutGlobalScope('fiscal_year')
+                    ->where('fiscal_year_id', $fiscalYear->id)
+                    ->first();
+
+                if ($format) {
+                    $format->update(['is_active' => true, 'format_prefix' => $fiscalYear->name]);
+                } else {
+                    ChallaniFormat::withoutGlobalScope('fiscal_year')->create([
+                        'fiscal_year_id' => $fiscalYear->id,
+                        'format_prefix' => $fiscalYear->name,
+                        'is_active' => true,
+                    ]);
+                }
+            }
         });
+
+        if ($makeCurrent) {
+            FiscalYearContext::set($fiscalYear->id);
+        }
 
         return back()->with('success', 'वित्तीय वर्ष अद्यावधिक भयो।');
     }
