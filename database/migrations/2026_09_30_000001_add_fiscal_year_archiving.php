@@ -49,8 +49,8 @@ return new class extends Migration
             'name' => '2082/083',
             'start_year' => 2082,
             'end_year' => 2083,
-            'is_current' => true,
-            'is_closed' => false,
+            'is_current' => false,
+            'is_closed' => true,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -62,6 +62,25 @@ return new class extends Migration
                 ]);
             }
         }
+
+        // Open the next fiscal year with completely fresh transactional data.
+        $current = DB::table('fiscal_years')->insertGetId([
+            'name' => '2083/084',
+            'start_year' => 2083,
+            'end_year' => 2084,
+            'is_current' => true,
+            'is_closed' => false,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        DB::table('challani_formats')->insert([
+            'fiscal_year_id' => $current,
+            'format_prefix' => '2083/084',
+            'is_active' => true,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
     }
 
     public function down(): void
