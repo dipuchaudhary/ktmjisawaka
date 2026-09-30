@@ -14,9 +14,17 @@ use App\Http\Controllers\PunarabedanController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoleController;
 use App\Models\AviyogChallani;
+use App\Http\Controllers\FiscalYearController;
 use App\Http\Controllers\MuddaStatusController;
 
 Route::get('/', [FrontendController::class, 'index'])->name('frontend.home');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/fiscal-years', [FiscalYearController::class, 'index'])->name('fiscal-year.index');
+    Route::post('/fiscal-years/{fiscalYear}/switch', [FiscalYearController::class, 'switch'])->name('fiscal-year.switch');
+    Route::post('/fiscal-years/{fiscalYear}/set-current', [FiscalYearController::class, 'current'])->name('fiscal-year.current');
+    Route::post('/fiscal-years/start-next', [FiscalYearController::class, 'startNext'])->name('fiscal-year.start-next');
+});
 
 Auth::routes();
 
@@ -27,7 +35,7 @@ Route::get('/patra-challani', [PatraChallaniController::class, 'index'])->name('
 Route::get('/aviyog-challani', [AviyogChallaniController::class, 'index'])->name('aviyog_challani.index');
 Route::get('/overall-status', [MuddaReportController::class, 'overallStatus'])->name('mudda.overall_status');
 // mudda darta routes
-Route::group(['middleware' => ['auth']], function() {
+Route::group(['middleware' => ['auth', 'fiscal.year']], function() {
 Route::get('/mudda-darta/create', [MuddaDartaController::class, 'create'])->name('mudda_darta.create');
 Route::post('/mudda-darta/store', [MuddaDartaController::class, 'store'])->name('mudda_darta.store');
 Route::get('/mudda-darta/{id}/edit', [MuddaDartaController::class, 'edit'])->name('mudda_darta.edit');
@@ -58,7 +66,7 @@ Route::get('/punarabedan/{id}/edit',[PunarabedanController::class,'edit'])->name
 Route::post('/punarabedan/update/{id}',[PunarabedanController::class, 'update'])->name('punarabedan.update');
 Route::delete('/punarabedan/delete/{id}',[PunarabedanController::class, 'destroy'])->name('punarabedan.destroy');
 });
-Route::prefix('admin')->middleware(['auth'])->group(function() {
+Route::prefix('admin')->middleware(['auth', 'fiscal.year'])->group(function() {
     Route::get('/home', [HomeController::class, 'index'])->name('admin.dashboard');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
